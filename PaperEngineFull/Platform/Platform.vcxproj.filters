@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="OpenGLPlatform">
+      <UniqueIdentifier>{fb393b8b-9d08-4528-bef1-a3d6a33ae814}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpenGLPlatform\include">
+      <UniqueIdentifier>{2e88ad42-ed65-41c5-8b31-dd9f1d643f04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpenGLPlatform\src">
+      <UniqueIdentifier>{8a1ae494-272f-4161-b8ed-56bc840c4581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{bcc5fabf-35a8-4037-aede-f4c1dc09a05e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="OpenGLPlatform\OpenGLTexture.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLShader.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLSupport.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLWin32Support.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLWin32Window.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLWin32Context.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLRenderSystem.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLImpl.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLRenderTexture.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLMesh.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLMaterial.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLShaderMgr.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLMaterialMgr.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLMeshMgr.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\RenderPreCompileHead.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLTextureMgr.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OpenGLPlatform\OpenGLTexture.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLShader.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLSupport.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLWin32Window.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLWin32Support.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLContext.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLWin32Context.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLRenderSystem.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLImpl.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLRenderTexture.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLMesh.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLMaterial.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLShaderMgr.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLMaterialMgr.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLMeshMgr.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\RenderPreCompileHead.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLTextureMgr.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

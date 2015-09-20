@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{3575958b-33d2-496d-921f-a33fe2237058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{67c2ee8d-8320-4366-9909-48d12c6759bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\win32">
+      <UniqueIdentifier>{1b275f56-11d4-43c6-9f54-ec3ca6655e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\win32">
+      <UniqueIdentifier>{bc3c27e9-b874-4efe-9dcc-df96a730d7a7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="win32\Win32Framework.h">
+      <Filter>include\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="win32\Win32InputManager.h">
+      <Filter>include\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="win32\CameraController.h">
+      <Filter>include\win32</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="win32\Win32Framework.cpp">
+      <Filter>src\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="win32\Win32InputManager.cpp">
+      <Filter>src\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="win32\CameraController.cpp">
+      <Filter>src\win32</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

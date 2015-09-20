@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="util">
+      <UniqueIdentifier>{e0c40bb2-3c3d-43a7-a853-2227d5763f61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\include">
+      <UniqueIdentifier>{eec9cae7-e2e2-432f-9363-49f4d37e4a7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\src">
+      <UniqueIdentifier>{d3df69f3-bb15-4758-8b4d-6e69c06aee44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceSystem">
+      <UniqueIdentifier>{b1e9f52a-dafa-4803-9b65-0e4395df4434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceSystem\include">
+      <UniqueIdentifier>{e09c4c1a-fe1d-420f-bfe1-dc58f027ba16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceSystem\src">
+      <UniqueIdentifier>{019f7ac7-895d-4de0-8d27-088a4c511f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{3030b7ae-109c-4fb2-a5e8-8836d056d858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{67698d6a-dd09-410b-ad63-23169ccf1f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\include">
+      <UniqueIdentifier>{9029cfc8-029e-476a-9c0c-53e064f65b33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\src">
+      <UniqueIdentifier>{248562e3-d964-44a0-9749-86d16f3802b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\xna math">
+      <UniqueIdentifier>{51ff0980-228e-4323-b516-0b531d866d50}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="util\Paper_Math.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Paper_Quat.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Camera.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Platform.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Engine_Define.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\Resource.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\Stream.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\ImageLoader.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\FileStream.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\MagicImageLoader.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\ResourceLoader.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Singleton.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Log.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\WindowEventUtil.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\AssimpMeshLoader.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Timer.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\RefCount.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\SmartPtr.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Memory.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Float4.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Frustum.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\ResHandle.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Node.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNode.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Entity.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\GameObject.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\IGameObjComponent.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\IGameObject.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\MovableObject.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\IMesh.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\StaticRenderable.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\RenderCommand.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\ResHandleMgr.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Renderable.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneMgr.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\GameObjSystem.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\IResMgr.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\System.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\IRenderSequence.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\RenderSequence.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Global.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\IMaterial.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\IShader.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\ShaderParam.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\GlobalShaderParamMng.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\ITexture.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="XNAMath\xnamath.h">
+      <Filter>util\xna math</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceSystem\CustomMeshLoader.h">
+      <Filter>ResourceSystem\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\IFontSystem.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\IUISystem.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\EngineProfile.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Common.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\ITask.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\IThread.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\TaskDispatcher.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\IEvent.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\PrecompileHead.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\sigslot.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\IProfile.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="util\IRenderTexture.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Plane.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="util\Paper_Quat.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Camera.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceSystem\Resource.cpp">
+      <Filter>ResourceSystem\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceSystem\Stream.cpp">
+      <Filter>ResourceSystem\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceSystem\MagicImageLoader.cpp">
+      <Filter>ResourceSystem\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceSystem\FileStream.cpp">
+      <Filter>ResourceSystem\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Log.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\WindowEventUtil.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceSystem\AssimpMeshLoader.cpp">
+      <Filter>ResourceSystem\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Win32Timer.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Frustum.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Node.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneNode.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Entity.cpp">
+      <Filter>GameObject\src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\MovableObject.cpp">
+      <Filter>GameObject\src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\StaticRenderable.cpp">
+      <Filter>GameObject\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneMgr.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\GameObject.cpp">
+      <Filter>GameObject\src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\GameObjSystem.cpp">
+      <Filter>GameObject\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\RenderSequence.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Global.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\GlobalShaderParamMng.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceSystem\CustomMeshLoader.cpp">
+      <Filter>ResourceSystem\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\System.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\EngineProfile.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Common.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\TaskDispatcher.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\PrecompileHead.cpp">
+      <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Plane.cpp">
+      <Filter>GameObject\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="XNAMath\xnamathconvert.inl">
+      <Filter>util\xna math</Filter>
+    </None>
+    <None Include="XNAMath\xnamathmatrix.inl">
+      <Filter>util\xna math</Filter>
+    </None>
+    <None Include="XNAMath\xnamathmisc.inl">
+      <Filter>util\xna math</Filter>
+    </None>
+    <None Include="XNAMath\xnamathvector.inl">
+      <Filter>util\xna math</Filter>
+    </None>
+  </ItemGroup>
+</Project>

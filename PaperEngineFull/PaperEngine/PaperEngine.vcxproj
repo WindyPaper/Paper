@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameObject\Entity.h" />
+    <ClInclude Include="GameObject\GameObject.h" />
+    <ClInclude Include="GameObject\GameObjSystem.h" />
+    <ClInclude Include="GameObject\IGameObjComponent.h" />
+    <ClInclude Include="GameObject\IGameObject.h" />
+    <ClInclude Include="GameObject\MovableObject.h" />
+    <ClInclude Include="GameObject\Plane.h" />
+    <ClInclude Include="GameObject\Renderable.h" />
+    <ClInclude Include="GameObject\StaticRenderable.h" />
+    <ClInclude Include="ResourceSystem\AssimpMeshLoader.h" />
+    <ClInclude Include="ResourceSystem\CustomMeshLoader.h" />
+    <ClInclude Include="ResourceSystem\FileStream.h" />
+    <ClInclude Include="ResourceSystem\IMaterial.h" />
+    <ClInclude Include="ResourceSystem\IMesh.h" />
+    <ClInclude Include="ResourceSystem\IResMgr.h" />
+    <ClInclude Include="ResourceSystem\ITexture.h" />
+    <ClInclude Include="ResourceSystem\ResHandle.h" />
+    <ClInclude Include="ResourceSystem\ImageLoader.h" />
+    <ClInclude Include="ResourceSystem\ResHandleMgr.h" />
+    <ClInclude Include="ResourceSystem\ResourceLoader.h" />
+    <ClInclude Include="ResourceSystem\MagicImageLoader.h" />
+    <ClInclude Include="ResourceSystem\Resource.h" />
+    <ClInclude Include="ResourceSystem\IShader.h" />
+    <ClInclude Include="ResourceSystem\ShaderParam.h" />
+    <ClInclude Include="ResourceSystem\Stream.h" />
+    <ClInclude Include="Scene\Node.h" />
+    <ClInclude Include="Scene\SceneMgr.h" />
+    <ClInclude Include="Scene\SceneNode.h" />
+    <ClInclude Include="util\Camera.h" />
+    <ClInclude Include="util\Common.h" />
+    <ClInclude Include="util\EngineProfile.h" />
+    <ClInclude Include="util\Engine_Define.h" />
+    <ClInclude Include="util\Float4.h" />
+    <ClInclude Include="util\Frustum.h" />
+    <ClInclude Include="util\Global.h" />
+    <ClInclude Include="util\GlobalShaderParamMng.h" />
+    <ClInclude Include="util\IEvent.h" />
+    <ClInclude Include="util\IFontSystem.h" />
+    <ClInclude Include="util\IProfile.h" />
+    <ClInclude Include="util\IRenderSequence.h" />
+    <ClInclude Include="util\IRenderTexture.h" />
+    <ClInclude Include="util\ITask.h" />
+    <ClInclude Include="util\IThread.h" />
+    <ClInclude Include="util\IUISystem.h" />
+    <ClInclude Include="util\Log.h" />
+    <ClInclude Include="util\Memory.h" />
+    <ClInclude Include="util\Paper_Math.h" />
+    <ClInclude Include="util\Paper_Quat.h" />
+    <ClInclude Include="util\Platform.h" />
+    <ClInclude Include="util\PrecompileHead.h" />
+    <ClInclude Include="util\RefCount.h" />
+    <ClInclude Include="util\RenderCommand.h" />
+    <ClInclude Include="util\RenderSequence.h" />
+    <ClInclude Include="util\sigslot.h" />
+    <ClInclude Include="util\Singleton.h" />
+    <ClInclude Include="util\SmartPtr.h" />
+    <ClInclude Include="util\System.h" />
+    <ClInclude Include="util\TaskDispatcher.h" />
+    <ClInclude Include="util\Timer.h" />
+    <ClInclude Include="util\WindowEventUtil.h" />
+    <ClInclude Include="XNAMath\xnamath.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameObject\Entity.cpp" />
+    <ClCompile Include="GameObject\GameObject.cpp" />
+    <ClCompile Include="GameObject\GameObjSystem.cpp" />
+    <ClCompile Include="GameObject\MovableObject.cpp" />
+    <ClCompile Include="GameObject\Plane.cpp" />
+    <ClCompile Include="GameObject\StaticRenderable.cpp" />
+    <ClCompile Include="ResourceSystem\AssimpMeshLoader.cpp" />
+    <ClCompile Include="ResourceSystem\CustomMeshLoader.cpp" />
+    <ClCompile Include="ResourceSystem\FileStream.cpp" />
+    <ClCompile Include="ResourceSystem\MagicImageLoader.cpp" />
+    <ClCompile Include="ResourceSystem\Resource.cpp" />
+    <ClCompile Include="ResourceSystem\Stream.cpp" />
+    <ClCompile Include="Scene\Node.cpp" />
+    <ClCompile Include="Scene\SceneMgr.cpp" />
+    <ClCompile Include="Scene\SceneNode.cpp" />
+    <ClCompile Include="util\Camera.cpp" />
+    <ClCompile Include="util\Common.cpp" />
+    <ClCompile Include="util\EngineProfile.cpp" />
+    <ClCompile Include="util\Frustum.cpp" />
+    <ClCompile Include="util\Global.cpp" />
+    <ClCompile Include="util\GlobalShaderParamMng.cpp" />
+    <ClCompile Include="util\Log.cpp" />
+    <ClCompile Include="util\Paper_Quat.cpp" />
+    <ClCompile Include="util\PrecompileHead.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="util\RenderSequence.cpp" />
+    <ClCompile Include="util\System.cpp" />
+    <ClCompile Include="util\TaskDispatcher.cpp" />
+    <ClCompile Include="util\Win32Timer.cpp" />
+    <ClCompile Include="util\WindowEventUtil.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="XNAMath\xnamathconvert.inl" />
+    <None Include="XNAMath\xnamathmatrix.inl" />
+    <None Include="XNAMath\xnamathmisc.inl" />
+    <None Include="XNAMath\xnamathvector.inl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BA929BC6-0349-4794-92F4-FBBF415673BF}</ProjectGuid>
+    <RootNamespace>PaperEngine</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\Lib</OutDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>G:\PaperEngine\trunk\PaperEngineFull\PaperEngine;G:\PaperEngine\trunk\ThirdParty\assimp--3.0.1270-sdk\include;G:\PaperEngine\trunk\ThirdParty\FreeImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILD_STATIC;_XM_NO_INTRINSICS_;_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>util/PrecompileHead.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>G:\PaperEngine\trunk\ThirdParty\FreeImage\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>assimp.lib;FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>G:\PaperEngine\trunk\ThirdParty\assimp--3.0.1270-sdk\lib\assimp_debug-dll_win32;G:\PaperEngine\trunk\ThirdParty\FreeImage\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

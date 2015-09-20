@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PaperEngine", "PaperEngine\PaperEngine.vcxproj", "{BA929BC6-0349-4794-92F4-FBBF415673BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{FB5952BE-0530-44A6-87F5-AE9037EB6645}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{753C5B7C-C94A-4946-9826-06F917C0E66F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "APP", "APP\APP.vcxproj", "{E6BD3E1F-A3F2-4B27-91E7-607071C33A1F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BBA3D23D-3C07-4AEA-886E-67216718326B} = {BBA3D23D-3C07-4AEA-886E-67216718326B}
+		{BA929BC6-0349-4794-92F4-FBBF415673BF} = {BA929BC6-0349-4794-92F4-FBBF415673BF}
+		{0AEA26F6-66E7-4FEF-BA59-60A86DE25F54} = {0AEA26F6-66E7-4FEF-BA59-60A86DE25F54}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderPlatform", "Platform\Platform.vcxproj", "{0AEA26F6-66E7-4FEF-BA59-60A86DE25F54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{ADC4B319-3951-4D4F-9A22-D9E8C4E86F21}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExportMeshFromFbx", "ExportMeshFromFbx\ExportMeshFromFbx.vcxproj", "{0F3AAC90-DB8F-4CEA-9AAD-6ADBCAEC12D0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyGuiCombine", "MyGuiCombine\MyGuiCombine.vcxproj", "{BBA3D23D-3C07-4AEA-886E-67216718326B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E8979B2B-F9C7-4EC5-9B79-B54A7824897B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA929BC6-0349-4794-92F4-FBBF415673BF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BA929BC6-0349-4794-92F4-FBBF415673BF}.Debug|Win32.Build.0 = Debug|Win32
+		{BA929BC6-0349-4794-92F4-FBBF415673BF}.Release|Win32.ActiveCfg = Release|Win32
+		{BA929BC6-0349-4794-92F4-FBBF415673BF}.Release|Win32.Build.0 = Release|Win32
+		{E6BD3E1F-A3F2-4B27-91E7-607071C33A1F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E6BD3E1F-A3F2-4B27-91E7-607071C33A1F}.Debug|Win32.Build.0 = Debug|Win32
+		{E6BD3E1F-A3F2-4B27-91E7-607071C33A1F}.Release|Win32.ActiveCfg = Release|Win32
+		{E6BD3E1F-A3F2-4B27-91E7-607071C33A1F}.Release|Win32.Build.0 = Release|Win32
+		{0AEA26F6-66E7-4FEF-BA59-60A86DE25F54}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0AEA26F6-66E7-4FEF-BA59-60A86DE25F54}.Debug|Win32.Build.0 = Debug|Win32
+		{0AEA26F6-66E7-4FEF-BA59-60A86DE25F54}.Release|Win32.ActiveCfg = Release|Win32
+		{0AEA26F6-66E7-4FEF-BA59-60A86DE25F54}.Release|Win32.Build.0 = Release|Win32
+		{0F3AAC90-DB8F-4CEA-9AAD-6ADBCAEC12D0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0F3AAC90-DB8F-4CEA-9AAD-6ADBCAEC12D0}.Debug|Win32.Build.0 = Debug|Win32
+		{0F3AAC90-DB8F-4CEA-9AAD-6ADBCAEC12D0}.Release|Win32.ActiveCfg = Release|Win32
+		{0F3AAC90-DB8F-4CEA-9AAD-6ADBCAEC12D0}.Release|Win32.Build.0 = Release|Win32
+		{BBA3D23D-3C07-4AEA-886E-67216718326B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BBA3D23D-3C07-4AEA-886E-67216718326B}.Debug|Win32.Build.0 = Debug|Win32
+		{BBA3D23D-3C07-4AEA-886E-67216718326B}.Release|Win32.ActiveCfg = Release|Win32
+		{BBA3D23D-3C07-4AEA-886E-67216718326B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BA929BC6-0349-4794-92F4-FBBF415673BF} = {FB5952BE-0530-44A6-87F5-AE9037EB6645}
+		{0AEA26F6-66E7-4FEF-BA59-60A86DE25F54} = {FB5952BE-0530-44A6-87F5-AE9037EB6645}
+		{BBA3D23D-3C07-4AEA-886E-67216718326B} = {FB5952BE-0530-44A6-87F5-AE9037EB6645}
+		{E6BD3E1F-A3F2-4B27-91E7-607071C33A1F} = {753C5B7C-C94A-4946-9826-06F917C0E66F}
+		{0F3AAC90-DB8F-4CEA-9AAD-6ADBCAEC12D0} = {ADC4B319-3951-4D4F-9A22-D9E8C4E86F21}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+EndGlobal

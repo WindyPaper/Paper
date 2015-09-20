@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="OpenGLPlatform\OpenGLMeshMgr.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLImpl.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLMaterial.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLMaterialMgr.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLMesh.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLRenderSystem.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLRenderTexture.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLShader.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLShaderMgr.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLSupport.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLTexture.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLWin32Context.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLWin32Support.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLWin32Window.cpp" />
+    <ClCompile Include="OpenGLPlatform\OpenGLTextureMgr.cpp" />
+    <ClCompile Include="OpenGLPlatform\RenderPreCompileHead.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OpenGLPlatform\OpenGLMeshMgr.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLContext.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLImpl.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLMaterialMgr.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLMaterial.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLMesh.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLRenderSystem.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLRenderTexture.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLShader.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLShaderMgr.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLSupport.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLTexture.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLWin32Context.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLWin32Support.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLWin32Window.h" />
+    <ClInclude Include="OpenGLPlatform\OpenGLTextureMgr.h" />
+    <ClInclude Include="OpenGLPlatform\RenderPreCompileHead.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PaperEngine\PaperEngine.vcxproj">
+      <Project>{ba929bc6-0349-4794-92f4-fbbf415673bf}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0AEA26F6-66E7-4FEF-BA59-60A86DE25F54}</ProjectGuid>
+    <RootNamespace>Platform</RootNamespace>
+    <ProjectName>RenderPlatform</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\Lib</OutDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>G:\PaperEngine\trunk\PaperEngineFull\Platform;G:\PaperEngine\trunk\PaperEngineFull\PaperEngine;G:\PaperEngine\trunk\PaperEngineFull\RenderSystem;G:\PaperEngine\trunk\ThirdParty\OpenGL;G:\PaperEngine\trunk\ThirdParty\;G:\PaperEngine\trunk\ThirdParty\nvFx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILD_STATIC;_XM_NO_INTRINSICS_;_X86_;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>OpenGLPlatform/RenderPreCompileHead.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>glew32sd.lib;OpenGL32.lib;FxLibD.lib;FxLibGLD.lib;FxParserD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>G:\PaperEngine\trunk\ThirdParty\OpenGL\lib;G:\PaperEngine\trunk\ThirdParty\nvFx\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
