@@ -44,6 +44,8 @@ public:
 	bool link();*/
 
 	void bindProgram() const;
+	void bindProgram(const std::string &techName, const std::string &passName) const;
+
 	virtual void setVec4(const std::string &name, const math::Vector4f &vec4);
 	virtual void setMatrix(const std::string &name, const math::Matrix44 &matrix44);
 

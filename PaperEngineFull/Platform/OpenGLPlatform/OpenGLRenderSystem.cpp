@@ -11,6 +11,7 @@
 #include "Scene/SceneMgr.h"
 #include "OpenGLPlatform/OpenGLRenderSystem.h"
 #include "OpenGLPlatform/OpenGLWin32Support.h"
+#include "OpenGLPlatform/OpenGLWin32Window.h"
 #include "OpenGLPlatform/OpenGLImpl.h"
 #include "OpenGLPlatform/OpenGLTexture.h"
 #include "OpenGLPlatform/OpenGLShader.h"
@@ -59,6 +60,8 @@ bool OpenGLRenderSystem::initRenderSystem()
 	}
 	initGL();
 	
+	mpShadowMap->init(mpGLSupport->getMainRenderWindow()->getWidth(), mpGLSupport->getMainRenderWindow()->getHeight());
+
 	return true;
 }
 
@@ -170,7 +173,7 @@ void OpenGLRenderSystem::preRender(const Material *pMaterial)
 
 }*/
 
-void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable)
+void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderItemType type)
 {
 	//IMaterial *pIMaterial = gEngModule->pMaterialMgr->getDataPtr(TEST_MATERIAL_NAME);
 	IMaterial *pIMaterial = gEngModule->pMaterialMgr->getDataPtr(pRenderable->getMaterial());
@@ -181,7 +184,18 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable)
 		GlobalShaderParamMng::getInstance().setCurrRenderable(pRenderable);
 		const math::Matrix44 &modelMatrix = GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixModel);
 
-		dynamic_cast<OpenGLShader*>(pShader)->bindProgram();
+		switch (type)
+		{
+		case SHADOW:
+			dynamic_cast<OpenGLShader*>(pShader)->bindProgram("TECH_DEFAULT", "shadow");
+			break;
+		case NORMAL:
+			dynamic_cast<OpenGLShader*>(pShader)->bindProgram();
+			break;
+		default:
+			break;
+		}		
+
 		pShader->setMatrix("g_Model", modelMatrix);
 
 		Camera *pCamera = SceneMgr::getInstance().getMainCamera();
@@ -193,7 +207,8 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable)
 		IShader *pShader = pIMaterial->getShader();
 		dynamic_cast<OpenGLShader*>(pShader)->bindProgram();
 	}
-	
+	OpenGLImpl::getInstance().checkError();
+
 	pIMaterial->bindAllTexture();
 
 	OpenGLImpl::getInstance().checkError();
@@ -204,12 +219,13 @@ const OpenGLWin32Window * OpenGLRenderSystem::getMainRenderWindow() const
 	return mpGLSupport->getMainRenderWindow();
 }
 
-void OpenGLRenderSystem::renderOneContain(RenderContain &contain)
+void OpenGLRenderSystem::renderOneContain(RenderContain &contain, const RenderItemType type)
 {
 	for (RenderContain::iterator iter = contain.begin(); iter != contain.end(); ++iter)
 	{
 		Renderable *pRenderable = (*iter);
-		bindShaderParam(pRenderable);
+		
+		bindShaderParam(pRenderable, type);
 
 		RenderCommand command;
 		pRenderable->generateRenderCommand(command);
@@ -223,9 +239,13 @@ void OpenGLRenderSystem::renderAll()
 	
 	gEngModule->pUISystem->draw();
 
+	//shadow
+	//mpShadowMap->bindForWriting();
 	RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
+	renderOneContain(renderableVec, NORMAL);
 
-	renderOneContain(renderableVec);
+	//RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
+	//renderOneContain(renderableVec, NORMAL);
 
 	//render UI
 	glDisable(GL_DEPTH_TEST);
@@ -233,7 +253,7 @@ void OpenGLRenderSystem::renderAll()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	RenderContain uiRenderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_UI);
-	renderOneContain(uiRenderableVec);
+	renderOneContain(uiRenderableVec, NORMAL);
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);

@@ -26,11 +26,11 @@ bool OpenGLRenderTexture::init(const uint width, const uint height)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mFbo);
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mTexture, 0);
+	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mFbo);
+	//glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mTexture, 0);
 
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
+	//glDrawBuffer(GL_NONE);
+	//glReadBuffer(GL_NONE);
 
 	GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (Status != GL_FRAMEBUFFER_COMPLETE) {
@@ -44,6 +44,7 @@ bool OpenGLRenderTexture::init(const uint width, const uint height)
 void OpenGLRenderTexture::bindForWriting()
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mFbo);
+	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mTexture, 0);
 }
 
 void OpenGLRenderTexture::bindForReading(const GLenum textureUnit)

@@ -141,7 +141,7 @@ void Win32Framework::createTestResource()
 void Win32Framework::createTestMeshObject(const char *meshName)
 {
 	IGameObject *pObj = mpGameObjSystem->createStaticGeoObj(meshName, meshName, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
-	IGameObject *pPlaneObj = mpGameObjSystem->createPlane(10, 10, 100, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
+	IGameObject *pPlaneObj = mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
 }
 
 void Win32Framework::createInputManager()

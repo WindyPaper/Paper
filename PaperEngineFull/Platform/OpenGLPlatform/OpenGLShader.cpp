@@ -65,6 +65,20 @@ void OpenGLShader::bindProgram() const
 	//pUniform->setImageUnit(2);
 }
 
+void OpenGLShader::bindProgram(const std::string &techName, const std::string &passName) const
+{	
+	nvFX::ITechnique *pTech = mpEffect->findTechnique(techName.c_str());
+	for (int i = 0; i < pTech->getNumPasses(); ++i)
+	{
+		nvFX::IPass *pPass = pTech->getPass(i);
+		if (pPass->getName() == passName)
+		{
+			pPass->execute();
+		}
+	}
+	//mpEffect->findTechnique(techName.c_str())->get(passName.c_str())->execute();
+}
+
 void OpenGLShader::setVec4(const std::string &name, const math::Vector4f &vec4)
 {
 	if (mpCstBuf == 0)

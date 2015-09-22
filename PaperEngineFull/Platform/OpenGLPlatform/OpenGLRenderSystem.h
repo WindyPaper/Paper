@@ -18,6 +18,11 @@ class IRenderTexture;
 class ENGINE_DLL OpenGLRenderSystem : public Singleton<OpenGLRenderSystem>
 {
 public:
+	enum RenderItemType
+	{
+		NORMAL,
+		SHADOW,
+	};
 	static OpenGLRenderSystem &getInstance();
 	static OpenGLRenderSystem *getInstancePtr();
 
@@ -28,7 +33,7 @@ public:
 
 	void beforeRender();
 	//void preRender(const Material *pMaterial);
-	void bindShaderParam(Renderable *pRenderable);
+	void bindShaderParam(Renderable *pRenderable, const RenderItemType type);
 
 	//IRenderSequence *getRenderSequence() { return mpRenderSequence; }
 
@@ -37,7 +42,7 @@ public:
 
 	const OpenGLWin32Window *getMainRenderWindow() const;
 
-	void renderOneContain(RenderContain &contain);
+	void renderOneContain(RenderContain &contain, const RenderItemType type);
 	void renderAll();
 
 protected:

@@ -9,7 +9,7 @@ using namespace rapidxml;
 
 OpenGLMaterial::OpenGLMaterial()
 {
-
+	mTextureHandleVec.resize(MAX_MAT_TEX_NUM);
 }
 
 OpenGLMaterial::~OpenGLMaterial()
@@ -51,16 +51,9 @@ void OpenGLMaterial::bindAllTexture()
 
 void OpenGLMaterial::setTexture(TexHandle texHanle, int slot)
 {
-	
-	if (mTextureHandleVec.size() > slot)
-	{
-		mTextureHandleVec[slot] = texHanle;
-	}
-	else //fix me. 不应该这个写法，到时每个mat应该都会 mTextureHandleVec.resize(MAX_MAT_TEX_NUM) 临时的
-	{
-		mTextureHandleVec.resize(slot + 1);
-		mTextureHandleVec[slot] = texHanle;
-	}
+	assert(slot < MAX_MAT_TEX_NUM);
+
+	mTextureHandleVec[slot] = texHanle;
 }
 
 IShader * OpenGLMaterial::getShader()
@@ -173,15 +166,22 @@ void OpenGLMaterial::loadMaterialFromXMLNode(rapidxml::xml_node<> *pEffectNode)
 	xml_node<> *pEleTexNode = pTexNode->first_node();
 	while (pEleTexNode)
 	{
-
+		size_t texShaderType = 0;
 		for (xml_attribute<> *attr = pEleTexNode->first_attribute(); attr; attr = attr->next_attribute())
 		{
+			if (strcmp(attr->name(), "Type") == 0)
+			{
+				if (attr->value() == "Diffuse")
+				{
+					texShaderType = ShaderTexType::TexDiffuse;
+				}
+			}
 			if (strcmp(attr->name(), "FileName") == 0)
 			{
 				std::string texName("res/");
 				texName.append(attr->value());
 				ITexture *pTex = gEngModule->pTexMgr->create(texName);
-				mTextureHandleVec.push_back(gEngModule->pTexMgr->getHandle(texName));
+				mTextureHandleVec[texShaderType] = gEngModule->pTexMgr->getHandle(texName);
 			}
 
 		}

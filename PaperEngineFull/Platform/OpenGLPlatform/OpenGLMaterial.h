@@ -8,6 +8,8 @@
 #include "ResourceSystem/IResMgr.h"
 #include "ResourceSystem/IMaterial.h"
 
+#define MAX_MAT_TEX_NUM 16
+
 class IShader;
 
 class ENGINE_DLL OpenGLMaterial : public IMaterial

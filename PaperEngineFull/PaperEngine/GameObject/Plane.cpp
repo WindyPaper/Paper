@@ -60,8 +60,8 @@ void Plane::setPlaneSize(const int width, const int height, const int seg)
 		for (int i = 0; i < width; ++i)
 		{	
 			pCurrVdata->pos = math::Vector3f(-planeDistWidth / 2 + i * seg, 0, -planeDistHeight / 2 + j * seg);
-			pCurrVdata->texcood.x = i * seg / planeDistWidth;
-			pCurrVdata->texcood.y = 1.0 - j * seg / planeDistHeight;
+			pCurrVdata->texcood.x = i * seg / float(planeDistWidth);
+			pCurrVdata->texcood.y = 1.0 - j * seg / float(planeDistHeight);
 			++pCurrVdata;
 		}
 	}

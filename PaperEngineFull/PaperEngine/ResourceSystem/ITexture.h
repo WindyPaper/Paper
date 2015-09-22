@@ -43,6 +43,13 @@ enum TextureType
 	TextureCube,
 };
 
+enum ShaderTexType
+{
+	TexDiffuse = 0,
+	TexSpecular,
+	TexNormal,
+};
+
 class ITexture : public Resource
 {
 public:
