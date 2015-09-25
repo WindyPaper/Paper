@@ -153,7 +153,7 @@ void OpenGLRenderSystem::beforeRender()
 {
 	//glClear(GL_DEPTH_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    // 清除屏幕和深度缓存
-	glClearDepth(1.0f);
+	//glClearDepth(1.0f);
 
 	glEnable(GL_DEPTH_TEST);
 	//glDepthFunc(GL_ALWAYS);
@@ -207,9 +207,9 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 		IShader *pShader = pIMaterial->getShader();
 		dynamic_cast<OpenGLShader*>(pShader)->bindProgram();
 	}
-	OpenGLImpl::getInstance().checkError();
 
-	pIMaterial->bindAllTexture();
+	if (type != SHADOW)
+		pIMaterial->bindAllTexture();
 
 	OpenGLImpl::getInstance().checkError();
 }
@@ -239,13 +239,18 @@ void OpenGLRenderSystem::renderAll()
 	
 	gEngModule->pUISystem->draw();
 
-	//shadow
-	//mpShadowMap->bindForWriting();
+	//shadow	
+	mpShadowMap->bindForWriting();
+	glClear(GL_DEPTH_BUFFER_BIT);
+	OpenGLImpl::getInstance().checkError();
 	RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
-	renderOneContain(renderableVec, NORMAL);
+	renderOneContain(renderableVec, SHADOW);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	//RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
-	//renderOneContain(renderableVec, NORMAL);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	OpenGLImpl::getInstance().checkError();
+	renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
+	renderOneContain(renderableVec, NORMAL);
 
 	//render UI
 	glDisable(GL_DEPTH_TEST);

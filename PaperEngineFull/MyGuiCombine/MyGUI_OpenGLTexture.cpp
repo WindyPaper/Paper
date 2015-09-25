@@ -11,6 +11,7 @@
 #include "MyGUI_OpenGLRTTexture.h"
 
 #include "GL/glew.h"
+#include "OpenGLPlatform/OpenGLImpl.h"
 
 
 MyGuiOpenGLTexture::MyGuiOpenGLTexture(const std::string& _name, MyGUI::OpenGLImageLoader* _loader) :
@@ -119,6 +120,7 @@ void MyGuiOpenGLTexture::setUsage(MyGUI::TextureUsage _usage)
 
 void MyGuiOpenGLTexture::createManual(int _width, int _height, MyGUI::TextureUsage _usage, MyGUI::PixelFormat _format)
 {
+	OpenGLImpl::getInstancePtr()->checkError();
 	createManual(_width, _height, _usage, _format, 0);
 }
 

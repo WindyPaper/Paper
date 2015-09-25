@@ -63,7 +63,7 @@ bool OpenGLTexture::createTexture(int width, int height, TextureUsage usage, Tex
 
 	mpTexMemData = new unsigned char[imageByteSize];
 	memset(mpTexMemData, 0, imageByteSize);
-
+	
 	loadInGLBuf(width, height, format, mpTexMemData, textureType);
 }
 
@@ -156,15 +156,15 @@ void OpenGLTexture::loadInGLBuf(const uint width, const uint height, const Textu
 	mTexPixFormat = format;
 	mGLInternalFormat = glInternalFormat;
 	mGLFormat = glFormat;
-
+	OpenGLImpl::getInstancePtr()->checkError();
 	glEnable(mTexType);
 	glActiveTexture(GL_TEXTURE0);
 
 	// Set unpack alignment to one byte
-	int alignment = 0;
-	glGetIntegerv(GL_UNPACK_ALIGNMENT, &alignment);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
+	//int alignment = 0;
+	//glGetIntegerv(GL_UNPACK_ALIGNMENT, &alignment);
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	OpenGLImpl::getInstancePtr()->checkError();
 	if((int)mTexObject <= 0)
 	{
 		
@@ -177,7 +177,8 @@ void OpenGLTexture::loadInGLBuf(const uint width, const uint height, const Textu
 	//glBindTexture(mTexType, mTexObject);zz
 	//glActiveTexture(GL_TEXTURE0);
 	//glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(mTexType, mTexObject);
+	//glBindTexture(mTexType, mTexObject);
+	OpenGLImpl::getInstance().activeTexObj(mTexType, mTexObject);
 	OpenGLImpl::getInstancePtr()->checkError();
 	glTexImage2D(mTexType, 0, glInternalFormat, width, height, 0, glFormat, GL_UNSIGNED_BYTE, buf);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -189,7 +190,7 @@ void OpenGLTexture::loadInGLBuf(const uint width, const uint height, const Textu
 	
 	OpenGLImpl::getInstancePtr()->checkError();
 	// Restore old unpack alignment
-	glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
+//	glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
 	glBindTexture(mTexType, 0);
 	glDisable(mTexType);
 }

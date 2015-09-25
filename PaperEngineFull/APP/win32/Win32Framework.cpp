@@ -80,7 +80,7 @@ void Win32Framework::init()
 
 	mpGLRenderSystem = new OpenGLRenderSystem();
 	mpGLRenderSystem->initRenderSystem();
-
+	OpenGLImpl::getInstancePtr()->checkError();
 	gEngModule->pUISystem->init((size_t)mpGLRenderSystem->getMainRenderWindow()->getWinHandle());
 
 	createTestResource();
