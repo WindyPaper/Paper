@@ -36,9 +36,7 @@ public:
 		MatrixInverseTransposeModel,
 
 		MatrixLightView,
-		MatrixLightProj0,
-		MatrixLightProj1,
-		MatrixLightProj2,
+		MatrixLightProj,
 
 		MatrixEnd,
 	};
@@ -144,6 +142,9 @@ public:
 	void setMatrixParam(const MatrixParamIndex index, const math::Matrix44 &matrix);
 
 	void setCurrRenderable(Renderable *pRenderable);
+
+protected:
+	void _initGlobalLightDir(const math::Vector3f &dir);
 	
 private:
 	GlobalShaderParamVec mShaderParams;

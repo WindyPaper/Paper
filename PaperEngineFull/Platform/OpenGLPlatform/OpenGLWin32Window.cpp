@@ -52,7 +52,11 @@ void OpenGLWin32Window::createWindow(const char *name, uint width, uint height, 
 
 	//mHWnd = CreateWindowEx(0, "PaperGLWindow", name, WS_VISIBLE, 0, 0, width, height, 0, 0, 0, this);
 	//mHWnd = CreateWindow("PaperGLWindow", "RenderWindow", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, GetModuleHandle(NULL), NULL);
-	mHWnd = CreateWindowEx(0, "RenderWindow", name, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, width, height, NULL, NULL, GetModuleHandle(0), NULL);
+
+	RECT ajustRect = { 0, 0, width, height };
+	AdjustWindowRect(&ajustRect, WS_OVERLAPPEDWINDOW, FALSE);
+
+	mHWnd = CreateWindowEx(0, "RenderWindow", name, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, ajustRect.right - ajustRect.left, ajustRect.bottom - ajustRect.top, NULL, NULL, GetModuleHandle(0), NULL);
 	//int createWinInt = GetLastError();
 
 	assert(mHWnd);
@@ -74,7 +78,7 @@ void OpenGLWin32Window::createWindow(const char *name, uint width, uint height, 
 	//mHeight = rc.bottom;
 
 	mHDC = GetDC(mHWnd);
-	mpOpenGLSupport->setupPixFormat(mHDC, 16, 0, false); //测试用
+	mpOpenGLSupport->setupPixFormat(mHDC, 32, 0, false); //测试用
 
 	// 暂时不考虑多窗口问题
 	//HDC old_hdc = wglGetCurrentDC();
@@ -90,6 +94,8 @@ void OpenGLWin32Window::createWindow(const char *name, uint width, uint height, 
 
 void OpenGLWin32Window::swapBuffer()
 {
+	//updateWinSize();
+
 	::SwapBuffers(mHDC);
 }
 
@@ -101,6 +107,29 @@ int OpenGLWin32Window::getWidth() const
 int OpenGLWin32Window::getHeight() const
 {
 	return mHeight;
+}
+
+void OpenGLWin32Window::updateWinSize()
+{
+	RECT rc;
+	// top and left represent outer window position
+	GetWindowRect(mHWnd, &rc);
+	int top = rc.top;
+	int left = rc.left;
+	// width and height represent drawable area only
+	GetClientRect(mHWnd, &rc);
+
+	if (mWidth == rc.right && mHeight == rc.bottom)
+		return;
+
+	mWidth = rc.right - rc.left;
+	mHeight = rc.bottom - rc.top;
+
+	//需要设置摄像机的viewport
+	//need set viewport of camera
+	//glViewport(0, 0, mWidth, mHeight);
+
+	mpOpenGLWin32Context->setCurrent();
 }
 
 HWND OpenGLWin32Window::getWinHandle() const

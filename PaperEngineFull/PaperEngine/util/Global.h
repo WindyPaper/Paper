@@ -39,7 +39,7 @@ struct EngineGlobalModule
 
 extern EngineGlobalModule *gEngModule;
 
-const unsigned int WIN_WIDTH = 1024;
+const unsigned int WIN_WIDTH = 1280;
 const unsigned int WIN_HEIGHT = 720;
 
 #endif

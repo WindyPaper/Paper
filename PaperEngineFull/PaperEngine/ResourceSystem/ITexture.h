@@ -48,6 +48,9 @@ enum ShaderTexType
 	TexDiffuse = 0,
 	TexSpecular,
 	TexNormal,
+	TexShadowMap,
+
+	ShaderTexTypeNum,
 };
 
 class ITexture : public Resource

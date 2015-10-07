@@ -61,6 +61,12 @@ public:
 	//const ActiveAttriMap &getActiveAttriMap() const { return mActiveAttriMap; }
 	//const ActiveUniformVec &getActiveUniform() const { return mActiveUniformVec; }
 
+	//only for test fix me
+	void bindShadowMap();
+
+protected:
+	void _bindAllTexture();
+
 protected:
 	//void compiler();
 	//std::auto_ptr<char> getFileStr(const char *fileName);

@@ -3,6 +3,7 @@
 #include "GameObject/IGameObjComponent.h"
 #include "GameObject/Renderable.h"
 #include "Scene/Node.h"
+#include "util/Camera.h"
 
 template<> GlobalShaderParamMng *Singleton<GlobalShaderParamMng>::msInstance = 0;
 
@@ -36,7 +37,11 @@ void GlobalShaderParamMng::initGlobalParam()
 	mShaderParams[MatrixProj] = ShaderParam("g_Proj", math::Matrix44());
 	mShaderParams[MatrixModel] = ShaderParam("g_Model", math::Matrix44());
 	mShaderParams[MatrixMVP] = ShaderParam("g_MVP", math::Matrix44());
+
+	_initGlobalLightDir(math::Vector3f(-1, -1, 1));
 }
+
+
 
 const math::Matrix44 & GlobalShaderParamMng::getMatrixParam(const MatrixParamIndex index) const
 {
@@ -81,4 +86,28 @@ void GlobalShaderParamMng::setMatrixParam(const MatrixParamIndex index, const ma
 void GlobalShaderParamMng::setCurrRenderable(Renderable *pRenderable)
 {
 	mpCurrRenderable = pRenderable;
+}
+
+void GlobalShaderParamMng::_initGlobalLightDir(const math::Vector3f &dir)
+{
+	math::Vector3f xzVec = math::Vector3f(dir.x, 0, dir.z);
+	xzVec.normalize();
+	float yaw = ToDegree(std::acosf(xzVec * math::VEC3F_NEGATIVE_UNIT_Z));
+
+	math::Vector3f xyVec = math::Vector3f(dir.x, dir.y, 0);
+	xyVec.normalize();
+	float pitch = ToDegree(std::acosf(xyVec * math::VEC3F_NEGATIVE_UNIT_X));
+
+	if (dir.y < 0)
+	{
+		pitch *= -1;
+	}
+
+	Camera cam;
+	cam.setPos(math::Vector3f(2000, 2000, -2000));
+	cam.pitch(pitch);
+	cam.yaw(yaw);
+
+	mShaderParams[MatrixLightView] = ShaderParam("light_view_mat", cam.getViewMatrix());
+	mShaderParams[MatrixLightProj] = ShaderParam("light_proj_mat", cam.getProjMatrix());
 }

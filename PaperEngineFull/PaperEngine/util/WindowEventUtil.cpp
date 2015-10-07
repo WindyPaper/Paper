@@ -26,6 +26,8 @@ LRESULT CALLBACK WindowEventUtil::winProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
 		PostQuitMessage(0);
 		exit(0);  //fix me
 		break;
+	case WM_SIZE:
+		break;
 	default:
 		break;
 	}

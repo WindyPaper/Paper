@@ -3,8 +3,8 @@
 
 Frustum::Frustum() :
 	mFov(60.0f),
-	mWidth(2),
-	mHeight(1),
+	mWidth(4),
+	mHeight(3),
 	mNear(1.0),
 	mFar(10000.0)
 {

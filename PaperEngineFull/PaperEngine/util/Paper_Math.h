@@ -164,6 +164,11 @@ struct ENGINE_DLL Vector3f
 		return retVec;
 	}
 
+	friend float operator *(const Vector3f &l, const Vector3f &r)
+	{
+		return l.x * r.x + l.y * r.y + l.z * r.z;
+	}
+
 	Vector3f rotate(const float angle, const Vector3f &axe)
 	{
 		/*const float SinHalfAngle = sinf(ToRadian(angle/2));
@@ -265,8 +270,8 @@ struct ENGINE_DLL Vertex
 struct ENGINE_DLL PerspectiveProjParam
 {
 	float fov;
-	int width;
-	int height;
+	float width;
+	float height;
 	float zNear;
 	float zFar;
 

@@ -30,7 +30,7 @@ int OpenGLWin32Support::setupPixFormat(HDC hdc, int colourDepth, int multisample
 	pfd.iPixelType = PFD_TYPE_RGBA;
 	pfd.cColorBits = (colourDepth > 16)? 24 : colourDepth;
 	pfd.cAlphaBits = (colourDepth > 16)? 8 : 0;
-	pfd.cDepthBits = 24;
+	pfd.cDepthBits = 32;
 	pfd.cStencilBits = 8;
 
 	int format = 0;

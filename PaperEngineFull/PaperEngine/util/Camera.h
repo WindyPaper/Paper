@@ -33,8 +33,11 @@ public:
 	void setUp(const math::Vector3f &up);
 
 	void pitch(const float angle);
+	void setPitch(const float angle);
 	void roll(const float angle);
+	void setRoll(const float angle);
 	void yaw(const float angle);
+	void setYaw(const float angle);
 	void cameraRotate(const math::Vector3f &axis, const float angle);
 	void cameraRotate(const math::Quaternion &quat);
 

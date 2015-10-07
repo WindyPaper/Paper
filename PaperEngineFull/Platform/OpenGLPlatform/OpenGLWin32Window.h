@@ -20,6 +20,7 @@ public:
 
 	int getWidth() const;
 	int getHeight() const;
+	void updateWinSize();
 	
 	HWND getWinHandle() const;
 

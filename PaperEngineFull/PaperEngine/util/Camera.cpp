@@ -116,11 +116,23 @@ void Camera::pitch(const float angle)
 	update();
 }
 
+void Camera::setPitch(const float angle)
+{
+	mPitch = angle;
+	update();
+}
+
 void Camera::roll(const float angle)
 {
 	//math::Vector3f zAxis = mOrientation * math::VEC3F_UNIT_Z;
 	//cameraRotate(zAxis, angle);
 	mRoll += angle;
+	update();
+}
+
+void Camera::setRoll(const float angle)
+{
+	mRoll = angle;
 	update();
 }
 
@@ -130,6 +142,12 @@ void Camera::yaw(const float angle)
 	//math::Vector3f yAxis = mOrientation * math::VEC3F_UNIT_Y;
 	//cameraRotate(yAxis, angle);
 	mYaw += angle;
+	update();
+}
+
+void Camera::setYaw(const float angle)
+{
+	mYaw = angle;
 	update();
 }
 
@@ -197,7 +215,7 @@ void Camera::updateViewMatrix()
 		mPitch = -90.0f;
 
 	//std::cout << "pitch = " << mPitch << " yaw = " << mYaw << std::endl;
-	XMVECTOR quat = XMQuaternionRotationRollPitchYaw(ToRadian(0), ToRadian(mYaw), 0);
+	//XMVECTOR quat = XMQuaternionRotationRollPitchYaw(ToRadian(0), ToRadian(mYaw), 0);
 	//mOrientation.vec4 = quat;
 	//XMMATRIX rotateMat = XMMatrixRotationQuaternion(quat);
 	XMMATRIX rotateMat = XMMatrixRotationRollPitchYaw(ToRadian(mPitch), ToRadian(mYaw), 0);

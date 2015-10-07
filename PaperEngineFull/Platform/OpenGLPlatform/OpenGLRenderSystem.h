@@ -45,6 +45,8 @@ public:
 	void renderOneContain(RenderContain &contain, const RenderItemType type);
 	void renderAll();
 
+	
+
 protected:
 	void initGL();
 	void _render(const RenderCommand &renderCommand);

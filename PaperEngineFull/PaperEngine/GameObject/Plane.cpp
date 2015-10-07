@@ -62,6 +62,10 @@ void Plane::setPlaneSize(const int width, const int height, const int seg)
 			pCurrVdata->pos = math::Vector3f(-planeDistWidth / 2 + i * seg, 0, -planeDistHeight / 2 + j * seg);
 			pCurrVdata->texcood.x = i * seg / float(planeDistWidth);
 			pCurrVdata->texcood.y = 1.0 - j * seg / float(planeDistHeight);
+
+			assert(pCurrVdata->texcood.x > -0.0000000000000000000000001);
+			assert(pCurrVdata->texcood.y > -0.0000000000000000000000001);
+
 			++pCurrVdata;
 		}
 	}
