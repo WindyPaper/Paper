@@ -3,6 +3,7 @@
 
 #include "ResourceSystem/IMesh.h"
 #include "util/RenderCommand.h"
+#include "util/CollionGeo.h"
 
 class ITask;
 
@@ -47,6 +48,9 @@ public:
 
 	void runCbSignal();
 
+protected:
+	void calAABB(const VertexData &verdata);
+
 private:
 	VertexData mVertexData;
 	IndexData mIndexData;
@@ -54,6 +58,8 @@ private:
 	NameParamMap mParamMap;
 
 	SubMeshVec mSubMeshVec;
+
+	AABB mMeshAABB;
 
 	ITask *mpLoadTask;
 };

@@ -219,6 +219,9 @@
     <ClInclude Include="GameObject\Plane.h">
       <Filter>GameObject\include</Filter>
     </ClInclude>
+    <ClInclude Include="util\CollionGeo.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\Paper_Quat.cpp">
@@ -307,6 +310,9 @@
     </ClCompile>
     <ClCompile Include="GameObject\Plane.cpp">
       <Filter>GameObject\src</Filter>
+    </ClCompile>
+    <ClCompile Include="util\CollionGeo.cpp">
+      <Filter>util\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -300,3 +300,15 @@ void OpenGLMesh::runCbSignal()
 	MeshHandle handle = gEngModule->pMeshMgr->getHandle(mName);
 	mCbSignal.emit(handle);
 }
+
+void OpenGLMesh::calAABB(const VertexData &verdata)
+{
+	mMeshAABB.reset();
+
+	const unsigned char *pCurrData = verdata.pMemData;
+	for (int i = 0; i < verdata.elementCount; ++i)
+	{
+		mMeshAABB.add(reinterpret_cast<const math::Vector3f&>(*pCurrData));
+		pCurrData += verdata.elementSize;
+	}
+}

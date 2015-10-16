@@ -227,6 +227,7 @@ const Vector3f VEC3F_NEGATIVE_UNIT_X(-1, 0, 0);
 const Vector3f VEC3F_NEGATIVE_UNIT_Y(0, -1, 0);
 const Vector3f VEC3F_NEGATIVE_UNIT_Z(0, 0, -1);
 const Vector3f VEC3F_UNIT_SCALE(1, 1, 1);
+const Vector3f VEC3F_ZERO(0, 0, 0);
 
 struct Vector4f
 {

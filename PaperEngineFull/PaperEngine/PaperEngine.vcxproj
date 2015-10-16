@@ -40,6 +40,7 @@
     <ClInclude Include="Scene\SceneMgr.h" />
     <ClInclude Include="Scene\SceneNode.h" />
     <ClInclude Include="util\Camera.h" />
+    <ClInclude Include="util\CollionGeo.h" />
     <ClInclude Include="util\Common.h" />
     <ClInclude Include="util\EngineProfile.h" />
     <ClInclude Include="util\Engine_Define.h" />
@@ -90,6 +91,7 @@
     <ClCompile Include="Scene\SceneMgr.cpp" />
     <ClCompile Include="Scene\SceneNode.cpp" />
     <ClCompile Include="util\Camera.cpp" />
+    <ClCompile Include="util\CollionGeo.cpp" />
     <ClCompile Include="util\Common.cpp" />
     <ClCompile Include="util\EngineProfile.cpp" />
     <ClCompile Include="util\Frustum.cpp" />

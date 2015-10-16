@@ -67,7 +67,6 @@ bool OpenGLRenderSystem::initRenderSystem()
 
 void OpenGLRenderSystem::initGL()
 {
-	//glShadeModel(GL_SMOOTH);        
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);       // ºÚÉ«±³¾°
 	//glClearDepth(0.0f);                           
 	glEnable(GL_DEPTH_TEST);  
@@ -156,6 +155,7 @@ void OpenGLRenderSystem::beforeRender()
 	//glClearDepth(1.0f);
 
 	glEnable(GL_DEPTH_TEST);
+	glDepthRange(0.0f, 1.0f);
 	//glDepthFunc(GL_ALWAYS);
 	//glDepthFunc(GL_GREATER);
 	
@@ -183,24 +183,31 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 		IShader *pShader = pIMaterial->getShader();
 		GlobalShaderParamMng::getInstance().setCurrRenderable(pRenderable);
 		const math::Matrix44 &modelMatrix = GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixModel);
+		Camera *pCamera = SceneMgr::getInstance().getMainCamera();
+		//Camera light = *pCamera;
 
 		switch (type)
 		{
-		case SHADOW:
+		case SHADOW:			
 			dynamic_cast<OpenGLShader*>(pShader)->bindProgram("TECH_DEFAULT", "shadow");
+			pShader->setMatrix("g_View", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightView));
+			pShader->setMatrix("g_Proj", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightProj));
 			break;
 		case NORMAL:
 			dynamic_cast<OpenGLShader*>(pShader)->bindProgram();
+			pShader->setMatrix("g_View", pCamera->getViewMatrix());
+			pShader->setMatrix("g_Proj", pCamera->getProjMatrix());
+			pShader->setMatrix("g_light_view", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightView));
+			pShader->setMatrix("g_light_proj", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightProj));
 			break;
 		default:
 			break;
-		}		
+		}
 
 		pShader->setMatrix("g_Model", modelMatrix);
-
-		Camera *pCamera = SceneMgr::getInstance().getMainCamera();
-		pShader->setMatrix("g_View", pCamera->getViewMatrix());
-		pShader->setMatrix("g_Proj", pCamera->getProjMatrix());
+		
+		//pShader->setMatrix("g_View", pCamera->getViewMatrix());
+		//pShader->setMatrix("g_Proj", pCamera->getProjMatrix());
 	}
 	else
 	{
@@ -209,7 +216,12 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 	}
 
 	if (type != SHADOW)
+	{
+		mpShadowMap->bindForReading(TexShadowMap);
+		IShader *pShader = pIMaterial->getShader();
+		dynamic_cast<OpenGLShader*>(pShader)->bindShadowMap();
 		pIMaterial->bindAllTexture();
+	}		
 
 	OpenGLImpl::getInstance().checkError();
 }
@@ -239,15 +251,21 @@ void OpenGLRenderSystem::renderAll()
 	
 	gEngModule->pUISystem->draw();
 
-	//shadow	
+	//shadow
 	mpShadowMap->bindForWriting();
+	//glCullFace(GL_FRONT);
 	glClear(GL_DEPTH_BUFFER_BIT);
+	//glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
+	OpenGLImpl::getInstance().activeTexUnit(TexShadowMap);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	OpenGLImpl::getInstance().checkError();
 	RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
 	renderOneContain(renderableVec, SHADOW);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+	
+	//glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	mpShadowMap->bindForReading(TexShadowMap);
 	OpenGLImpl::getInstance().checkError();
 	renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
 	renderOneContain(renderableVec, NORMAL);

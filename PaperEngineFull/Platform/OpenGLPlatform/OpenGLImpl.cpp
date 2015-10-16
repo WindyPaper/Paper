@@ -130,24 +130,24 @@ void OpenGLImpl::activeIndexBufObj(const GLuint bufId)
 
 void OpenGLImpl::activeTexObj(const GLenum target, const GLuint texId)
 {
-	if(mCurrTexObjs[mCurrTexUnit] != texId)
-	{
+	//if(mCurrTexObjs[mCurrTexUnit] != texId)
+	//{
 		glBindTexture(target, texId);
 		mCurrTexObjs[mCurrTexUnit] = texId;
 		checkError();
-	}
+	//}
 }
 
 void OpenGLImpl::activeTexUnit(const GLenum unit)
 {
-	if(mCurrTexUnit != unit)
-	{
+	//if(mCurrTexUnit != unit)
+	//{
 		assert(unit >= 0 && unit < MAX_TEX_UNIT);
 		glActiveTexture(GL_TEXTURE0 + unit);
 		mCurrTexUnit = unit;
 
 		checkError();
-	}
+	//}
 }
 
 void OpenGLImpl::activeShaderProgram(const GLuint shaderId)
