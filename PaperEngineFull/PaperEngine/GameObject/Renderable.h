@@ -3,6 +3,7 @@
 
 #include <string>
 #include "util/RenderCommand.h"
+#include "util/CollionGeo.h"
 #include "ResourceSystem/IMaterial.h"
 
 class IGameObjRenderComp;
@@ -21,6 +22,9 @@ public:
 	virtual IGameObjRenderComp *getParentComp() = 0;
 
 	virtual void generateRenderCommand(RenderCommand &renderCommand) = 0;
+
+	//virtual void setWorldAABB(const AABB &aabb) = 0;
+	//virtual AABB getWorldAABB() const = 0;
 };
 
 #endif

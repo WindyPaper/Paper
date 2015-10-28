@@ -50,3 +50,10 @@ void StaticRenderable::generateRenderCommand(RenderCommand &renderCommand)
 	
 	pMeshData->generateRenderCommand(renderCommand, mSubIndex);
 }
+
+AABB StaticRenderable::getLocalAABB()
+{
+	IMeshMgr *pMeshMgr = gEngModule->pMeshMgr;
+	IMesh *pMeshData = pMeshMgr->getDataPtr(mMeshHandle);
+	return pMeshData->getAABB();
+}

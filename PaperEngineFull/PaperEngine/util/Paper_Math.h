@@ -4,6 +4,7 @@
 #include <math.h>
 #include <memory>
 #include "util/Platform.h"
+#include "util/PreDefine.h"
 #include "util/Paper_Quat.h"
 #include "XNAMath/xnamath.h"
 
@@ -137,6 +138,15 @@ struct ENGINE_DLL Vector3f
 		{
 			return true;
 		}
+	}
+
+	Vector3f &operator =(const XMVECTOR &vec)
+	{
+		x = vec.x;
+		y = vec.y;
+		z = vec.z;
+
+		return *this;
 	}
 
 	Vector3f mul(const Vector3f &rhs) const
@@ -279,8 +289,8 @@ struct ENGINE_DLL PerspectiveProjParam
 	PerspectiveProjParam()
 	{
 		fov = 30;
-		width = 960;
-		height = 640;
+		width = WIN_WIDTH;
+		height = WIN_HEIGHT;
 		zNear = 0.1;
 		zFar = 1000;
 	}

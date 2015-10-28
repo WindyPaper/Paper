@@ -44,7 +44,7 @@ public:
 
 	virtual const std::string &getName() const;
 
-	const math::Matrix44 &getAllTransformMatrix();
+	const math::Matrix44 getAllTransformMatrix();
 
 	virtual void update();
 

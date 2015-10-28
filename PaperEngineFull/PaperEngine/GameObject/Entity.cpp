@@ -226,3 +226,16 @@ void Entity::updateRenderable(MeshHandle meshHandle)
 		pRenderable->setMaterial(gEngModule->pMaterialMgr->getHandle(pMaterial->getName()));
 	}
 }
+
+AABB Entity::getWorldAABB()
+{
+	AABB fullAABB;
+	for (int i = 0; i < mSubRenderableVec.size(); ++i)
+	{
+		StaticRenderable *p = dynamic_cast<StaticRenderable*>(mSubRenderableVec[i]);
+		fullAABB.merge(p->getLocalAABB());
+	}
+
+	convertAABBToWorld(fullAABB, mpParentNode->getAllTransformMatrix());
+	return fullAABB;
+}

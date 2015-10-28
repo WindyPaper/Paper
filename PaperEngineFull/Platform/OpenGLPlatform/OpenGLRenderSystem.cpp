@@ -194,11 +194,11 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 			pShader->setMatrix("g_Proj", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightProj));
 			break;
 		case NORMAL:
-			dynamic_cast<OpenGLShader*>(pShader)->bindProgram();
+			dynamic_cast<OpenGLShader*>(pShader)->bindProgram("TECH_DEFAULT", "nor_diffuse");
 			pShader->setMatrix("g_View", pCamera->getViewMatrix());
 			pShader->setMatrix("g_Proj", pCamera->getProjMatrix());
-			pShader->setMatrix("g_light_view", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightView));
-			pShader->setMatrix("g_light_proj", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightProj));
+			//pShader->setMatrix("g_light_view", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightView));
+			//pShader->setMatrix("g_light_proj", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightProj));
 			break;
 		default:
 			break;
@@ -252,22 +252,21 @@ void OpenGLRenderSystem::renderAll()
 	gEngModule->pUISystem->draw();
 
 	//shadow
+/*
 	mpShadowMap->bindForWriting();
-	//glCullFace(GL_FRONT);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	//glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
 	OpenGLImpl::getInstance().activeTexUnit(TexShadowMap);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	OpenGLImpl::getInstance().checkError();
 	RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
 	renderOneContain(renderableVec, SHADOW);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 	
 	//glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	mpShadowMap->bindForReading(TexShadowMap);
+	//mpShadowMap->bindForReading(TexShadowMap);
 	OpenGLImpl::getInstance().checkError();
-	renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
+	RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
 	renderOneContain(renderableVec, NORMAL);
 
 	//render UI

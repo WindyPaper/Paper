@@ -46,6 +46,7 @@ public:
 protected:
 	SceneNode *_createSceneNodeFast(const std::string &name);
 	void _addToRenderSequenece(Node *pNode);
+	void _createVisibleVector(const Camera *pCamera, Node *pNode);
 
 private:
 	SceneNode *mpRootNode;
@@ -57,6 +58,8 @@ private:
 	MovableObjContain mMovableObjContain;
 
 	IRenderSequence *mpRenderSequence;
+
+	//std::vector<Node*> mVisibleNodeVec;
 
 	typedef std::vector<Camera*> CameraVec;
 	Camera *mpMainCamera;

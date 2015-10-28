@@ -2788,7 +2788,7 @@ VOID            XMQuaternionToAxisAngle(_Out_ XMVECTOR* pAxis, _Out_ FLOAT* pAng
 
 /****************************************************************************
  *
- * Plane operations
+ * PlaneMesh operations
  *
  ****************************************************************************/
 

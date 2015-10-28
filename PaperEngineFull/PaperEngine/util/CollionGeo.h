@@ -11,8 +11,30 @@ struct AABB
 	void reset();
 	void add(const math::Vector3f &vec3);
 
+	void merge(const AABB &aabb);
+
 	math::Vector3f min;
 	math::Vector3f max;
+
 };
+
+class Plane
+{
+public:
+	Plane::Plane(math::Vector3f &v1, math::Vector3f &v2, math::Vector3f &v3);
+	Plane::Plane(void);
+	Plane::~Plane();
+
+	void set3Points(math::Vector3f &v1, math::Vector3f &v2, math::Vector3f &v3);
+	void setNormalAndPoint(math::Vector3f &normal, math::Vector3f &point);
+	//void setCoefficients(float a, float b, float c, float d);
+	float getDistance(math::Vector3f &p);
+
+private:
+	math::Vector3f mNormal, mPoint;
+	float mD;
+};
+
+void convertAABBToWorld(AABB &aabb, const math::Matrix44& worldMatrix);
 
 #endif

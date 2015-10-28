@@ -1,10 +1,10 @@
 #include "util/PrecompileHead.h"
-#include "GameObject/Plane.h"
+#include "GameObject/PlaneMesh.h"
 #include "util/Global.h"
 #include "GameObject/Renderable.h"
 #include "GameObject/StaticRenderable.h"
 
-Plane::Plane(const int width, const int height, const int seg) :
+PlaneMesh::PlaneMesh(const int width, const int height, const int seg) :
 mpVerMemData(0),
 mpIndexMemData(0)
 {
@@ -15,7 +15,7 @@ mpIndexMemData(0)
 }
 
 
-Plane::Plane(const std::string &name) :
+PlaneMesh::PlaneMesh(const std::string &name) :
 mWidth(0),
 mHeight(0),
 mSeg(0),
@@ -25,13 +25,13 @@ mpIndexMemData(0)
 	mName = name;
 }
 
-Plane::~Plane()
+PlaneMesh::~PlaneMesh()
 {
 	SAFE_DELETE_ARRAY(mpVerMemData); 
 	SAFE_DELETE_ARRAY(mpIndexMemData);
 }
 
-void Plane::setPlaneSize(const int width, const int height, const int seg)
+void PlaneMesh::setPlaneSize(const int width, const int height, const int seg)
 {
 	mWidth = width;
 	mHeight = height;

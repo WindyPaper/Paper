@@ -194,6 +194,13 @@ const std::string & Node::getName() const
 	return mName;
 }
 
+const math::Matrix44 Node::getAllTransformMatrix()
+{
+	math::Matrix44 matrix;
+	matrix.initFullTransform(getWorldPosition(), getWorldScale(), getWorldOrientation());
+	return matrix;
+}
+
 void Node::update()
 {
 	updateFromParent();

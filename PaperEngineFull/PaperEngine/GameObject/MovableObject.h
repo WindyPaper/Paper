@@ -3,6 +3,7 @@
 
 #include <string>
 #include "util/Platform.h"
+#include "util/CollionGeo.h"
 
 class Node;
 class IRenderSequence;
@@ -26,11 +27,13 @@ public:
 
 	virtual void pushToRenderSequence(IRenderSequence *pRenderSequence) = 0;
 
+	virtual AABB getWorldAABB() = 0;
+
 protected:
 	Node *mpParentNode;
 	bool mVisible;
 	std::string mName;
-
+	AABB mWorldAABB;
 };
 
 #endif

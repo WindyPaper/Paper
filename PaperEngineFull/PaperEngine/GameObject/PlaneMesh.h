@@ -1,17 +1,17 @@
-#ifndef _PLANE_H_
-#define _PLANE_H_
+#ifndef _PLANE_MESH_H_
+#define _PLANE_MESH_H_
 
 #include "GameObject/GameObject.h"
 
 struct Vertex_P3UVF2;
 
-class Plane : public GameObject
+class PlaneMesh : public GameObject
 {
 public:
-	Plane(const int width, const int height, const int seg);
-	Plane(const std::string &name);
+	PlaneMesh(const int width, const int height, const int seg);
+	PlaneMesh(const std::string &name);
 
-	~Plane();
+	~PlaneMesh();
 
 	void setPlaneSize(const int width, const int height, const int seg);
 

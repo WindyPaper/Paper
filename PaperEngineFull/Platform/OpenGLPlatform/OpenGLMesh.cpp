@@ -227,6 +227,8 @@ void OpenGLMesh::bindVertexData()
 		OpenGLImpl::getInstance().activeVertexBufObj(static_cast<GLuint>(mVertexData.bufferId));
 		glBufferData(GL_ARRAY_BUFFER, mVertexData.elementSize * mVertexData.elementCount, mVertexData.pMemData, GL_STATIC_DRAW); // ?GL_DYNAMIC_DRAW @@fix me
 		OpenGLImpl::getInstance().activeVertexBufObj(0);
+
+		calAABB(mVertexData);
 	}
 }
 

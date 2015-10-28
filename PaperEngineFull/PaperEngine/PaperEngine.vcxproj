@@ -17,7 +17,7 @@
     <ClInclude Include="GameObject\IGameObjComponent.h" />
     <ClInclude Include="GameObject\IGameObject.h" />
     <ClInclude Include="GameObject\MovableObject.h" />
-    <ClInclude Include="GameObject\Plane.h" />
+    <ClInclude Include="GameObject\PlaneMesh.h" />
     <ClInclude Include="GameObject\Renderable.h" />
     <ClInclude Include="GameObject\StaticRenderable.h" />
     <ClInclude Include="ResourceSystem\AssimpMeshLoader.h" />
@@ -79,7 +79,7 @@
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="GameObject\GameObjSystem.cpp" />
     <ClCompile Include="GameObject\MovableObject.cpp" />
-    <ClCompile Include="GameObject\Plane.cpp" />
+    <ClCompile Include="GameObject\PlaneMesh.cpp" />
     <ClCompile Include="GameObject\StaticRenderable.cpp" />
     <ClCompile Include="ResourceSystem\AssimpMeshLoader.cpp" />
     <ClCompile Include="ResourceSystem\CustomMeshLoader.cpp" />

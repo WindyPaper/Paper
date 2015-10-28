@@ -21,11 +21,15 @@ public:
 	virtual IGameObjRenderComp *getParentComp();
 	virtual void generateRenderCommand(RenderCommand &renderCommand);
 
+	virtual AABB getLocalAABB();
+
 protected:
 	MaterialHandle mMaterialHandle;
 	IGameObjRenderComp *mpOwner;
 	MeshHandle mMeshHandle;
 	int mSubIndex;
+
+	AABB mWorldAABB;
 };
 
 #endif

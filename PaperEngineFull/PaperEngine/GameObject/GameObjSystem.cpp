@@ -6,7 +6,7 @@
 #include "GameObject/Entity.h"
 #include "ResourceSystem/IResMgr.h"
 #include "GameObject/StaticRenderable.h"
-#include "GameObject/Plane.h"
+#include "GameObject/PlaneMesh.h"
 
 GameObjSystem::GameObjSystem()
 {
@@ -78,10 +78,10 @@ IGameObject * GameObjSystem::createStaticGeoObj(const std::string &gameObjName, 
 
 IGameObject * GameObjSystem::createPlane(const int width, const int height, const int seg, const math::Vector3f &pos, const math::Quaternion &quat)
 {
-	IGameObject *pObj = _createGameObjFast("Plane", PLANE_OBJ);
-	IGameObjRenderComp *pMainRenderComp = createRenderComp("Plane", pos, quat);
+	IGameObject *pObj = _createGameObjFast("PlaneMesh", PLANE_OBJ);
+	IGameObjRenderComp *pMainRenderComp = createRenderComp("PlaneMesh", pos, quat);
 	pObj->setObjectComp(pMainRenderComp);
-	Plane *pPlane = dynamic_cast<Plane*>(pObj);
+	PlaneMesh *pPlane = dynamic_cast<PlaneMesh*>(pObj);
 	pPlane->setPlaneSize(width, height, seg);
 	return pPlane;
 }
@@ -111,7 +111,7 @@ IGameObject * GameObjSystem::_createGameObjFast(const std::string &gameObjName, 
 		mGameObjMap[gameObjName] = pObj;
 		break;
 	case PLANE_OBJ:
-		pObj = new Plane(gameObjName);
+		pObj = new PlaneMesh(gameObjName);
 		mGameObjMap[gameObjName] = pObj;
 	default:
 		break;

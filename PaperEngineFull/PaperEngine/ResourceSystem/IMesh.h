@@ -4,6 +4,7 @@
 #include <vector>
 #include "util/Engine_Define.h"
 #include "util/Paper_Math.h"
+#include "util/CollionGeo.h"
 #include "ResourceSystem/Resource.h"
 #include "ResourceSystem/ResHandle.h"
 #include "util/RenderCommand.h"
@@ -143,6 +144,7 @@ public:
 	virtual void generateRenderCommand(RenderCommand &renderCommand, const int subIndex) = 0;
 
 	//virtual unsigned char* getVertexData() = 0;
+	virtual AABB getAABB() const = 0;
 
 	typedef sigslot::signal1<MeshHandle> CbSignal;
 	virtual CbSignal &getSignalRef() { return mCbSignal; }

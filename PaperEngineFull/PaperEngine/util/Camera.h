@@ -50,19 +50,17 @@ public:
 
 protected:
 	void updateViewMatrix();
+	void updateCollionPlane();
 
 private: 
 	math::Matrix44 mViewMatrix;
 
-	XMVECTOR mPos;
 	XMVECTOR mLookAt;
 	XMVECTOR mUp;
 
 	float mPitch;
 	float mYaw;
 	float mRoll;
-
-	math::Quaternion mOrientation;
 
 	std::string mName;
 };

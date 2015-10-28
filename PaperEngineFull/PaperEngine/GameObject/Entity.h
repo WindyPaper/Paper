@@ -48,6 +48,7 @@ public:
 	void clearAllRenderable();
 
 	virtual void updateRenderable(MeshHandle meshHandle);
+	virtual AABB getWorldAABB();
 
 private:
 	typedef std::vector<Renderable*> SubRenderableVec;

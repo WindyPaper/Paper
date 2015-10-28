@@ -2,6 +2,7 @@
 #define _GLOBAL_H_
 
 //put global var here
+#include "util/PreDefine.h"
 #include "util/IUISystem.h" 
 #include "util/IProfile.h"
 #include "ResourceSystem/IResMgr.h"
@@ -38,8 +39,5 @@ struct EngineGlobalModule
 };
 
 extern EngineGlobalModule *gEngModule;
-
-const unsigned int WIN_WIDTH = 1280;
-const unsigned int WIN_HEIGHT = 720;
 
 #endif

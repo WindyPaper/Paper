@@ -1,17 +1,16 @@
 #include "util/PrecompileHead.h"
 
 #include "util/Camera.h"
+#include <cmath>
 
-Camera::Camera() :
-	mOrientation(0, 0, 0, 1)
+Camera::Camera()
 {
 	//默认的应该可以自动生成名字，后面加入
 	//we should can generate name of object by default
 	init();
 }
 
-Camera::Camera(const math::Vector3f &pos, const math::Vector3f &lookAt, const math::Vector3f &up) :
-	mOrientation(0, 0, 0, 1)
+Camera::Camera(const math::Vector3f &pos, const math::Vector3f &lookAt, const math::Vector3f &up)
 {
 	mPos = pos;
 	mLookAt = lookAt;
@@ -20,8 +19,7 @@ Camera::Camera(const math::Vector3f &pos, const math::Vector3f &lookAt, const ma
 	init();
 }
 
-Camera::Camera(const std::string &name) :
-	mOrientation(0, 0, 0, 1)
+Camera::Camera(const std::string &name)
 {
 	init();
 }
@@ -166,7 +164,8 @@ void Camera::cameraRotate(const math::Vector3f &axis, const float angle)
 
 void Camera::cameraRotate(const math::Quaternion &quat)
 {
-	mOrientation = quat * mOrientation;
+	assert(false);
+	//mOrientation = quat * mOrientation;
 	/*mOrientation.vec4.w = mOrientation.vec4.w * quat.vec4.w - mOrientation.vec4.x * quat.vec4.x - mOrientation.vec4.y * quat.vec4.y - mOrientation.vec4.z * quat.vec4.z;  // 1
 	mOrientation.vec4.x = mOrientation.vec4.w * quat.vec4.x + mOrientation.vec4.x * quat.vec4.w + mOrientation.vec4.y * quat.vec4.z - mOrientation.vec4.z * quat.vec4.y;  // i
 	mOrientation.vec4.y = mOrientation.vec4.w * quat.vec4.y - mOrientation.vec4.x * quat.vec4.z + mOrientation.vec4.y * quat.vec4.w + mOrientation.vec4.z * quat.vec4.x;  // j
@@ -239,8 +238,8 @@ void Camera::updateViewMatrix()
 	mUp = initUp;
 
 	XMVECTOR eyeVec = mPos;
-	XMVECTOR upVec = mOrientation * math::VEC3F_UNIT_Y;
-	XMVECTOR lookVec = mOrientation * math::VEC3F_NEGATIVE_UNIT_Z;
+	//XMVECTOR upVec = mOrientation * math::VEC3F_UNIT_Y;
+	//XMVECTOR lookVec = mOrientation * math::VEC3F_NEGATIVE_UNIT_Z;
 	//eyeVec = XMVector3Normalize(eyeVec);
 	//upVec = XMVector3Normalize(upVec);
 	//lookVec = XMVector3Normalize(lookVec);
@@ -258,5 +257,60 @@ void Camera::updateViewMatrix()
 	//XMMATRIX viewMatrix = XMMatrixTranslation(mPos.x, mPos.y, mPos.z) * XMMatrixRotationQuaternion(quat);
 	//mViewMatrix.m = viewMatrix;
 	//mViewMatrix.m = XMMatrixTranspose(mViewMatrix.m);
+
+	updateCollionPlane();
 }
 
+void Camera::updateCollionPlane()
+{
+	XMVECTOR nor_up = XMVector3Normalize(mUp);
+	XMVECTOR nor_lookat = XMVector3Normalize(mLookAt);
+
+	XMVECTOR nc = nor_lookat * mNear + mPos;
+	XMVECTOR fc = nor_lookat * mFar + mPos;
+
+	XMVECTOR left = XMVector3Cross(mUp, mLookAt);
+	left = XMVector3Normalize(left);
+
+	float nHeight = std::tan(mFov / 2) * mNear;
+	float nWidth = mWidth / mHeight * nHeight;
+
+	float fHeight = std::tan(mFov / 2) * mFar;
+	float fWidth = mWidth / mHeight * fHeight;
+
+	XMVECTOR nlt = nc + left * nWidth / 2 + nor_up * nHeight / 2;
+	XMVECTOR nlb = nc + left * nWidth / 2 - nor_up * nHeight / 2;
+	XMVECTOR nrt = nc - left * nWidth / 2 + nor_up * nHeight / 2;
+	XMVECTOR nrb = nc - left * nWidth / 2 - nor_up * nHeight / 2;
+
+	XMVECTOR flt = fc + left * fWidth / 2 + nor_up * fHeight / 2;
+	XMVECTOR flb = fc + left * fWidth / 2 - nor_up * fHeight / 2;
+	XMVECTOR frt = fc - left * fWidth / 2 + nor_up * fHeight / 2;
+	XMVECTOR frb = fc - left * fWidth / 2 - nor_up * fHeight / 2;
+
+	math::Vector3f normal, point;
+
+	normal = nor_lookat;
+	point = nc;
+	mPlanes[P_NEAR].setNormalAndPoint(normal, point);
+
+	normal = -nor_lookat;
+	point = fc;
+	mPlanes[P_FAR].setNormalAndPoint(normal, point);
+
+	normal = XMVector3Normalize(XMVector3Cross((flb - nlb), (nlt - nlb)));
+	point = nlb;
+	mPlanes[P_LEFT].setNormalAndPoint(normal, point);
+
+	normal = XMVector3Normalize(XMVector3Cross((nrt - nrb), (frb - nrb)));
+	point = nrb;
+	mPlanes[P_RIGHT].setNormalAndPoint(normal, point);
+
+	normal = XMVector3Normalize(XMVector3Cross((nlt - nrt), (frt - nrt)));
+	point = nrt;
+	mPlanes[P_TOP].setNormalAndPoint(normal, point);
+
+	normal = XMVector3Normalize(XMVector3Cross((frb - nrb), (nlb - nrb)));
+	point = nrb;
+	mPlanes[P_BOTTOM].setNormalAndPoint(normal, point);
+}

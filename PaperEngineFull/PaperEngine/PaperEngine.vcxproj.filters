@@ -216,11 +216,11 @@
     <ClInclude Include="util\IRenderTexture.h">
       <Filter>util\include</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject\Plane.h">
-      <Filter>GameObject\include</Filter>
-    </ClInclude>
     <ClInclude Include="util\CollionGeo.h">
       <Filter>util\include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\PlaneMesh.h">
+      <Filter>GameObject\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -308,11 +308,11 @@
     <ClCompile Include="util\PrecompileHead.cpp">
       <Filter>util\src</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject\Plane.cpp">
-      <Filter>GameObject\src</Filter>
-    </ClCompile>
     <ClCompile Include="util\CollionGeo.cpp">
       <Filter>util\src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\PlaneMesh.cpp">
+      <Filter>GameObject\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

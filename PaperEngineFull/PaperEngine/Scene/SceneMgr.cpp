@@ -188,7 +188,12 @@ void SceneMgr::_addToRenderSequenece(Node *pNode)
 	for (int i = 0; i < movableCount; ++i)
 	{
 		MovableObject *pObj = pSceneNode->getMovable(i);
-		pObj->pushToRenderSequence(mpRenderSequence);
+		
+		Entity *pEnt = dynamic_cast<Entity*>(pObj);
+		AABB worldAABB = pEnt->getWorldAABB();
+
+		if (mpMainCamera->interectAABB(worldAABB))
+			pObj->pushToRenderSequence(mpRenderSequence);
 	}
 
 	int count = pNode->getChildCount();
@@ -197,4 +202,9 @@ void SceneMgr::_addToRenderSequenece(Node *pNode)
 		Node *pChildNode = pNode->getChild(i);
 		_addToRenderSequenece(pChildNode);
 	}
+}
+
+void SceneMgr::_createVisibleVector(const Camera *pCamera, Node *pNode)
+{
+
 }

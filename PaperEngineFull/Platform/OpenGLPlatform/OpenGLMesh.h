@@ -3,7 +3,7 @@
 
 #include "ResourceSystem/IMesh.h"
 #include "util/RenderCommand.h"
-#include "util/CollionGeo.h"
+
 
 class ITask;
 
@@ -44,6 +44,10 @@ public:
 	virtual void generateRenderCommand(RenderCommand &renderCommand);
 	virtual void generateRenderCommand(RenderCommand &renderCommand, const int subIndex);
 
+	virtual AABB getAABB() const { return mMeshAABB; }
+	//void setWorldAABB(const AABB &aabb) { mWorldAABB = aabb; }
+	//AABB &getWorldAABB() { return mWorldAABB; }
+
 	//virtual unsigned char* getVertexData();
 
 	void runCbSignal();
@@ -60,6 +64,7 @@ private:
 	SubMeshVec mSubMeshVec;
 
 	AABB mMeshAABB;
+	//AABB mWorldAABB;
 
 	ITask *mpLoadTask;
 };
