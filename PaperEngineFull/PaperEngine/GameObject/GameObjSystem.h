@@ -19,19 +19,28 @@ struct ENGINE_DLL ExportModelHeadInfo
 	}
 };
 
-class ENGINE_DLL GameObjSystem : public IGameObjSystem
+const std::string PLANE_OBJ_NAME = "PlaneMesh";
+const std::string INS_AABB_OBJ_NAME = "INSAABBMesh";
+
+class ENGINE_DLL GameObjSystem : public IGameObjSystem, public Singleton<GameObjSystem>
 {
 public:
 	enum eGameObjType
 	{
 		MODEL_GAME_OBJ,
 		PLANE_OBJ,
+		INS_AABB_OBJ,
 	};
+
+	static GameObjSystem& getInstance(void);
+	static GameObjSystem* getInstancePtr(void);
+
 	GameObjSystem();
 	virtual ~GameObjSystem();
 
 	virtual IGameObject *createStaticGeoObj(const std::string &gameObjName, const std::string &modelName, const math::Vector3f &pos, const math::Quaternion &quat);
 	virtual IGameObject *createPlane(const int width, const int height, const int seg, const math::Vector3f &pos, const math::Quaternion &quat);
+	virtual IGameObject *createHelperAABBBox();
 	virtual void destoryAllStaticGeoObj();
 
 	virtual IGameObjRenderComp *createRenderComp(const std::string &entityName, const math::Vector3f &pos, const math::Quaternion &quat);

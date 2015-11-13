@@ -7,18 +7,21 @@
 #include "Scene/Node.h"
 #include "Scene/SceneNode.h"
 #include "util/Log.h"
+#include "GameObject/HelperObjMgr.h"
 #include "ResourceSystem/IResMgr.h"
 #include "ResourceSystem/IMaterial.h"
 #include "GameObject/StaticRenderable.h"
 
 Entity::Entity() :
-mpParentEntity(0)
+mpParentEntity(0),
+mIsShowAABB(true)
 {
 
 }
 
 Entity::Entity(const std::string &name) :
-mpParentEntity(0)
+mpParentEntity(0),
+mIsShowAABB(true)
 {
 	mName = name;
 }
@@ -201,6 +204,12 @@ void Entity::pushToRenderSequence(IRenderSequence *pRenderSequence)
 		Entity *pEntity = mSubEntityVec[i];
 		pEntity->pushToRenderSequence(pRenderSequence);
 	}
+
+	//add aabb render
+	if (mIsShowAABB)
+	{
+		HelperObjMgr::getInstance().addAABBBox(getWorldAABB());
+	}
 }
 
 void Entity::clearAllRenderable()
@@ -229,7 +238,9 @@ void Entity::updateRenderable(MeshHandle meshHandle)
 
 AABB Entity::getWorldAABB()
 {
-	AABB fullAABB;
+	static AABB fullAABB;
+	fullAABB.reset();
+
 	for (int i = 0; i < mSubRenderableVec.size(); ++i)
 	{
 		StaticRenderable *p = dynamic_cast<StaticRenderable*>(mSubRenderableVec[i]);

@@ -47,6 +47,13 @@ void AABB::merge(const AABB &aabb)
 	max.z = std::fmaxf(max.z, aabb.max.z);
 }
 
+math::Vector3f AABB::getPos() const
+{
+	return math::Vector3f(min.x + (max.x - min.x) / 2,
+		min.y + (max.y - min.y) / 2,
+		min.z + (max.z - min.z) / 2);
+}
+
 //Plane --------------------------------------------------
 //Ë³Ê±ÕëµÄ
 Plane::Plane(math::Vector3f &v1, math::Vector3f &v2, math::Vector3f &v3)

@@ -354,6 +354,11 @@ public:
 		return *this;
 	}
 
+	void transpose()
+	{
+		m = XMMatrixTranspose(m);
+	}
+
 
 	void initTranslateTransform(const Vector3f &translate)
 	{

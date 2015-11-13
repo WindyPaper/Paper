@@ -22,6 +22,7 @@ public:
 	{
 		NORMAL,
 		SHADOW,
+		HELPER,
 	};
 	static OpenGLRenderSystem &getInstance();
 	static OpenGLRenderSystem *getInstancePtr();

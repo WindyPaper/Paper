@@ -19,6 +19,7 @@
 #include "util/RenderSequence.h"
 #include "util/EngineProfile.h"
 #include "util/TaskDispatcher.h"
+#include "GameObject/HelperObjMgr.h"
 
 #include "MyGuiCombine/GLUISystem.h"
 
@@ -50,7 +51,8 @@ Win32Framework::~Win32Framework()
 	}
 
 	SAFE_DELETE(mpGameObjSystem);
-	SAFE_DELETE(mpSceneMgr);		
+	SAFE_DELETE(mpSceneMgr);
+	SAFE_DELETE(mpHelperObjMgr);
 	SAFE_DELETE(gEngModule);
 	SAFE_DELETE(mpGLRenderSystem);
 	SAFE_DELETE(mpSystem);
@@ -82,6 +84,8 @@ void Win32Framework::init()
 	mpGLRenderSystem->initRenderSystem();
 	OpenGLImpl::getInstancePtr()->checkError();
 	gEngModule->pUISystem->init((size_t)mpGLRenderSystem->getMainRenderWindow()->getWinHandle());
+
+	mpHelperObjMgr = new HelperObjMgr();
 
 	createTestResource();
 	createInputManager();
@@ -140,7 +144,7 @@ void Win32Framework::createTestResource()
 
 void Win32Framework::createTestMeshObject(const char *meshName)
 {
-	IGameObject *pObj = mpGameObjSystem->createStaticGeoObj(meshName, meshName, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
+	IGameObject *pObj = mpGameObjSystem->createStaticGeoObj(meshName, meshName, math::Vector3f(0, 100, 0), math::Quaternion(0, 0, 0, 1));
 	IGameObject *pPlaneObj = mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
 }
 

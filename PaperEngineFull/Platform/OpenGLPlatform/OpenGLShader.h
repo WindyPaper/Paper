@@ -17,6 +17,8 @@ enum BindShaderAttr
 	ATTR_TEXCOOD_ARRAY,
 	ATTR_NORMAL_ARRAY,
 	ATTR_COLOR_INT,
+	ATTR_MVP_MAT_ARRAY,
+	ATTR_WORLD_MAT_ARRAY,
 };
 
 class ENGINE_DLL OpenGLShader : public IShader

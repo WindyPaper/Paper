@@ -50,6 +50,10 @@ public:
 	virtual void updateRenderable(MeshHandle meshHandle);
 	virtual AABB getWorldAABB();
 
+	virtual void showAABB(bool show) { mIsShowAABB = show; }
+
+	virtual const std::string &getName() { return mName; }
+
 private:
 	typedef std::vector<Renderable*> SubRenderableVec;
 	SubRenderableVec mSubRenderableVec;
@@ -59,6 +63,7 @@ private:
 
 	Entity *mpParentEntity;
 
+	bool mIsShowAABB;
 	MaterialHandle mMaterialHandle;
 	std::string mName;
 };

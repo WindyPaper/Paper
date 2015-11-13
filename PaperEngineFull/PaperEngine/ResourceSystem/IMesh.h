@@ -17,8 +17,16 @@ enum VertexDataSortType
 	P3F2F3 = 0,
 	P3UVF2,
 	P3I1F2,
+	P3,
 
 	UNKNOW,
+};
+
+enum InstanceDataSortType
+{
+	MVP_WORLD_TYPE = 0,
+
+	INS_UNKNOW,
 };
 
 struct Vertex_P3F2F3
@@ -54,7 +62,7 @@ struct VertexData
 		bufferId(0),
 		elementCount(0),
 		elementSize(0),
-		type(UNKNOW)
+		type(VertexDataSortType::UNKNOW)
 	{
 
 	}
@@ -65,7 +73,33 @@ struct VertexData
 		bufferId = 0;
 		elementCount = 0;
 		elementSize = 0;
-		type = UNKNOW;
+		type = VertexDataSortType::UNKNOW;
+	}
+};
+
+struct InstanceData
+{
+	unsigned char *pMemData;
+	uint bufferId;
+	uint elementCount;
+	uint elementSize;
+	InstanceDataSortType type;
+
+	InstanceData() :
+		pMemData(0),
+		bufferId(0),
+		elementCount(0),
+		elementSize(0),
+		type(InstanceDataSortType::INS_UNKNOW)
+	{}
+
+	void unload()
+	{
+		pMemData = 0;
+		bufferId = 0;
+		elementCount = 0;
+		elementSize = 0;
+		type = InstanceDataSortType::INS_UNKNOW;
 	}
 };
 
@@ -145,6 +179,8 @@ public:
 
 	//virtual unsigned char* getVertexData() = 0;
 	virtual AABB getAABB() const = 0;
+	virtual void setInstanceRender(const bool isInstanceRender) = 0;
+	virtual void bindInstanceData(unsigned char *pMemData, uint elementSize, uint elementCount, InstanceDataSortType type) = 0;
 
 	typedef sigslot::signal1<MeshHandle> CbSignal;
 	virtual CbSignal &getSignalRef() { return mCbSignal; }

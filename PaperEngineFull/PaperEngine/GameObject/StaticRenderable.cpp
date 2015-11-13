@@ -1,6 +1,7 @@
 #include "util/PrecompileHead.h"
 #include "util/Global.h"
 #include "GameObject/StaticRenderable.h"
+#include "GameObject/IGameObjComponent.h"
 
 StaticRenderable::StaticRenderable()
 {
@@ -48,7 +49,15 @@ void StaticRenderable::generateRenderCommand(RenderCommand &renderCommand)
 	IMeshMgr *pMeshMgr = gEngModule->pMeshMgr;
 	IMesh *pMeshData = pMeshMgr->getDataPtr(mMeshHandle);
 	
-	pMeshData->generateRenderCommand(renderCommand, mSubIndex);
+	if (pMeshData)
+	{
+		pMeshData->generateRenderCommand(renderCommand, mSubIndex);
+	}
+	else
+	{
+		Log::getInstance().logMsg("Entity %s lost mesh !!!", mpOwner->getName());
+	}
+	
 }
 
 AABB StaticRenderable::getLocalAABB()

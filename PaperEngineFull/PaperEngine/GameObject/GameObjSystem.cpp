@@ -7,6 +7,20 @@
 #include "ResourceSystem/IResMgr.h"
 #include "GameObject/StaticRenderable.h"
 #include "GameObject/PlaneMesh.h"
+#include "GameObject/BoundInsMesh.h"
+
+template<> GameObjSystem *Singleton<GameObjSystem>::msInstance = 0;
+
+GameObjSystem& GameObjSystem::getInstance(void)
+{
+	assert(msInstance);
+	return (*msInstance);
+}
+
+GameObjSystem* GameObjSystem::getInstancePtr(void)
+{
+	return msInstance;
+}
 
 GameObjSystem::GameObjSystem()
 {
@@ -78,12 +92,21 @@ IGameObject * GameObjSystem::createStaticGeoObj(const std::string &gameObjName, 
 
 IGameObject * GameObjSystem::createPlane(const int width, const int height, const int seg, const math::Vector3f &pos, const math::Quaternion &quat)
 {
-	IGameObject *pObj = _createGameObjFast("PlaneMesh", PLANE_OBJ);
-	IGameObjRenderComp *pMainRenderComp = createRenderComp("PlaneMesh", pos, quat);
+	IGameObject *pObj = _createGameObjFast(PLANE_OBJ_NAME, PLANE_OBJ);
+	IGameObjRenderComp *pMainRenderComp = createRenderComp(PLANE_OBJ_NAME, pos, quat);
 	pObj->setObjectComp(pMainRenderComp);
 	PlaneMesh *pPlane = dynamic_cast<PlaneMesh*>(pObj);
 	pPlane->setPlaneSize(width, height, seg);
 	return pPlane;
+}
+
+IGameObject * GameObjSystem::createHelperAABBBox()
+{
+	IGameObject *pObj = _createGameObjFast(INS_AABB_OBJ_NAME, INS_AABB_OBJ);
+	IGameObjRenderComp *pMainRenderComp = createRenderComp(INS_AABB_OBJ_NAME, math::VEC3F_ZERO, math::QUAT_IDENTIFY);
+	pObj->setObjectComp(pMainRenderComp);
+	BoundInsMesh *pBoundMesh = dynamic_cast<BoundInsMesh*>(pObj);
+	return pBoundMesh;
 }
 
 void GameObjSystem::destoryAllStaticGeoObj()
@@ -113,6 +136,11 @@ IGameObject * GameObjSystem::_createGameObjFast(const std::string &gameObjName, 
 	case PLANE_OBJ:
 		pObj = new PlaneMesh(gameObjName);
 		mGameObjMap[gameObjName] = pObj;
+		break;
+	case INS_AABB_OBJ:
+		pObj = new BoundInsMesh(gameObjName);
+		mGameObjMap[gameObjName] = pObj;
+		break;
 	default:
 		break;
 	}

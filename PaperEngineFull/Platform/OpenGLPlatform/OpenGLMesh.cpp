@@ -29,7 +29,9 @@ public:
 	{
 		mpMesh->bindVertexData();
 		mpMesh->bindIndexData();
-		mpMesh->runCbSignal();	 	
+		mpMesh->runCbSignal();	 
+
+		Log::getInstance().logMsg("%s model load complete !!", mFileName);
 	}
 
 protected:
@@ -39,7 +41,9 @@ protected:
 
 OpenGLMesh::OpenGLMesh() :
 mMeshMemData(0),
-mpLoadTask(0)
+mpLoadTask(0),
+mRenderMode(RenderCommand::TRIANGLE_LIST),
+mIsInstanceRender(false)
 {
 
 }
@@ -250,6 +254,24 @@ void OpenGLMesh::bindIndexData()
 	}
 }
 
+void OpenGLMesh::bindInstanceData(unsigned char *pMemData, uint elementSize, uint elementCount, InstanceDataSortType type)
+{
+	mInstanceData.pMemData = pMemData;
+	mInstanceData.elementSize = elementSize;
+	mInstanceData.elementCount = elementCount;
+	mInstanceData.type = type;
+
+	if (mInstanceData.bufferId == 0)
+	{
+		glGenBuffers(1, (GLuint*)(&(mInstanceData.bufferId)));
+	}
+	
+	glBindBuffer(GL_ARRAY_BUFFER, mInstanceData.bufferId);
+	glBufferData(GL_ARRAY_BUFFER, mInstanceData.elementSize * mInstanceData.elementCount, mInstanceData.pMemData, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	OpenGLImpl::getInstance().checkError();
+}
+
 void OpenGLMesh::setRenderIndexValue(int value)
 {
 	mIndexData.elementCount = value;
@@ -267,10 +289,19 @@ const SubMeshVec & OpenGLMesh::getSubMeshVec() const
 
 void OpenGLMesh::generateRenderCommand(RenderCommand &renderCommand, const int subIndex)
 {
-	renderCommand.renderMode = RenderCommand::TRIANGLE_LIST;
+	renderCommand.renderMode = mRenderMode;
 
 	renderCommand.pVertexData = &mVertexData;	
 	renderCommand.pIndexData = &mIndexData;
+
+	if (mIsInstanceRender)
+	{
+		//fix me. instance render only for show helper obj of line for now.
+		renderCommand.renderMode = RenderCommand::LINE_LIST;
+		renderCommand.pInstanceData = &mInstanceData;
+	}
+		
+	//renderCommand.pOwnerMesh = this;
 	
 	if (mSubMeshVec.size() > subIndex)
 	{
@@ -289,6 +320,16 @@ void OpenGLMesh::generateRenderCommand(RenderCommand &renderCommand, const int s
 void OpenGLMesh::generateRenderCommand(RenderCommand &renderCommand)
 {
 	generateRenderCommand(renderCommand, 0);
+}
+
+void OpenGLMesh::setRenderMode(const RenderCommand::RenderMode &renderMode)
+{
+	mRenderMode = renderMode;
+}
+
+void OpenGLMesh::setInstanceRender(const bool isInstanceRender)
+{
+	mIsInstanceRender = isInstanceRender;
 }
 
 /*

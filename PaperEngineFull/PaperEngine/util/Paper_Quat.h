@@ -26,6 +26,7 @@ namespace math
 		Matrix4f toMatrix() const;
 	};
 
+	const Quaternion QUAT_IDENTIFY(0.0, 0.0, 0.0, 1.0);
 
 	Quaternion operator*(const math::Quaternion& l, const math::Quaternion& r);
 

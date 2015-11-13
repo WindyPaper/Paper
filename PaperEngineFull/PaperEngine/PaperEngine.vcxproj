@@ -11,9 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObject\BoundInsMesh.h" />
     <ClInclude Include="GameObject\Entity.h" />
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="GameObject\GameObjSystem.h" />
+    <ClInclude Include="GameObject\HelperObjMgr.h" />
     <ClInclude Include="GameObject\IGameObjComponent.h" />
     <ClInclude Include="GameObject\IGameObject.h" />
     <ClInclude Include="GameObject\MovableObject.h" />
@@ -75,9 +77,11 @@
     <ClInclude Include="XNAMath\xnamath.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameObject\BoundInsMesh.cpp" />
     <ClCompile Include="GameObject\Entity.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="GameObject\GameObjSystem.cpp" />
+    <ClCompile Include="GameObject\HelperObjMgr.cpp" />
     <ClCompile Include="GameObject\MovableObject.cpp" />
     <ClCompile Include="GameObject\PlaneMesh.cpp" />
     <ClCompile Include="GameObject\StaticRenderable.cpp" />

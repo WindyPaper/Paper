@@ -10,6 +10,7 @@ class CameraController;
 class SceneMgr;
 class GameObjSystem;
 class OpenGLRenderSystem;
+class HelperObjMgr;
 
 class System;
 
@@ -40,6 +41,7 @@ private:
 
 	SceneMgr *mpSceneMgr;
 	GameObjSystem *mpGameObjSystem;
+	HelperObjMgr *mpHelperObjMgr;
 
 	OpenGLRenderSystem *mpGLRenderSystem;
 };

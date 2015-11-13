@@ -8,6 +8,7 @@
 #include "util/Log.h"
 #include "util/EngineProfile.h"
 #include "GameObject/Renderable.h"
+#include "GameObject/HelperObjMgr.h"
 #include "Scene/SceneMgr.h"
 #include "OpenGLPlatform/OpenGLRenderSystem.h"
 #include "OpenGLPlatform/OpenGLWin32Support.h"
@@ -80,6 +81,8 @@ void OpenGLRenderSystem::initGL()
 
 	//背面剔除
 	glEnable(GL_CULL_FACE);
+
+	glLineWidth(2);
 	
 	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);    // 系统对透视进行修正
 
@@ -137,9 +140,45 @@ void OpenGLRenderSystem::_render(const RenderCommand &renderCommand)
 		glVertexAttribPointer(BindShaderAttr::ATTR_TEXCOOD_ARRAY, 2, GL_FLOAT, GL_FALSE, pVerData->elementSize, (void*)16);
 		OpenGLImpl::getInstancePtr()->checkError();
 	}
-	OpenGLImpl::getInstancePtr()->activeIndexBufObj(pIndexData->bufferId);
-	glDrawElements(GL_TRIANGLES, renderCommand.indexCount, GL_UNSIGNED_INT, (void*)(renderCommand.indexStart * sizeof(uint)));
+	else if (pVerData->type == VertexDataSortType::P3)
+	{
+		glEnableVertexAttribArray(BindShaderAttr::ATTR_POSITION_ARRAY);
+		glVertexAttribPointer(BindShaderAttr::ATTR_POSITION_ARRAY, 3, GL_FLOAT, GL_FALSE, pVerData->elementSize, 0);
 
+		for (int i = 0; i < 4; ++i)
+		{
+			OpenGLImpl::getInstancePtr()->activeVertexBufObj(renderCommand.pInstanceData->bufferId);
+			glEnableVertexAttribArray(BindShaderAttr::ATTR_WORLD_MAT_ARRAY + i);
+			glVertexAttribPointer(BindShaderAttr::ATTR_WORLD_MAT_ARRAY + i, 4, GL_FLOAT, GL_FALSE, \
+				renderCommand.pInstanceData->elementSize, (const GLvoid*)(sizeof(GLfloat)* i * 4));
+			glVertexAttribDivisor(BindShaderAttr::ATTR_WORLD_MAT_ARRAY + i, 1);
+		}
+		
+	}
+	OpenGLImpl::getInstancePtr()->activeIndexBufObj(pIndexData->bufferId);
+
+	GLint renderType = 0;
+	switch (renderCommand.renderMode)
+	{
+	case RenderCommand::TRIANGLE_LIST:
+		renderType = GL_TRIANGLES;
+		break;
+	case RenderCommand::LINE_LIST:
+		renderType = GL_LINE_LOOP;
+		break;
+	default:
+		break;
+	}
+	assert(renderType != 0);
+	if (renderCommand.pInstanceData == 0)
+	{
+		glDrawElements(renderType, renderCommand.indexCount, GL_UNSIGNED_INT, (void*)(renderCommand.indexStart * sizeof(uint)));
+	}
+	else
+	{
+		glDrawElementsInstanced(renderType, renderCommand.indexCount, GL_UNSIGNED_INT, (void*)(renderCommand.indexStart * sizeof(uint)), renderCommand.pInstanceData->elementCount);
+	}
+	
 	EngineProfile::getInstancePtr()->addVerticeNum(renderCommand.indexCount / 3);
 	EngineProfile::getInstancePtr()->increaseDrawCallNum();
 
@@ -217,9 +256,10 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 
 	if (type != SHADOW)
 	{
-		mpShadowMap->bindForReading(TexShadowMap);
-		IShader *pShader = pIMaterial->getShader();
-		dynamic_cast<OpenGLShader*>(pShader)->bindShadowMap();
+		//显示阴影暂时注释
+		//mpShadowMap->bindForReading(TexShadowMap);
+		//IShader *pShader = pIMaterial->getShader();
+		//dynamic_cast<OpenGLShader*>(pShader)->bindShadowMap();
 		pIMaterial->bindAllTexture();
 	}		
 
@@ -267,6 +307,8 @@ void OpenGLRenderSystem::renderAll()
 	//mpShadowMap->bindForReading(TexShadowMap);
 	OpenGLImpl::getInstance().checkError();
 	RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
+	//add instance render helper obj
+	HelperObjMgr::getInstance().fillVertexBufInsData();
 	renderOneContain(renderableVec, NORMAL);
 
 	//render UI

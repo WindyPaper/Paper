@@ -15,7 +15,8 @@ namespace math
 
 	Quaternion::Quaternion() 
 	{
-		memset(&vec4, 0, sizeof(XMVECTOR));
+		//memset(&vec4, 0, sizeof(XMVECTOR));
+		vec4 = g_XMIdentityR3;
 	}
 
 	void Quaternion::Normalize()

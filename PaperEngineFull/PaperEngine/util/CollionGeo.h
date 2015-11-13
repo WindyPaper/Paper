@@ -13,6 +13,8 @@ struct AABB
 
 	void merge(const AABB &aabb);
 
+	math::Vector3f getPos() const;
+
 	math::Vector3f min;
 	math::Vector3f max;
 

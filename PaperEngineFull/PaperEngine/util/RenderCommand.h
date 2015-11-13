@@ -5,6 +5,8 @@
 
 class VertexData;
 class IndexData;
+class InstanceData;
+class IMesh;
 
 struct RenderCommand
 {
@@ -26,12 +28,18 @@ struct RenderCommand
 	uint indexStart;
 	uint indexCount;
 
+	//bool isInstanceRender;
+	InstanceData *pInstanceData;
+	//IMesh *pOwnerMesh;
+
 	RenderCommand() :
 		renderMode(TRIANGLE_LIST),
 		pVertexData(0),
 		pIndexData(0),
 		indexStart(0),
-		indexCount(0)
+		indexCount(0),
+		pInstanceData(0)
+		//pOwnerMesh(0)
 	{
 
 	}

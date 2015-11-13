@@ -17,11 +17,15 @@ typedef unsigned int uint32;
 
 #define BIT(x) (1<<(x))
 
-//此宏展开后，类似于printf("%d""%d", 1, 2);
+//此宏展开后，类似于printf("%d%d", 1, 2);
 #define MSG_LOG(fmt, ...) \
 	printf("%s(%d)-<%s>: "##fmt, __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
 
 //xna math
 //#define _XM_NO_INTRINSICS_
+
+#define MAX_INSTANCE_RENDER_NUM 128
+
+#define MAX_INSTANCE_NUM 256
 
 #endif

@@ -25,6 +25,8 @@ public:
 	virtual void setObjectComp(IGameObjComponent *comp) = 0;
 	virtual IGameObjComponent *getComp(const GameObjCompType type) = 0;
 	//virtual void setTranslate(const math::Vector3f &pos)
+
+	virtual const std::string &getName() = 0;
 };
 
 class IGameObjSystem

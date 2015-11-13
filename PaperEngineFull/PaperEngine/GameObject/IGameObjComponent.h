@@ -52,10 +52,13 @@ public:
 	virtual void setOrientation(const float x, const float y, const float z, const float w) = 0;
 	virtual const math::Quaternion &getOrientation() const = 0;*/
 	virtual Node *getOwnNode() = 0;
+	virtual const std::string &getName() = 0;
 
 	virtual void addRenderable(Renderable *pRenderable) = 0;
 	virtual void modifyRenderable(Renderable *pRenderable, int index) = 0;
 	virtual Renderable *getRenderable(int index) = 0;
+
+	virtual void showAABB(bool show) = 0;
 
 	virtual void updateRenderable(MeshHandle meshHandle) {
 		assert(false);

@@ -272,10 +272,10 @@ void Camera::updateCollionPlane()
 	XMVECTOR left = XMVector3Cross(mUp, mLookAt);
 	left = XMVector3Normalize(left);
 
-	float nHeight = std::tan(mFov / 2) * mNear;
+	float nHeight = std::tan(ToRadian(mFov / 2)) * mNear;
 	float nWidth = mWidth / mHeight * nHeight;
 
-	float fHeight = std::tan(mFov / 2) * mFar;
+	float fHeight = std::tan(ToRadian(mFov / 2)) * mFar;
 	float fWidth = mWidth / mHeight * fHeight;
 
 	XMVECTOR nlt = nc + left * nWidth / 2 + nor_up * nHeight / 2;

@@ -26,6 +26,8 @@ public:
 	virtual void setObjectComp(IGameObjComponent *comp);
 	virtual IGameObjComponent *getComp(const GameObjCompType type);
 
+	virtual const std::string &getName() { return mName; }
+
 protected:
 	IGameObjRenderComp *mpRenderComp;
 
