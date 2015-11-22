@@ -41,7 +41,6 @@ void BoundInsMesh::addTransformMatrix(const math::Matrix44 matrix)
 
 void BoundInsMesh::initCubeMesh()
 {
-	//set unit cube
 	float vertices[] = {
 		-0.5, 0.5, -0.5,
 		-0.5, 0.5, 0.5,
@@ -52,42 +51,6 @@ void BoundInsMesh::initCubeMesh()
 		0.5, -0.5, 0.5,
 		0.5, -0.5, -0.5,
 	};
-
-	if (mpCubeBoxVData == 0)
-	{
-		mpCubeBoxVData = new float[sizeof(vertices) / sizeof(float)];
-		memcpy(mpCubeBoxVData, vertices, sizeof(vertices));
-	}
-
-	const char *cubeMeshName = "CubeMesh";
-	NameParamMap paramMap;
-	IMesh *pMeshData = gEngModule->pMeshMgr->create(cubeMeshName, paramMap);
-	mpMesh = pMeshData;
-	pMeshData->setInstanceRender(true);
-
-	//IMesh *pMeshData = gEngModule->pMeshMgr->getDataPtr(meshHandle);
-	VertexData *pVertexData = pMeshData->getVertexData();
-	IndexData *pIndexData = pMeshData->getIndexData();
-
-	pVertexData->pMemData = reinterpret_cast<unsigned char*>(mpCubeBoxVData);
-	pVertexData->elementSize = sizeof(float)* 3;
-	pVertexData->elementCount = sizeof(vertices) / pVertexData->elementSize;
-	pVertexData->type = VertexDataSortType::P3;
-
-	/*unsigned int elements[] = {
-		0, 1,
-		0, 3,
-		0, 4,
-		2, 1,
-		2, 3,
-		2, 6,
-		5, 1,
-		5, 4,
-		5, 6,
-		7, 3,
-		7, 4,
-		7, 6
-	};*/
 	unsigned int elements[] = {
 		0, 1,
 		0, 3,
@@ -102,20 +65,44 @@ void BoundInsMesh::initCubeMesh()
 		7, 6,
 		7, 4
 	};
-	/*short elements[] = {
-		0, 1, 2, 3,
-		0, 4, 5, 6, 7,
-		};*/
-	if (mpCubeBoxIData == 0)
+	initCustomMesh("CubeMesh", reinterpret_cast<const unsigned char*>(vertices), sizeof(vertices), \
+		reinterpret_cast< const unsigned char*>(elements), sizeof(elements));
+}
+
+void BoundInsMesh::initCustomMesh(const std::string &meshName, const unsigned char *pVertexData, int vertexNum, const unsigned char *pIndexData, int indexNum)
+{
+	if (mpCubeBoxVData == 0)
 	{
-		mpCubeBoxIData = new unsigned int[sizeof(elements) / sizeof(unsigned int)];
-		memcpy(mpCubeBoxIData, elements, sizeof(elements));
+		mpCubeBoxVData = new float[vertexNum / sizeof(float)];
+		memcpy(mpCubeBoxVData, pVertexData, vertexNum);
 	}
 
-	pIndexData->elementSize = sizeof(unsigned int);
-	pIndexData->elementCount = sizeof(elements) / pIndexData->elementSize;
-	pIndexData->type = IndexType::BIT32;
-	pIndexData->pMemData = reinterpret_cast<unsigned char*>(mpCubeBoxIData);
+	const char *cubeMeshName = meshName.c_str();
+
+	NameParamMap paramMap;
+	IMesh *pMeshData = gEngModule->pMeshMgr->create(cubeMeshName, paramMap);
+	mpMesh = pMeshData;
+	pMeshData->setInstanceRender(true);
+
+	//IMesh *pMeshData = gEngModule->pMeshMgr->getDataPtr(meshHandle);
+	VertexData *pNewVertexData = pMeshData->getVertexData();
+	IndexData *pNewIndexData = pMeshData->getIndexData();
+
+	pNewVertexData->pMemData = reinterpret_cast<unsigned char*>(mpCubeBoxVData);
+	pNewVertexData->elementSize = sizeof(float)* 3;
+	pNewVertexData->elementCount = vertexNum / pNewVertexData->elementSize;
+	pNewVertexData->type = VertexDataSortType::P3;
+
+	if (mpCubeBoxIData == 0)
+	{
+		mpCubeBoxIData = new unsigned int[indexNum / sizeof(unsigned int)];
+		memcpy(mpCubeBoxIData, pIndexData, indexNum);
+	}
+
+	pNewIndexData->elementSize = sizeof(unsigned int);
+	pNewIndexData->elementCount = indexNum / pNewIndexData->elementSize;
+	pNewIndexData->type = IndexType::BIT32;
+	pNewIndexData->pMemData = reinterpret_cast<unsigned char*>(mpCubeBoxIData);
 
 	pMeshData->updateHWData();
 
@@ -124,5 +111,5 @@ void BoundInsMesh::initCubeMesh()
 	pStaticRender->setMaterial(gEngModule->pMaterialMgr->getHandle(pMat->getName()));
 	mpRenderComp->addRenderable(pStaticRender);
 	mpRenderComp->showAABB(false);
-	
+	mpRenderComp->setNeedClip(false);
 }

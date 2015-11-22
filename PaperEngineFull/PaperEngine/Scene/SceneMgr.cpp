@@ -192,8 +192,21 @@ void SceneMgr::_addToRenderSequenece(Node *pNode)
 		Entity *pEnt = dynamic_cast<Entity*>(pObj);
 		AABB worldAABB = pEnt->getWorldAABB();
 
-		if (mpMainCamera->interectAABB(worldAABB))
+		bool isNeedAddToRenderSequence = false;
+		if (pEnt->isNeedClip())
+		{
+			if (mpMainCamera->interectAABB(worldAABB))
+				isNeedAddToRenderSequence = true;
+		}			
+		else
+		{
+			isNeedAddToRenderSequence = true;
+		}
+
+		if (isNeedAddToRenderSequence)
+		{
 			pObj->pushToRenderSequence(mpRenderSequence);
+		}
 	}
 
 	int count = pNode->getChildCount();

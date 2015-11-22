@@ -59,6 +59,8 @@ public:
 	virtual Renderable *getRenderable(int index) = 0;
 
 	virtual void showAABB(bool show) = 0;
+	virtual void setNeedClip(bool clip) = 0;
+	virtual bool isNeedClip() const = 0;
 
 	virtual void updateRenderable(MeshHandle meshHandle) {
 		assert(false);

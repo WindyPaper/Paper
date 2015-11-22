@@ -29,6 +29,7 @@ public:
 protected:
 	void initCollionPlane();
 	void updateProjMatrix();
+	bool frustumAABBIntersect(Plane *planes, const AABB &aabb);
 
 protected:
 	float mFov;

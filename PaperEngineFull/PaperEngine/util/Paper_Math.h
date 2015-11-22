@@ -288,11 +288,11 @@ struct ENGINE_DLL PerspectiveProjParam
 
 	PerspectiveProjParam()
 	{
-		fov = 30;
+		fov = 45;
 		width = WIN_WIDTH;
 		height = WIN_HEIGHT;
-		zNear = 0.1;
-		zFar = 1000;
+		zNear = 1;
+		zFar = 10000;
 	}
 };
 
@@ -430,30 +430,30 @@ public:
 		const float zNear = param.zNear;
 		const float zFar = param.zFar;
 		const float zRange = param.zNear - param.zFar;
-		const float tanHalfFov = tanf(ToRadian(param.fov/2.0));*/
+		const float tanHalfFov = tanf(ToRadian(param.fov/2.0));
 
-		/*float mm[4][4];
-		mm[0][0] = 1.0f / (tanHalfFov * ar); mm[0][1] = 0.0f; mm[0][2] = 0.0f; mm[0][3] = 0.0f;
-		mm[1][0] = 0.0f; mm[1][1] = 1.0f / tanHalfFov; mm[1][2] = 0.0f; mm[1][3] = 0.0f;
-		mm[2][0] = 0.0f; mm[2][1] = 0.0f; mm[2][2] = (-zNear - zFar) / zRange; mm[2][3] = 2.0f * zNear * zFar / zRange;
-		mm[3][0] = 0.0f; mm[3][1] = 0.0f; mm[3][2] = 1.0f; mm[3][3] = 0.0f; */
+		//float mm[4][4];
+		m.m[0][0] = 1.0f / (tanHalfFov * ar); m.m[0][1] = 0.0f; m.m[0][2] = 0.0f; m.m[0][3] = 0.0f;
+		m.m[1][0] = 0.0f; m.m[1][1] = 1.0f / tanHalfFov; m.m[1][2] = 0.0f; m.m[1][3] = 0.0f;
+		m.m[2][0] = 0.0f; m.m[2][1] = 0.0f; m.m[2][2] = (-zNear - zFar) / zRange; m.m[2][3] = 2.0f * zNear * zFar / zRange;
+		m.m[3][0] = 0.0f; m.m[3][1] = 0.0f; m.m[3][2] = 1.0f; m.m[3][3] = 0.0f;*/
 
 		m = XMMatrixPerspectiveFovRH(ToRadian(param.fov), param.width/param.height, param.zNear, param.zFar);
 	}
 
 	void initCameraTransform(const Vector3f &target, const Vector3f &up)
 	{
-		Vector3f n = target;
+		/*Vector3f n = target;
 		n.normalize();
 		Vector3f u = up;
 		u.normalize();
 		u = u.cross(target);
 		Vector3f v = n.cross(u);
 
-		/*m[0][0] = u.x; m[0][1] = u.y; m[0][2] = u.z; m[0][3] = 0.0f;
-		m[1][0] = v.x; m[1][1] = v.y; m[1][2] = v.z; m[1][3] = 0.0f;
-		m[2][0] = n.x; m[2][1] = n.y; m[2][2] = n.z; m[2][3] = 0.0f;
-		m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;*/
+		m.m[0][0] = u.x; m.m[0][1] = u.y; m.m[0][2] = u.z; m.m[0][3] = 0.0f;
+		m.m[1][0] = v.x; m.m[1][1] = v.y; m.m[1][2] = v.z; m.m[1][3] = 0.0f;
+		m.m[2][0] = n.x; m.m[2][1] = n.y; m.m[2][2] = n.z; m.m[2][3] = 0.0f;
+		m.m[3][0] = 0.0f; m.m[3][1] = 0.0f; m.m[3][2] = 0.0f; m.m[3][3] = 1.0f;*/
 
 		XMVECTOR eyePos;
 		XMVECTOR targetVec;

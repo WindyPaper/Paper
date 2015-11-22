@@ -12,6 +12,7 @@ struct AABB
 	void add(const math::Vector3f &vec3);
 
 	void merge(const AABB &aabb);
+	math::Vector3f getVertex(int index);
 
 	math::Vector3f getPos() const;
 
@@ -27,10 +28,13 @@ public:
 	Plane::Plane(void);
 	Plane::~Plane();
 
-	void set3Points(math::Vector3f &v1, math::Vector3f &v2, math::Vector3f &v3);
+	void set3Points(XMVECTOR &v1, XMVECTOR &v2, XMVECTOR &v3);
 	void setNormalAndPoint(math::Vector3f &normal, math::Vector3f &point);
 	//void setCoefficients(float a, float b, float c, float d);
 	float getDistance(math::Vector3f &p);
+
+	const math::Vector3f &getNormal() const { return mNormal; }
+	int getD() const { return mD; }
 
 private:
 	math::Vector3f mNormal, mPoint;

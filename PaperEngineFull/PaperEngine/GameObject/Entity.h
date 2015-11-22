@@ -51,6 +51,8 @@ public:
 	virtual AABB getWorldAABB();
 
 	virtual void showAABB(bool show) { mIsShowAABB = show; }
+	virtual void setNeedClip(bool clip) { mIsNeedClip = clip; }
+	virtual bool isNeedClip() const { return mIsNeedClip; }
 
 	virtual const std::string &getName() { return mName; }
 
@@ -64,6 +66,8 @@ private:
 	Entity *mpParentEntity;
 
 	bool mIsShowAABB;
+	bool mIsNeedClip;
+
 	MaterialHandle mMaterialHandle;
 	std::string mName;
 };

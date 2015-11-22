@@ -17,6 +17,7 @@ public:
 	void addTransformMatrix(const math::Matrix44 matrix);
 
 	void initCubeMesh();
+	void initCustomMesh(const std::string &meshName, const unsigned char *pVertexData, int vertexNum, const unsigned char *pIndexData, int indexNum);
 
 	IMesh *getMesh() { return mpMesh; }
 

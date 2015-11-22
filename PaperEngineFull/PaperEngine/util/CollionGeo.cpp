@@ -58,7 +58,7 @@ math::Vector3f AABB::getPos() const
 //Ë³Ê±ÕëµÄ
 Plane::Plane(math::Vector3f &v1, math::Vector3f &v2, math::Vector3f &v3)
 {
-	set3Points(v1, v2, v3);
+	//set3Points(v1, v2, v3);
 }
 
 Plane::Plane(void)
@@ -71,26 +71,27 @@ Plane::~Plane()
 
 }
 
-void Plane::set3Points(math::Vector3f &v1, math::Vector3f &v2, math::Vector3f &v3)
+void Plane::set3Points(XMVECTOR &v1, XMVECTOR &v2, XMVECTOR &v3)
 {
-	math::Vector3f planeVec1 = v1 - v2;
-	math::Vector3f planeVec2 = v3 - v2;
+	XMVECTOR planeVec1 = v1 - v2;
+	XMVECTOR planeVec2 = v3 - v2;
 
-	mNormal = planeVec2.cross(planeVec1).normalize();
+	mNormal = XMVector3Normalize(XMVector3Cross(planeVec2, planeVec1));//planeVec2.cross(planeVec1).normalize();
 	mPoint = v2;
-	mD = mNormal * mPoint;
+	mD = -mNormal * mPoint;
 }
 
 void Plane::setNormalAndPoint(math::Vector3f &normal, math::Vector3f &point)
 {
 	mNormal = normal.normalize();
 	mPoint = point;
-	mD = mNormal * mPoint;
+	mD = -mNormal * mPoint;
 }
 
 float Plane::getDistance(math::Vector3f &p)
 {
-	return mNormal * p - mD;
+	float val = mNormal * p + mD;
+	return val;
 }
 
 //------------------------------------------------------------------------------------

@@ -77,6 +77,7 @@ void Camera::setPos(const math::Vector3f &pos)
 	XMVECTOR cpos = pos;
 	if (!XMVector3Equal(mPos, cpos))
 	{
+		//std::cout << "x = " << pos.x << " z = " << pos.z << std::endl;
 		mPos = cpos;
 		update();
 	}
@@ -254,12 +255,11 @@ void Camera::updateViewMatrix()
 	
 	
 	mViewMatrix.m = XMMatrixLookAtRH(mPos, target, up);
-	//XMMATRIX viewMatrix = XMMatrixTranslation(mPos.x, mPos.y, mPos.z) * XMMatrixRotationQuaternion(quat);
-	//mViewMatrix.m = viewMatrix;
-	//mViewMatrix.m = XMMatrixTranspose(mViewMatrix.m);
+	
 
 	updateCollionPlane();
 }
+
 
 void Camera::updateCollionPlane()
 {
@@ -278,7 +278,7 @@ void Camera::updateCollionPlane()
 	float fHeight = std::tan(ToRadian(mFov / 2)) * mFar;
 	float fWidth = mWidth / mHeight * fHeight;
 
-	XMVECTOR nlt = nc + left * nWidth / 2 + nor_up * nHeight / 2;
+	/*XMVECTOR nlt = nc + left * nWidth / 2 + nor_up * nHeight / 2;
 	XMVECTOR nlb = nc + left * nWidth / 2 - nor_up * nHeight / 2;
 	XMVECTOR nrt = nc - left * nWidth / 2 + nor_up * nHeight / 2;
 	XMVECTOR nrb = nc - left * nWidth / 2 - nor_up * nHeight / 2;
@@ -286,9 +286,47 @@ void Camera::updateCollionPlane()
 	XMVECTOR flt = fc + left * fWidth / 2 + nor_up * fHeight / 2;
 	XMVECTOR flb = fc + left * fWidth / 2 - nor_up * fHeight / 2;
 	XMVECTOR frt = fc - left * fWidth / 2 + nor_up * fHeight / 2;
-	XMVECTOR frb = fc - left * fWidth / 2 - nor_up * fHeight / 2;
+	XMVECTOR frb = fc - left * fWidth / 2 - nor_up * fHeight / 2;*/
 
-	math::Vector3f normal, point;
+	//XMMATRIX cameraViewInvert;
+	//cameraViewInvert = XMMatrixInverse(cameraViewInvert.r, mViewMatrix.m);
+	//cameraViewInvert = XMMatrixTranspose(cameraViewInvert);
+	//XMMATRIX projectInvert;
+	//projectInvert = XMMatrixInverse(projectInvert.r, mProjMatrix.m);
+	//projectInvert = XMMatrixTranspose(projectInvert);
+	XMMATRIX transformMatrix = mViewMatrix.m * mProjMatrix.m;
+	XMVECTOR t;
+	transformMatrix = XMMatrixInverse(&t, transformMatrix);
+
+	XMVECTOR nlt;
+	nlt.x = -1.0; nlt.y = 1.0; nlt.z = 0.0; nlt.w = 1.0;
+	XMVECTOR nlb;
+	nlb.x = -1.0; nlb.y = -1.0; nlb.z = 0.0; nlb.w = 1.0;
+	XMVECTOR nrt;
+	nrt.x = 1.0; nrt.y = 1.0; nrt.z = 0.0; nrt.w = 1.0;
+	XMVECTOR nrb;
+	nrb.x = 1.0; nrb.y = -1.0; nrb.z = 0.0; nrb.w = 1.0;
+
+	XMVECTOR flt;
+	flt.x = -1.0; flt.y = 1.0; flt.z = 1.0; flt.w = 1.0;
+	XMVECTOR flb;
+	flb.x = -1.0; flb.y = -1.0; flb.z = 1.0; flb.w = 1.0;
+	XMVECTOR frt;
+	frt.x = 1.0; frt.y = 1.0; frt.z = 1.0; frt.w = 1.0;
+	XMVECTOR frb;
+	frb.x = 1.0; frb.y = -1.0; frb.z = 1.0; frb.w = 1.0;
+
+	nlt = XMVector3TransformCoord(nlt, transformMatrix);
+	nlb = XMVector3TransformCoord(nlb, transformMatrix);
+	nrt = XMVector3TransformCoord(nrt, transformMatrix);
+	nrb = XMVector3TransformCoord(nrb, transformMatrix);
+
+	flt = XMVector3TransformCoord(flt, transformMatrix);
+	flb = XMVector3TransformCoord(flb, transformMatrix);
+	frt = XMVector3TransformCoord(frt, transformMatrix);
+	frb = XMVector3TransformCoord(frb, transformMatrix);
+
+	/*math::Vector3f normal, point;
 
 	normal = nor_lookat;
 	point = nc;
@@ -312,5 +350,54 @@ void Camera::updateCollionPlane()
 
 	normal = XMVector3Normalize(XMVector3Cross((frb - nrb), (nlb - nrb)));
 	point = nrb;
-	mPlanes[P_BOTTOM].setNormalAndPoint(normal, point);
+	mPlanes[P_BOTTOM].setNormalAndPoint(normal, point);*/
+
+	mPlanes[P_TOP].set3Points(nrt, nlt, flt);
+	mPlanes[P_BOTTOM].set3Points(nlb, nrb, frb);
+	mPlanes[P_LEFT].set3Points(nlt, nlb, flb);
+	mPlanes[P_RIGHT].set3Points(nrb, nrt, frb);
+	mPlanes[P_NEAR].set3Points(nlt, nrt, nrb);
+	mPlanes[P_FAR].set3Points(frt, flt, flb);
+
+	XMVECTOR newTestVec = XMVector3Transform(XMVector3Transform(flt, mViewMatrix.m), mProjMatrix.m);
 }
+
+/*
+void Camera::updateCollionPlane()
+{
+	math::Vector3f dir, nc, fc, X, Y, Z;
+
+	Z = mPos - mLookAt;
+	Z.normalize();
+
+	X = XMVector3Cross(mUp, Z);
+	X.normalize();
+
+	Y = XMVector3Cross(Z, X);
+
+	nc = mPos - Z * mNear;
+	fc = mPos - Z * mFar;
+
+	float nHeight = std::tan(ToRadian(mFov / 2)) * mNear;
+	float nWidth = mWidth / mHeight * nHeight;
+
+	float fHeight = std::tan(ToRadian(mFov / 2)) * mFar;
+	float fWidth = mWidth / mHeight * fHeight;
+
+	XMVECTOR ntl = nc + Y * nHeight - X * nWidth;
+	XMVECTOR ntr = nc + Y * nHeight + X * nWidth;
+	XMVECTOR nbl = nc - Y * nHeight - X * nWidth;
+	XMVECTOR nbr = nc - Y * nHeight + X * nWidth;
+
+	XMVECTOR ftl = fc + Y * fHeight - X * fWidth;
+	XMVECTOR ftr = fc + Y * fHeight + X * fWidth;
+	XMVECTOR fbl = fc - Y * fHeight - X * fWidth;
+	XMVECTOR fbr = fc - Y * fHeight + X * fWidth;
+
+	mPlanes[P_TOP].set3Points(ntr, ntl, ftl);
+	mPlanes[P_BOTTOM].set3Points(nbl, nbr, fbr);
+	mPlanes[P_LEFT].set3Points(ntl, nbl, fbl);
+	mPlanes[P_RIGHT].set3Points(nbr, ntr, fbr);
+	mPlanes[P_NEAR].set3Points(ntl, ntr, nbr);
+	mPlanes[P_FAR].set3Points(ftr, ftl, fbl);
+}*/

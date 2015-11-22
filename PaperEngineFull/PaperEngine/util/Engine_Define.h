@@ -26,6 +26,6 @@ typedef unsigned int uint32;
 
 #define MAX_INSTANCE_RENDER_NUM 128
 
-#define MAX_INSTANCE_NUM 256
+#define MAX_INSTANCE_NUM 2048
 
 #endif
