@@ -131,6 +131,15 @@ bool MagicImageLoader::loadRes(Resource *res)
 	unsigned char *pNewData = new unsigned char[imageSize];
 	memset(pNewData, 0, imageSize);
 
+	if (pImageRes->isFlipX())
+	{
+		FreeImage_FlipHorizontal(dib);
+	}
+	if (pImageRes->isFlipY())
+	{
+		FreeImage_FlipVertical(dib);
+	}
+
 	unsigned char *textureData = FreeImage_GetBits(dib);
 
 	memcpy(pNewData, FreeImage_GetBits(dib), imageSize);

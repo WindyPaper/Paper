@@ -53,7 +53,12 @@ ITexture * TextureMgr::create(const std::string &name, const NameParamMap &param
 	ResNameMapInsertRc rc = mResNameMap.insert(std::pair<std::string, TexHandle>(name, handle));
 	if (rc.second)
 	{
-		mImageContain.acquire(rc.first->second);
+		ITexture *ptex = mImageContain.acquire(rc.first->second);
+		if (!ptex->load(name, paramMap))
+		{
+			deleteData(rc.first->second);
+			rc.first->second = TexHandle();
+		}
 	}
 	return mImageContain.dereference(rc.first->second);
 }

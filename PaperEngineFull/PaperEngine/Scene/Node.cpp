@@ -228,7 +228,7 @@ void Node::updateFromParent()
 		const math::Vector3f &scale = mpParent->getScale();
 		if (mIsInheritScale)
 		{
-			mWorldScale = scale.mul(scale);
+			mWorldScale = scale.mul(mLocalScale);
 		}
 		else
 		{

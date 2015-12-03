@@ -21,6 +21,7 @@
     <ClInclude Include="GameObject\MovableObject.h" />
     <ClInclude Include="GameObject\PlaneMesh.h" />
     <ClInclude Include="GameObject\Renderable.h" />
+    <ClInclude Include="GameObject\SkyBox.h" />
     <ClInclude Include="GameObject\StaticRenderable.h" />
     <ClInclude Include="ResourceSystem\AssimpMeshLoader.h" />
     <ClInclude Include="ResourceSystem\CustomMeshLoader.h" />
@@ -84,6 +85,7 @@
     <ClCompile Include="GameObject\HelperObjMgr.cpp" />
     <ClCompile Include="GameObject\MovableObject.cpp" />
     <ClCompile Include="GameObject\PlaneMesh.cpp" />
+    <ClCompile Include="GameObject\SkyBox.cpp" />
     <ClCompile Include="GameObject\StaticRenderable.cpp" />
     <ClCompile Include="ResourceSystem\AssimpMeshLoader.cpp" />
     <ClCompile Include="ResourceSystem\CustomMeshLoader.cpp" />

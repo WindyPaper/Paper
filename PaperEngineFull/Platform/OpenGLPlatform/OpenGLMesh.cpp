@@ -29,9 +29,7 @@ public:
 	{
 		mpMesh->bindVertexData();
 		mpMesh->bindIndexData();
-		mpMesh->runCbSignal();	 
-
-		Log::getInstance().logMsg("%s model load complete !!", mFileName);
+		mpMesh->runCbSignal();
 	}
 
 protected:

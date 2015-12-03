@@ -8,6 +8,7 @@
 #include "GameObject/StaticRenderable.h"
 #include "GameObject/PlaneMesh.h"
 #include "GameObject/BoundInsMesh.h"
+#include "GameObject/SkyBox.h"
 
 template<> GameObjSystem *Singleton<GameObjSystem>::msInstance = 0;
 
@@ -109,6 +110,17 @@ IGameObject * GameObjSystem::createHelperAABBBox()
 	return pBoundMesh;
 }
 
+IGameObject * GameObjSystem::createSkyBox()
+{
+	IGameObject *pObj = _createGameObjFast(SKY_BOX_OBJ_NAME, SKY_BOX_OBJ);
+	IGameObjRenderComp *pMainRenderComp = createRenderComp(SKY_BOX_OBJ_NAME, math::VEC3F_ZERO, math::QUAT_IDENTIFY);
+	pObj->setObjectComp(pMainRenderComp);
+	SkyBox *pSkyBox = dynamic_cast<SkyBox*>(pObj);
+	pSkyBox->init();
+	pSkyBox->setScale(math::Vector3f(40000, 40000, 40000));
+	return pSkyBox;
+}
+
 void GameObjSystem::destoryAllStaticGeoObj()
 {
 	for (ObjectMap::iterator iter = mGameObjMap.begin(); iter != mGameObjMap.end(); ++iter)
@@ -141,6 +153,9 @@ IGameObject * GameObjSystem::_createGameObjFast(const std::string &gameObjName, 
 		pObj = new BoundInsMesh(gameObjName);
 		mGameObjMap[gameObjName] = pObj;
 		break;
+	case SKY_BOX_OBJ:
+		pObj = new SkyBox(gameObjName);
+		mGameObjMap[gameObjName] = pObj;
 	default:
 		break;
 	}

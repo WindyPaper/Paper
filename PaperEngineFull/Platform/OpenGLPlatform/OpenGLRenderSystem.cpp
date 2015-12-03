@@ -144,6 +144,12 @@ void OpenGLRenderSystem::_render(const RenderCommand &renderCommand)
 	{
 		glEnableVertexAttribArray(BindShaderAttr::ATTR_POSITION_ARRAY);
 		glVertexAttribPointer(BindShaderAttr::ATTR_POSITION_ARRAY, 3, GL_FLOAT, GL_FALSE, pVerData->elementSize, 0);
+		OpenGLImpl::getInstancePtr()->checkError();
+	}
+	else if (pVerData->type == VertexDataSortType::P3INS)
+	{
+		glEnableVertexAttribArray(BindShaderAttr::ATTR_POSITION_ARRAY);
+		glVertexAttribPointer(BindShaderAttr::ATTR_POSITION_ARRAY, 3, GL_FLOAT, GL_FALSE, pVerData->elementSize, 0);
 
 		for (int i = 0; i < 4; ++i)
 		{

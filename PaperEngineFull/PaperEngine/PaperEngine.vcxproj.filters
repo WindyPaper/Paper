@@ -228,6 +228,9 @@
     <ClInclude Include="GameObject\HelperObjMgr.h">
       <Filter>GameObject\include</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject\SkyBox.h">
+      <Filter>GameObject\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\Paper_Quat.cpp">
@@ -324,6 +327,9 @@
       <Filter>GameObject\src</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\HelperObjMgr.cpp">
+      <Filter>GameObject\src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\SkyBox.cpp">
       <Filter>GameObject\src</Filter>
     </ClCompile>
   </ItemGroup>

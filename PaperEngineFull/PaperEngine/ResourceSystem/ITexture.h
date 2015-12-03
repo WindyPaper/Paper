@@ -56,6 +56,14 @@ enum ShaderTexType
 class ITexture : public Resource
 {
 public:
+	ITexture() :
+		mIsFlipX(false),
+		mIsFlipY(false),
+		mFormat(UNKNOW_PIXEL)
+	{
+
+	}
+
 	virtual ~ITexture() {}
 
 	virtual bool createTexture(int width, int height, TextureUsage usage, TextureType textureType, TexturePixelFormat format, void *data) = 0;
@@ -63,10 +71,19 @@ public:
 	virtual void setData(unsigned char *pData, const int width, const int height, TexturePixelFormat format) = 0;
 	virtual int getWidth() const = 0;
 	virtual int getHeight() const = 0;
+	virtual bool isFlipX() const { return mIsFlipX; }
+	virtual bool isFlipY() const { return mIsFlipY; }
+	virtual TexturePixelFormat getFormat() const { return mFormat; }
+	virtual TextureType getType() { return mTexType; }
 
 	virtual unsigned char *lock() = 0;
 	virtual void unlock() = 0;
 
+protected:
+	TextureType mTexType;
+	TexturePixelFormat mFormat;
+	bool mIsFlipX;
+	bool mIsFlipY;
 };
 
 typedef ResHandle<ITexture*> TexHandle;

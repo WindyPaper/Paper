@@ -91,7 +91,7 @@ void BoundInsMesh::initCustomMesh(const std::string &meshName, const unsigned ch
 	pNewVertexData->pMemData = reinterpret_cast<unsigned char*>(mpCubeBoxVData);
 	pNewVertexData->elementSize = sizeof(float)* 3;
 	pNewVertexData->elementCount = vertexNum / pNewVertexData->elementSize;
-	pNewVertexData->type = VertexDataSortType::P3;
+	pNewVertexData->type = VertexDataSortType::P3INS;
 
 	if (mpCubeBoxIData == 0)
 	{

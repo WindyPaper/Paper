@@ -28,4 +28,6 @@ typedef unsigned int uint32;
 
 #define MAX_INSTANCE_NUM 2048
 
+#define MAX_RES_PATH 512
+
 #endif

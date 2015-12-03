@@ -97,7 +97,7 @@ void Win32Framework::init()
 	pMainCamrea->setPos(math::Vector3f(0, 0, 0));
 	pMainCamrea->setLookAt(math::Vector3f(0, 0, -1));
 	pMainCamrea->setUp(math::Vector3f(0, 1, 0));
-	pMainCamrea->setPerspective(45, WIN_WIDTH, WIN_HEIGHT, 1, 10000);
+	pMainCamrea->setPerspective(45, WIN_WIDTH, WIN_HEIGHT, 1, 100000);
 
 	mpSceneMgr->setRenderSequence(gEngModule->pRenderSequence);
 
@@ -144,8 +144,9 @@ void Win32Framework::createTestResource()
 
 void Win32Framework::createTestMeshObject(const char *meshName)
 {
+	IGameObject *pSkyBox = mpGameObjSystem->createSkyBox();
 	IGameObject *pObj = mpGameObjSystem->createStaticGeoObj(meshName, meshName, math::Vector3f(0, 100, 0), math::Quaternion(0, 0, 0, 1));
-	IGameObject *pPlaneObj = mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
+	//IGameObject *pPlaneObj = mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
 }
 
 void Win32Framework::createInputManager()

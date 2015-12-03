@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="OpenGLPlatform\OpenGLCubeMap.cpp" />
     <ClCompile Include="OpenGLPlatform\OpenGLMeshMgr.cpp" />
     <ClCompile Include="OpenGLPlatform\OpenGLImpl.cpp" />
     <ClCompile Include="OpenGLPlatform\OpenGLMaterial.cpp" />
@@ -31,6 +32,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OpenGLPlatform\OpenGLCubeMap.h" />
     <ClInclude Include="OpenGLPlatform\OpenGLMeshMgr.h" />
     <ClInclude Include="OpenGLPlatform\OpenGLContext.h" />
     <ClInclude Include="OpenGLPlatform\OpenGLImpl.h" />

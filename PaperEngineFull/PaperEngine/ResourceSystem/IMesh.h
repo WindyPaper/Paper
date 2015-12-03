@@ -18,6 +18,7 @@ enum VertexDataSortType
 	P3UVF2,
 	P3I1F2,
 	P3,
+	P3INS,
 
 	UNKNOW,
 };
