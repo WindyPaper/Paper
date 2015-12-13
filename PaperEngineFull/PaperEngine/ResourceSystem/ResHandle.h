@@ -31,17 +31,24 @@ public:
 
 	ResHandle &operator =(ResHandle handle)
 	{
-		mHandle = handle.getHandle();
-		if (handle.isNull() == false)			
+		/*if (handle.isNull() == false)			
 		{
 			assert(handle.mpRefCount != 0);
 			if (isNull() == false && mpRefCount)
 			{
-				release();
-				if (mpRefCount != 0)
-					assert(mpRefCount == handle.mpRefCount);
+				//release();
+				//if (mpRefCount != 0)
+					//assert(mpRefCount == handle.mpRefCount);
 			}
+		}*/
+		if (isNull() == false && mpRefCount)
+		{
+			release();
+			//if (mpRefCount != 0)
+				//assert(mpRefCount == handle.mpRefCount);
 		}
+
+		mHandle = handle.getHandle();
 		mpRefCount = handle.mpRefCount;
 		addRef();
 		return *this;

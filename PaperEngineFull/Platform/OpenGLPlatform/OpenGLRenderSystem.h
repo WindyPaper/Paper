@@ -6,14 +6,31 @@
 #include "util/IRenderSequence.h"
 #include "util/RenderCommand.h"
 #include "OpenGLPlatform/OpenGLImpl.h"
+#include "ResourceSystem/IMaterial.h"
 
 class OpenGLWin32Support;
-class Material;
 class MaterialPass;
 class ShaderParam;
 class OpenGLWin32Window;
 class Camera;
 class IRenderTexture;
+
+class PostEffectRenderCommand
+{
+public:
+	PostEffectRenderCommand();
+	~PostEffectRenderCommand();
+
+
+	void draw(IRenderTexture *backBufferTex);
+
+private:
+	uint mGLBufferVertexId;
+	uint mGLBufferIndexId;
+	int mVertexSize;
+	int mIndexSize;
+	MaterialHandle mMatHandle;
+};
 
 class ENGINE_DLL OpenGLRenderSystem : public Singleton<OpenGLRenderSystem>
 {
@@ -56,7 +73,10 @@ private:
 	OpenGLWin32Support *mpGLSupport;
 	//IRenderSequence *mpRenderSequence;
 	IRenderTexture *mpShadowMap;
-	OpenGLImpl *gpGLImp;
+	IRenderTexture *mpBackBufferTex;
+	OpenGLImpl *gpGLImp;	
+
+	PostEffectRenderCommand *mpHdr;
 };
 
 #endif

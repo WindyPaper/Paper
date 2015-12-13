@@ -91,6 +91,16 @@ void OpenGLShader::setVec4(const std::string &name, const math::Vector4f &vec4)
 	mpCstBuf->update();
 }
 
+void OpenGLShader::setVec3(const std::string &name, const math::Vector3f &vec3)
+{
+	if (mpCstBuf == 0)
+		return;
+	nvFX::IUniform *pUniform = mpCstBuf->findUniform(name.c_str());
+	if (pUniform)
+		pUniform->setValue3f(vec3.x, vec3.y, vec3.z);
+	mpCstBuf->update();
+}
+
 void OpenGLShader::setMatrix(const std::string &name, const math::Matrix44 &matrix44)
 {
 	if (mpCstBuf == 0)

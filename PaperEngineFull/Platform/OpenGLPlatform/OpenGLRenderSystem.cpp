@@ -35,11 +35,14 @@ OpenGLRenderSystem &OpenGLRenderSystem::getInstance()
 
 OpenGLRenderSystem::OpenGLRenderSystem() :
 	mpGLSupport(0),
-	gpGLImp(0)
+	gpGLImp(0),
+	mpShadowMap(0),
+	mpBackBufferTex(0)
 {
 	gpGLImp = new OpenGLImpl();
 
 	mpShadowMap = new OpenGLRenderTexture();
+	mpBackBufferTex = new OpenGLRenderTexture();
 
 	//nvFX::setMessageCallback((nvFX::messageCallbackFunc)Log::logNvFX);
 }
@@ -50,6 +53,8 @@ OpenGLRenderSystem::~OpenGLRenderSystem()
 	SAFE_DELETE(mpGLSupport);
 	SAFE_DELETE(gpGLImp);
 	SAFE_DELETE(mpShadowMap);
+	SAFE_DELETE(mpBackBufferTex);
+	SAFE_DELETE(mpHdr);
 }
 
 bool OpenGLRenderSystem::initRenderSystem()
@@ -62,6 +67,9 @@ bool OpenGLRenderSystem::initRenderSystem()
 	initGL();
 	
 	mpShadowMap->init(mpGLSupport->getMainRenderWindow()->getWidth(), mpGLSupport->getMainRenderWindow()->getHeight());
+	mpBackBufferTex->init(mpGLSupport->getMainRenderWindow()->getWidth(), mpGLSupport->getMainRenderWindow()->getHeight());
+
+	mpHdr = new PostEffectRenderCommand();
 
 	return true;
 }
@@ -223,14 +231,19 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 	//IMaterial *pIMaterial = gEngModule->pMaterialMgr->getDataPtr(TEST_MATERIAL_NAME);
 	IMaterial *pIMaterial = gEngModule->pMaterialMgr->getDataPtr(pRenderable->getMaterial());
 
+	//bind Camera Param
+	Camera *pCamera = SceneMgr::getInstance().getMainCamera();
+	IShader *pShader = pIMaterial->getShader();
+	pShader->setVec3("g_cam_pos", pCamera->getPos());
+	pShader->setVec3("g_cam_lookup", pCamera->getLookAt());
+
 	if (pRenderable->getParentComp())
 	{
-		IShader *pShader = pIMaterial->getShader();
+		
 		GlobalShaderParamMng::getInstance().setCurrRenderable(pRenderable);
 		const math::Matrix44 &modelMatrix = GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixModel);
-		Camera *pCamera = SceneMgr::getInstance().getMainCamera();
+		
 		//Camera light = *pCamera;
-
 		switch (type)
 		{
 		case SHADOW:			
@@ -256,7 +269,7 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 	}
 	else
 	{
-		IShader *pShader = pIMaterial->getShader();
+		//IShader *pShader = pIMaterial->getShader();
 		dynamic_cast<OpenGLShader*>(pShader)->bindProgram();
 	}
 
@@ -309,6 +322,8 @@ void OpenGLRenderSystem::renderAll()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 	
 	//glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
+	
+	mpBackBufferTex->bindForWriting();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//mpShadowMap->bindForReading(TexShadowMap);
 	OpenGLImpl::getInstance().checkError();
@@ -316,6 +331,10 @@ void OpenGLRenderSystem::renderAll()
 	//add instance render helper obj
 	HelperObjMgr::getInstance().fillVertexBufInsData();
 	renderOneContain(renderableVec, NORMAL);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	//post effect
+	mpHdr->draw(mpBackBufferTex);
 
 	//render UI
 	glDisable(GL_DEPTH_TEST);
@@ -336,4 +355,65 @@ void OpenGLRenderSystem::renderAll()
 void OpenGLRenderSystem::swap()
 {
 	mpGLSupport->swapBuffer();
+}
+
+PostEffectRenderCommand::PostEffectRenderCommand() :
+mGLBufferVertexId(-1),
+mGLBufferIndexId(-1)
+{
+	static float vertexs[] = {
+		-1.0, -1.0, 0.0, 0.0,
+		1.0, -1.0, 1.0, 0.0,
+		1.0, 1.0, 1.0, 1.0,
+		-1.0, 1.0, 0.0, 1.0,
+	};
+
+	static uint indexs[] = {
+		0, 1, 3,
+		1, 2, 3,
+	};
+
+	mVertexSize = sizeof(vertexs);
+	glGenBuffers(1, (GLuint*)(&(mGLBufferVertexId)));
+	OpenGLImpl::getInstance().activeVertexBufObj(static_cast<GLuint>(mGLBufferVertexId));
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexs), vertexs, GL_STATIC_DRAW); // ?GL_DYNAMIC_DRAW @@fix me
+	OpenGLImpl::getInstance().activeVertexBufObj(0);
+
+	mIndexSize = sizeof(indexs);
+	glGenBuffers(1, (GLuint*)(&(mGLBufferIndexId)));
+	OpenGLImpl::getInstance().activeIndexBufObj(static_cast<GLuint>(mGLBufferIndexId));
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexs), indexs, GL_STATIC_DRAW); // ?GL_DYNAMIC_DRAW @@fix me
+	OpenGLImpl::getInstance().activeIndexBufObj(0);
+
+	IMaterial *pMat = gEngModule->pMaterialMgr->create("Res/mat_util/post_effect.mtl");
+	mMatHandle = gEngModule->pMaterialMgr->getHandle(pMat->getName());
+}
+
+PostEffectRenderCommand::~PostEffectRenderCommand()
+{
+
+}
+
+void PostEffectRenderCommand::draw(IRenderTexture *backBufferTex)
+{
+	IMaterial *pMat = gEngModule->pMaterialMgr->getDataPtr(mMatHandle);
+	IShader *pShader = pMat->getShader();
+	dynamic_cast<OpenGLShader*>(pShader)->bindProgram("TECH_DEFAULT", "hdr");
+
+	backBufferTex->bindForReading(TexDiffuse);
+	
+	OpenGLImpl::getInstancePtr()->activeVertexBufObj(mGLBufferVertexId);
+
+	glEnableVertexAttribArray(BindShaderAttr::ATTR_POSITION_ARRAY);
+	glEnableVertexAttribArray(BindShaderAttr::ATTR_TEXCOOD_ARRAY);
+
+	glVertexAttribPointer(BindShaderAttr::ATTR_POSITION_ARRAY, 2, GL_FLOAT, GL_FALSE, 16, 0);
+	OpenGLImpl::getInstancePtr()->checkError();
+
+	glVertexAttribPointer(BindShaderAttr::ATTR_TEXCOOD_ARRAY, 2, GL_FLOAT, GL_FALSE, 16, (void*)8);
+	OpenGLImpl::getInstancePtr()->checkError();
+
+	OpenGLImpl::getInstancePtr()->activeIndexBufObj(mGLBufferIndexId);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+
 }

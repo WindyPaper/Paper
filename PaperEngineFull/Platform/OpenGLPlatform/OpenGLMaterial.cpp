@@ -171,9 +171,13 @@ void OpenGLMaterial::loadMaterialFromXMLNode(rapidxml::xml_node<> *pEffectNode)
 		{
 			if (strcmp(attr->name(), "Type") == 0)
 			{
-				if (attr->value() == "Diffuse")
+				if (strcmp(attr->value(), "Diffuse") == 0)
 				{
 					texShaderType = ShaderTexType::TexDiffuse;
+				}
+				else if (strcmp(attr->value(), "Normal") == 0)
+				{
+					texShaderType = ShaderTexType::TexNormal;
 				}
 			}
 			if (strcmp(attr->name(), "FileName") == 0)

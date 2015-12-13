@@ -30,6 +30,7 @@ public:
 
 	virtual void setValue(const ShaderParam &param) = 0;*/
 	virtual void setVec4(const std::string &name, const math::Vector4f &vec4) = 0;
+	virtual void setVec3(const std::string &name, const math::Vector3f &vec3) = 0;
 	virtual void setMatrix(const std::string &name, const math::Matrix44 &matrix44) = 0;
 };
 

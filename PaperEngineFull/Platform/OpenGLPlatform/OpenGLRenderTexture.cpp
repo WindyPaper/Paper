@@ -23,7 +23,7 @@ bool OpenGLRenderTexture::init(const uint width, const uint height)
 
 	glGenTextures(1, &mTexture);
 	glBindTexture(GL_TEXTURE_2D, mTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, 0);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
@@ -32,11 +32,20 @@ bool OpenGLRenderTexture::init(const uint width, const uint height)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
+
+	GLuint rboDepth;
+	glGenRenderbuffers(1, &rboDepth);
+	glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);	
+
+	OpenGLImpl::getInstance().checkError();
+
 	glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mTexture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mTexture, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
 
-	glDrawBuffer(GL_NONE);
+	//glDrawBuffer(GL_LEFT);
 	//glReadBuffer(GL_NONE);
 
 	GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -45,14 +54,14 @@ bool OpenGLRenderTexture::init(const uint width, const uint height)
 		return false;
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
 	return true;
 }
 
 void OpenGLRenderTexture::bindForWriting()
 {
-	glBindTexture(GL_TEXTURE_2D, mTexture);
+	//glBindTexture(GL_TEXTURE_2D, mTexture);
 	glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
 	OpenGLImpl::getInstance().checkError();
 }
