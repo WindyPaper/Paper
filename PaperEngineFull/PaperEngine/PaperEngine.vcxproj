@@ -51,6 +51,7 @@
     <ClInclude Include="util\Frustum.h" />
     <ClInclude Include="util\Global.h" />
     <ClInclude Include="util\GlobalShaderParamMng.h" />
+    <ClInclude Include="util\IControlUI.h" />
     <ClInclude Include="util\IEvent.h" />
     <ClInclude Include="util\IFontSystem.h" />
     <ClInclude Include="util\IProfile.h" />
@@ -156,7 +157,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>G:\PaperEngine\trunk\PaperEngineFull\PaperEngine;G:\PaperEngine\trunk\ThirdParty\assimp--3.0.1270-sdk\include;G:\PaperEngine\trunk\ThirdParty\FreeImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\PaperEngine\trunk\PaperEngineFull\PaperEngine;G:\PaperEngine\trunk\ThirdParty\AntTweakBar;G:\PaperEngine\trunk\ThirdParty\assimp--3.0.1270-sdk\include;G:\PaperEngine\trunk\ThirdParty\FreeImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BUILD_STATIC;_XM_NO_INTRINSICS_;_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>util/PrecompileHead.h</PrecompiledHeaderFile>
@@ -167,10 +168,10 @@
       <AdditionalLibraryDirectories>G:\PaperEngine\trunk\ThirdParty\FreeImage\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>assimp.lib;FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp.lib;FreeImaged.lib;AntTweakBar.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>G:\PaperEngine\trunk\ThirdParty\assimp--3.0.1270-sdk\lib\assimp_debug-dll_win32;G:\PaperEngine\trunk\ThirdParty\FreeImage\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>G:\PaperEngine\trunk\ThirdParty\assimp--3.0.1270-sdk\lib\assimp_debug-dll_win32;G:\PaperEngine\trunk\ThirdParty\FreeImage\debug;G:\PaperEngine\trunk\ThirdParty\AntTweakBar\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

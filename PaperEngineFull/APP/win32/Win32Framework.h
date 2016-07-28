@@ -11,6 +11,7 @@ class SceneMgr;
 class GameObjSystem;
 class OpenGLRenderSystem;
 class HelperObjMgr;
+class ControlUI;
 
 class System;
 

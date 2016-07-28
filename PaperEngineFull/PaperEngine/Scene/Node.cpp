@@ -1,6 +1,7 @@
 #include "util/PrecompileHead.h"
 #include "Scene/Node.h"
 #include "util/Log.h"
+#include "util/IControlUI.h"
 
 Node::Node() :
 mpParent(0)
@@ -194,7 +195,7 @@ const std::string & Node::getName() const
 	return mName;
 }
 
-const math::Matrix44 Node::getAllTransformMatrix()
+math::Matrix44 Node::getAllTransformMatrix()
 {
 	math::Matrix44 matrix;
 	matrix.initFullTransform(getWorldPosition(), getWorldScale(), getWorldOrientation());
@@ -210,9 +211,13 @@ void Node::update()
 	}
 }
 
+void Node::addUIControl(IControlUI *pUIControl)
+{
+	pUIControl->addVector3("position", &mLocalPos);
+}
+
 void Node::updateFromParent()
 {
-
 	if (mpParent)
 	{
 		const math::Quaternion &parentQuat = mpParent->getOrientation();

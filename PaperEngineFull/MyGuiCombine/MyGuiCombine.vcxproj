@@ -54,7 +54,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;BUILD_STATIC;_XM_NO_INTRINSICS_;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>G:\PaperEngine\trunk\PaperEngineFull\RenderSystem;G:\PaperEngine\trunk\PaperEngineFull\APP;G:\PaperEngine\trunk\PaperEngineFull\PaperEngine;G:\PaperEngine\trunk\PaperEngineFull\Platform;G:\PaperEngine\trunk\ThirdParty\OpenGL;G:\PaperEngine\trunk\ThirdParty\OIS\include;G:\PaperEngine\trunk\ThirdParty\MyGui\include;G:\PaperEngine\trunk\ThirdParty\FreeImage;G:\PaperEngine\trunk\ThirdParty\nvFx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\PaperEngine\trunk\PaperEngineFull\RenderSystem;G:\PaperEngine\trunk\PaperEngineFull\APP;G:\PaperEngine\trunk\PaperEngineFull\PaperEngine;G:\PaperEngine\trunk\PaperEngineFull\Platform;G:\PaperEngine\trunk\ThirdParty\OpenGL;G:\PaperEngine\trunk\ThirdParty\OIS\include;G:\PaperEngine\trunk\ThirdParty\MyGui\include;G:\PaperEngine\trunk\ThirdParty\FreeImage;G:\PaperEngine\trunk\ThirdParty\nvFx\include;G:\PaperEngine\trunk\ThirdParty\AntTweakBar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>

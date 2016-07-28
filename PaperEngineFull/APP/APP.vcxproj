@@ -43,14 +43,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>G:\PaperEngine\trunk\PaperEngineFull\;G:\PaperEngine\trunk\PaperEngineFull\RenderSystem;G:\PaperEngine\trunk\PaperEngineFull\APP;G:\PaperEngine\trunk\PaperEngineFull\PaperEngine;G:\PaperEngine\trunk\PaperEngineFull\Platform;G:\PaperEngine\trunk\ThirdParty\OpenGL;G:\PaperEngine\trunk\ThirdParty\OIS\include;G:\PaperEngine\trunk\ThirdParty\;G:\PaperEngine\trunk\ThirdParty\MyGui\include;D:\Program Files (x86)\Visual Leak Detector\include;G:\PaperEngine\trunk\ThirdParty\nvFx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\PaperEngine\trunk\PaperEngineFull\;G:\PaperEngine\trunk\PaperEngineFull\RenderSystem;G:\PaperEngine\trunk\PaperEngineFull\APP;G:\PaperEngine\trunk\PaperEngineFull\PaperEngine;G:\PaperEngine\trunk\PaperEngineFull\Platform;G:\PaperEngine\trunk\ThirdParty\OpenGL;G:\PaperEngine\trunk\ThirdParty\OIS\include;G:\PaperEngine\trunk\ThirdParty\;G:\PaperEngine\trunk\ThirdParty\MyGui\include;D:\Program Files (x86)\Visual Leak Detector\include;G:\PaperEngine\trunk\ThirdParty\nvFx\include;G:\PaperEngine\trunk\ThirdParty\AntTweakBar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDOWS;BUILD_STATIC;_XM_NO_INTRINSICS_;_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>OIS_static_d.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>G:\PaperEngine\trunk\ThirdParty\OIS\debug;D:\Program Files (x86)\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OIS_static_d.lib;vld.lib;AntTweakBar.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>G:\PaperEngine\trunk\ThirdParty\OIS\debug;D:\Program Files (x86)\Visual Leak Detector\lib\Win32;G:\PaperEngine\trunk\ThirdParty\AntTweakBar\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -67,12 +67,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ui\ControlUI.h" />
     <ClInclude Include="win32\CameraController.h" />
     <ClInclude Include="win32\Win32InputManager.h" />
     <ClInclude Include="win32\Win32Framework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ui\ControlUI.cpp" />
     <ClCompile Include="win32\CameraController.cpp" />
     <ClCompile Include="win32\Win32Framework.cpp" />
     <ClCompile Include="win32\Win32InputManager.cpp" />

@@ -34,6 +34,7 @@ void UIRenderable::setMaterial(const std::string &name)
 void UIRenderable::setMaterial(MaterialHandle materialHandle)
 {
 	mMatHandle = materialHandle;
+	mBatchRenderId = mMatHandle;
 }
 
 void UIRenderable::generateRenderCommand(RenderCommand &renderCommand)

@@ -13,6 +13,12 @@
     <Filter Include="src\win32">
       <UniqueIdentifier>{bc3c27e9-b874-4efe-9dcc-df96a730d7a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\ui">
+      <UniqueIdentifier>{b407b8d9-c141-4283-953c-4c872a7d35f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui">
+      <UniqueIdentifier>{91bfecc7-b42b-4b1e-988d-87d37d350c2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\Win32Framework.h">
@@ -23,6 +29,9 @@
     </ClInclude>
     <ClInclude Include="win32\CameraController.h">
       <Filter>include\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ControlUI.h">
+      <Filter>include\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -35,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="win32\CameraController.cpp">
       <Filter>src\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ControlUI.cpp">
+      <Filter>src\ui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

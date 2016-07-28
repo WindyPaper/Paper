@@ -7,6 +7,8 @@
 #include "util/Paper_Math.h"
 #include "util/Paper_Quat.h"
 
+class IControlUI;
+
 class Node
 {
 public:
@@ -44,9 +46,11 @@ public:
 
 	virtual const std::string &getName() const;
 
-	const math::Matrix44 getAllTransformMatrix();
+	math::Matrix44 getAllTransformMatrix();
 
 	virtual void update();
+
+	void addUIControl(IControlUI *pUIControl);
 
 protected:
 	virtual void updateFromParent();

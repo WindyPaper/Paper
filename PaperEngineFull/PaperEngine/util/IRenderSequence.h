@@ -15,16 +15,18 @@ enum RenderLayerType
 class Renderable;
 
 typedef std::vector<Renderable*> RenderContain;
-typedef std::map<RenderLayerType, RenderContain> RenderLayerMap;
+typedef std::map<int, RenderContain> BatchRenderMap;
+typedef std::map<RenderLayerType, BatchRenderMap> RenderLayerMap;
 
 class IRenderSequence
 {
 public:
 	virtual ~IRenderSequence() {}
 
+	virtual void preRender() = 0;
 	virtual void pushToRenderSequence(Renderable *pRenderable) = 0;
 	virtual void pushToRenderSequence(Renderable *pRenderable, RenderLayerType renderLayer) = 0;
-	virtual RenderContain &getRenderSequence(RenderLayerType renderLayer) = 0;
+	virtual BatchRenderMap &getRenderSequence(RenderLayerType renderLayer) = 0;
 
 	virtual void clear() = 0;
 };

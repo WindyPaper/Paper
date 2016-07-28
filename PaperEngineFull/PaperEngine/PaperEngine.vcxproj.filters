@@ -231,6 +231,9 @@
     <ClInclude Include="GameObject\SkyBox.h">
       <Filter>GameObject\include</Filter>
     </ClInclude>
+    <ClInclude Include="util\IControlUI.h">
+      <Filter>util\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\Paper_Quat.cpp">

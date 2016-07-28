@@ -20,6 +20,8 @@
 #include "util/EngineProfile.h"
 #include "util/TaskDispatcher.h"
 #include "GameObject/HelperObjMgr.h"
+#include "ui/ControlUI.h"
+#include "Scene/Node.h"
 
 #include "MyGuiCombine/GLUISystem.h"
 
@@ -61,7 +63,7 @@ Win32Framework::~Win32Framework()
 void Win32Framework::init()
 {
 	mpSystem = new System();
-	mpSystem->init();
+	mpSystem->init();	
 
 	mpSceneMgr = new SceneMgr();
 	mpGameObjSystem = new GameObjSystem();
@@ -74,7 +76,7 @@ void Win32Framework::init()
 	gEngModule->pMeshMgr = new OpenGLMeshMgr();
 	gEngModule->pTexMgr = new TextureMgr();
 	gEngModule->pRenderSequence = new RenderSequence();
-	gEngModule->pUISystem = new GLUISystem();
+	gEngModule->pUISystem = new GLUISystem();	
 	gEngModule->pProfile = new EngineProfile();
 	gEngModule->pTaskDispatcher = new TaskDispatcher();
 
@@ -84,6 +86,8 @@ void Win32Framework::init()
 	mpGLRenderSystem->initRenderSystem();
 	OpenGLImpl::getInstancePtr()->checkError();
 	gEngModule->pUISystem->init((size_t)mpGLRenderSystem->getMainRenderWindow()->getWinHandle());
+
+	gEngModule->pControlUI = new ControlUI();
 
 	mpHelperObjMgr = new HelperObjMgr();
 
@@ -98,6 +102,7 @@ void Win32Framework::init()
 	pMainCamrea->setLookAt(math::Vector3f(0, 0, -1));
 	pMainCamrea->setUp(math::Vector3f(0, 1, 0));
 	pMainCamrea->setPerspective(45, WIN_WIDTH, WIN_HEIGHT, 1, 100000);
+	pMainCamrea->addCameraEdit(gEngModule->pControlUI);
 
 	mpSceneMgr->setRenderSequence(gEngModule->pRenderSequence);
 
@@ -118,12 +123,15 @@ void Win32Framework::run()
 
 		gEngModule->pTaskDispatcher->update();
 		
-		OpenGLRenderSystem::getInstance().beforeRender();
-		
 		mpSceneMgr->prepareToRenderSequence();
 		mpSceneMgr->updateSceneNode();
 
+		OpenGLRenderSystem::getInstance().beforeRender();
+
 		OpenGLRenderSystem::getInstance().renderAll();
+
+		//draw AntTweakBar ui
+		TwDraw();
 
 		OpenGLRenderSystem::getInstance().swap();
 
@@ -146,7 +154,11 @@ void Win32Framework::createTestMeshObject(const char *meshName)
 {
 	IGameObject *pSkyBox = mpGameObjSystem->createSkyBox();
 	IGameObject *pObj = mpGameObjSystem->createStaticGeoObj(meshName, meshName, math::Vector3f(0, 100, 0), math::Quaternion(0, 0, 0, 1));
-	//IGameObject *pPlaneObj = mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
+	IGameObject *pObj2 = mpGameObjSystem->createStaticGeoObj("car111", meshName, math::Vector3f(500, 300, 0), math::Quaternion(0, 0, 0, 1));
+	IGameObject *pPlaneObj = mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
+	//mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, -400, 0), math::Quaternion(0, 0, 0, 1));
+	
+	dynamic_cast<IGameObjRenderComp*>(pObj->getComp(RenderComp))->getOwnNode()->addUIControl(gEngModule->pControlUI);
 }
 
 void Win32Framework::createInputManager()

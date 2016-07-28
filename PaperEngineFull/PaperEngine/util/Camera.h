@@ -6,6 +6,8 @@
 #include "util/Paper_Math.h"
 #include "util/Frustum.h"
 
+class IControlUI;
+
 class ENGINE_DLL Camera : public Frustum
 {
 public:
@@ -47,6 +49,8 @@ public:
 
 	//fix me. is only for test, need delete
 	//const math::Matrix44 getModelMatrix() const;
+
+	void addCameraEdit(IControlUI *pUIControl);
 
 protected:
 	void updateViewMatrix();

@@ -20,8 +20,12 @@ public:
 	virtual void setParentComp(IGameObjRenderComp *parent);
 	virtual IGameObjRenderComp *getParentComp();
 	virtual void generateRenderCommand(RenderCommand &renderCommand);
+	virtual void setBatchRenderEnable(bool isEnable);
 
 	virtual AABB getLocalAABB();
+
+protected:
+	void convertVerticeToWorld();
 
 protected:
 	MaterialHandle mMaterialHandle;
@@ -30,6 +34,8 @@ protected:
 	int mSubIndex;
 
 	AABB mWorldAABB;
+
+	bool mIsConvertVerticeDirty;
 };
 
 #endif

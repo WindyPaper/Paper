@@ -9,9 +9,10 @@ public:
 	RenderSequence();
 	~RenderSequence();
 
+	virtual void preRender();
 	void pushToRenderSequence(Renderable *pRenderable);
 	virtual void pushToRenderSequence(Renderable *pRenderable, RenderLayerType renderLayer);
-	RenderContain &getRenderSequence(RenderLayerType renderLayer);
+	BatchRenderMap &getRenderSequence(RenderLayerType renderLayer);
 
 	virtual void clear();
 private:

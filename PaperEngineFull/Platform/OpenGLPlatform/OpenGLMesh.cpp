@@ -217,6 +217,11 @@ void OpenGLMesh::bindVertexData()
 {
 	if (mVertexData.elementCount > 0)
 	{
+		if (mVertexData.bufferId == 0) //first time
+		{
+			calAABB(mVertexData);
+		}
+
 		if (mVertexData.bufferId != 0)
 		{
 			glDeleteBuffers(1, (GLuint*)(&(mVertexData.bufferId)));
@@ -228,9 +233,7 @@ void OpenGLMesh::bindVertexData()
 
 		OpenGLImpl::getInstance().activeVertexBufObj(static_cast<GLuint>(mVertexData.bufferId));
 		glBufferData(GL_ARRAY_BUFFER, mVertexData.elementSize * mVertexData.elementCount, mVertexData.pMemData, GL_STATIC_DRAW); // ?GL_DYNAMIC_DRAW @@fix me
-		OpenGLImpl::getInstance().activeVertexBufObj(0);
-
-		calAABB(mVertexData);
+		OpenGLImpl::getInstance().activeVertexBufObj(0);		
 	}
 }
 
@@ -353,3 +356,4 @@ void OpenGLMesh::calAABB(const VertexData &verdata)
 		pCurrData += verdata.elementSize;
 	}
 }
+

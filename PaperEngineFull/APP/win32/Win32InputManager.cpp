@@ -8,6 +8,8 @@
 
 #include "MyGuiCombine/GLUISystem.h"
 
+#include "ui/ControlUI.h"
+
 
 
 Win32InputManager::Win32InputManager(size_t handle) :
@@ -96,6 +98,8 @@ bool Win32InputManager::isKeyDown(OIS::KeyCode key)
 
 bool Win32InputManager::keyPressed(const OIS::KeyEvent &arg)
 {
+	dynamic_cast<ControlUI*>(gEngModule->pControlUI)->keyPressed(arg);
+
 	OIS::KeyCode key = arg.key;
 	if (key == OIS::KC_ESCAPE)
 	{
@@ -141,6 +145,8 @@ void Win32InputManager::addMouseListener(OIS::MouseListener *pListener)
 
 bool Win32InputManager::mouseMoved(const OIS::MouseEvent &arg)
 {
+	dynamic_cast<ControlUI*>(gEngModule->pControlUI)->mouseMoved(arg);
+
 	for (int i = 0; i < mMouseListenerVec.size(); ++i)
 	{
 		if (!mMouseListenerVec[i]->mouseMoved(arg))
@@ -154,6 +160,8 @@ bool Win32InputManager::mouseMoved(const OIS::MouseEvent &arg)
 
 bool Win32InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
+	dynamic_cast<ControlUI*>(gEngModule->pControlUI)->mousePressed(arg, id);
+
 	for (int i = 0; i < mMouseListenerVec.size(); ++i)
 	{
 		if (!mMouseListenerVec[i]->mousePressed(arg, id))
@@ -167,6 +175,8 @@ bool Win32InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButto
 
 bool Win32InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
+	dynamic_cast<ControlUI*>(gEngModule->pControlUI)->mouseReleased(arg, id);
+
 	for (int i = 0; i < mMouseListenerVec.size(); ++i)
 	{
 		if (!mMouseListenerVec[i]->mouseReleased(arg, id))

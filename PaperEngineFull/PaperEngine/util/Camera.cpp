@@ -1,6 +1,7 @@
 #include "util/PrecompileHead.h"
 
 #include "util/Camera.h"
+#include "util/IControlUI.h"
 #include <cmath>
 
 Camera::Camera()
@@ -177,6 +178,12 @@ void Camera::cameraRotate(const math::Quaternion &quat)
 const math::Matrix44 & Camera::getViewMatrix() const
 {
 	return mViewMatrix;
+}
+
+void Camera::addCameraEdit(IControlUI *pUIControl)
+{
+	pUIControl->addVector4("cam position", &mPos);
+	pUIControl->addVector4("dir", &mLookAt);
 }
 
 void Camera::updateViewMatrix()

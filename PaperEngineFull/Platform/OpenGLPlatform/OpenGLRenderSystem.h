@@ -40,6 +40,7 @@ public:
 		NORMAL,
 		SHADOW,
 		HELPER,
+		UI,
 	};
 	static OpenGLRenderSystem &getInstance();
 	static OpenGLRenderSystem *getInstancePtr();
@@ -52,6 +53,7 @@ public:
 	void beforeRender();
 	//void preRender(const Material *pMaterial);
 	void bindShaderParam(Renderable *pRenderable, const RenderItemType type);
+	void bindBatchShaderParam(IMaterial *pMaterial);
 
 	//IRenderSequence *getRenderSequence() { return mpRenderSequence; }
 
@@ -60,7 +62,7 @@ public:
 
 	const OpenGLWin32Window *getMainRenderWindow() const;
 
-	void renderOneContain(RenderContain &contain, const RenderItemType type);
+	void renderOneContain(BatchRenderMap &contain, const RenderItemType type);
 	void renderAll();
 
 	

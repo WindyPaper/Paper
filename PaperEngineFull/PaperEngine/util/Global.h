@@ -8,6 +8,7 @@
 #include "ResourceSystem/IResMgr.h"
 #include "util/IRenderSequence.h"
 #include "util/ITask.h"
+#include "util/IControlUI.h"
 
 struct EngineGlobalModule
 {
@@ -16,6 +17,7 @@ struct EngineGlobalModule
 	IMeshMgr *pMeshMgr;
 	ITextureMgr *pTexMgr;
 	IUISystem *pUISystem;
+	IControlUI *pControlUI;
 	IRenderSequence *pRenderSequence;
 	IProfile *pProfile;
 	ITaskDispatcher *pTaskDispatcher;
@@ -28,6 +30,7 @@ struct EngineGlobalModule
 	~EngineGlobalModule()
 	{
 		SAFE_DELETE(pUISystem);
+		SAFE_DELETE(pControlUI);
 		SAFE_DELETE(pRenderSequence);
 		SAFE_DELETE(pMaterialMgr);
 		SAFE_DELETE(pShaderMgr);
