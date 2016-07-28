@@ -1,2 +1,2 @@
 # Paper
-Just for Study.
+Just for study.
