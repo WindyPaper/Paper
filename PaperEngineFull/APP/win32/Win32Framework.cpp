@@ -131,7 +131,7 @@ void Win32Framework::run()
 		OpenGLRenderSystem::getInstance().renderAll();
 
 		//draw AntTweakBar ui
-		TwDraw();
+		gEngModule->pControlUI->draw();
 
 		OpenGLRenderSystem::getInstance().swap();
 
@@ -145,17 +145,18 @@ void Win32Framework::createTestResource()
 {
 	//createTestMeshObject("res/phoenix_ugv.md2");
 	//createTestMeshObject("res/quad.obj");
-	createTestMeshObject("res/model/test.model");
+	//createTestMeshObject("res/model/test.model");
 	//createTestMeshObject("res/model/test_anim.model");
 	//createTestMeshObject("res/model/scene.model");
+	createTestMeshObject("res/model/crytek_sponza_scene.model");
 }
 
 void Win32Framework::createTestMeshObject(const char *meshName)
 {
 	IGameObject *pSkyBox = mpGameObjSystem->createSkyBox();
-	IGameObject *pObj = mpGameObjSystem->createStaticGeoObj(meshName, meshName, math::Vector3f(0, 100, 0), math::Quaternion(0, 0, 0, 1));
-	IGameObject *pObj2 = mpGameObjSystem->createStaticGeoObj("car111", meshName, math::Vector3f(500, 300, 0), math::Quaternion(0, 0, 0, 1));
-	IGameObject *pPlaneObj = mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
+	IGameObject *pObj = mpGameObjSystem->createStaticGeoObj(meshName, meshName, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
+	//IGameObject *pObj2 = mpGameObjSystem->createStaticGeoObj("car111", meshName, math::Vector3f(500, 300, 0), math::Quaternion(0, 0, 0, 1));
+	//IGameObject *pPlaneObj = mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, 0, 0), math::Quaternion(0, 0, 0, 1));
 	//mpGameObjSystem->createPlane(10, 10, 1000, math::Vector3f(0, -400, 0), math::Quaternion(0, 0, 0, 1));
 	
 	dynamic_cast<IGameObjRenderComp*>(pObj->getComp(RenderComp))->getOwnNode()->addUIControl(gEngModule->pControlUI);

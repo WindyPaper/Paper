@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include <set>
 
 enum RenderLayerType
 {
@@ -15,6 +16,7 @@ enum RenderLayerType
 class Renderable;
 
 typedef std::vector<Renderable*> RenderContain;
+typedef std::set<Renderable*> RenderContainSet;
 typedef std::map<int, RenderContain> BatchRenderMap;
 typedef std::map<RenderLayerType, BatchRenderMap> RenderLayerMap;
 

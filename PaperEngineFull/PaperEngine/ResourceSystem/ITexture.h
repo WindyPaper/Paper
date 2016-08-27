@@ -46,8 +46,9 @@ enum TextureType
 enum ShaderTexType
 {
 	TexDiffuse = 0,
-	TexSpecular,
 	TexNormal,
+	TexSpecular,
+	TexMask,
 	TexShadowMap,
 
 	ShaderTexTypeNum,

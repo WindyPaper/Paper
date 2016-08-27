@@ -26,6 +26,8 @@ public:
 
 	TwBar *getMainBar();
 
+	virtual void draw();
+
 	virtual void addVector3(const char *name, math::Vector3f *pVec3);
 	virtual void addVector4(const char *name, XMVECTOR *pVec4);
 
@@ -38,6 +40,7 @@ protected:
 	
 	TwType mVector3fType;
 	TwType mVector4fType;
+	bool mIsUseTw;
 };
 
 #endif

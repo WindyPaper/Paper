@@ -200,6 +200,10 @@ void OpenGLRenderSystem::_render(const RenderCommand &renderCommand)
 	OpenGLImpl::getInstancePtr()->checkError();
 }
 
+void OpenGLRenderSystem::renderDefferedLighting(RenderContain *contain)
+{
+
+}
 
 void OpenGLRenderSystem::beforeRender()
 {
@@ -243,6 +247,7 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 		
 		GlobalShaderParamMng::getInstance().setCurrRenderable(pRenderable);
 		const math::Matrix44 &modelMatrix = GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixModel);
+		pShader->setMatrix("g_Model", modelMatrix);
 		
 		//Camera light = *pCamera;
 		switch (type)
@@ -261,9 +266,7 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 			break;
 		default:
 			break;
-		}
-
-		pShader->setMatrix("g_Model", modelMatrix);
+		}		
 		
 		//pShader->setMatrix("g_View", pCamera->getViewMatrix());
 		//pShader->setMatrix("g_Proj", pCamera->getProjMatrix());
@@ -299,12 +302,24 @@ void OpenGLRenderSystem::bindBatchShaderParam(IMaterial *pMaterial)
 	OpenGLImpl::getInstance().checkError();
 }
 
+void OpenGLRenderSystem::bindObjPosParam(Renderable *pRenderable)
+{
+	IMaterial *pIMaterial = gEngModule->pMaterialMgr->getDataPtr(pRenderable->getMaterial());
+	pIMaterial->bindAllTexture();
+	IShader *pShader = pIMaterial->getShader();
+	GlobalShaderParamMng::getInstance().setCurrRenderable(pRenderable);
+	const math::Matrix44 &modelMatrix = GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixModel);
+	pShader->setMatrix("g_Model", modelMatrix);
+
+	dynamic_cast<OpenGLShader*>(pShader)->bindProgram("TECH_DEFAULT", "BatchRender");
+}
+
 const OpenGLWin32Window * OpenGLRenderSystem::getMainRenderWindow() const
 {
 	return mpGLSupport->getMainRenderWindow();
 }
 
-void OpenGLRenderSystem::renderOneContain(BatchRenderMap &contain, const RenderItemType type)
+void OpenGLRenderSystem::forwardRendering(BatchRenderMap &contain, const RenderItemType type)
 {
 	/*for (RenderContain::iterator iter = contain.begin(); iter != contain.end(); ++iter)
 	{
@@ -341,14 +356,15 @@ void OpenGLRenderSystem::renderOneContain(BatchRenderMap &contain, const RenderI
 			{
 				if (is_need_bind_batch)
 				{
-					MaterialHandle matHandle = contain[0]->getMaterial();
+					MaterialHandle matHandle = contain[i]->getMaterial();
 					IMaterial *pIMaterial = gEngModule->pMaterialMgr->getDataPtr(matHandle);
 					bindBatchShaderParam(pIMaterial);
 					logMatHandle = matHandle;
 
 					is_need_bind_batch = false;
 				}
-				Log::getInstance().logMsg("%d batch render", logMatHandle);
+				//bindObjPosParam(contain[i]);
+				//Log::getInstance().logMsg("%d batch render", logMatHandle);
 				
 			}
 			RenderCommand command;
@@ -372,7 +388,7 @@ void OpenGLRenderSystem::renderAll()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	OpenGLImpl::getInstance().checkError();
 	RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
-	renderOneContain(renderableVec, SHADOW);
+	forwardRendering(renderableVec, SHADOW);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 	
 	//glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
@@ -385,7 +401,7 @@ void OpenGLRenderSystem::renderAll()
 	BatchRenderMap renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
 	//add instance render helper obj
 	HelperObjMgr::getInstance().fillVertexBufInsData();
-	renderOneContain(renderableVec, NORMAL);
+	forwardRendering(renderableVec, NORMAL);
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//post effect
@@ -396,7 +412,7 @@ void OpenGLRenderSystem::renderAll()
 	glDisable(GL_CULL_FACE);
 
 	BatchRenderMap uiRenderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_UI);
-	renderOneContain(uiRenderableVec, UI);
+	forwardRendering(uiRenderableVec, UI);
 
 	//glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);

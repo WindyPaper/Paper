@@ -179,6 +179,10 @@ void OpenGLMaterial::loadMaterialFromXMLNode(rapidxml::xml_node<> *pEffectNode)
 				{
 					texShaderType = ShaderTexType::TexNormal;
 				}
+				else if (strcmp(attr->value(), "Mask") == 0)
+				{
+					texShaderType = ShaderTexType::TexMask;
+				}
 			}
 			if (strcmp(attr->name(), "FileName") == 0)
 			{

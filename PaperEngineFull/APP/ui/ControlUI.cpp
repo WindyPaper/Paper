@@ -21,17 +21,31 @@
 ControlUI::ControlUI() :
 mpBar(0)
 {
-	assert(initAntTweakBar());
+	mIsUseTw = false;
+
+	if (mIsUseTw)
+	{
+		assert(initAntTweakBar());
+	}	
 }
 
 ControlUI::~ControlUI()
 {
 	//SAFE_DELETE(mpBar);
-	TwTerminate();
+
+	if (mIsUseTw)
+	{
+		TwTerminate();
+	}	
 }
 
 bool ControlUI::initAntTweakBar()
 {
+	if (!mIsUseTw)
+	{
+		return false;
+	}
+
 	bool ret = false;	
 
 	if (TwInit(TW_OPENGL_CORE, 0) == 1)
@@ -153,6 +167,16 @@ bool ControlUI::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 TwBar * ControlUI::getMainBar()
 {
 	return mpBar;
+}
+
+void ControlUI::draw()
+{
+	if (!mIsUseTw)
+	{
+		return;
+	}
+
+	TwDraw();
 }
 
 void ControlUI::addVector3(const char *name, math::Vector3f *pVec3)

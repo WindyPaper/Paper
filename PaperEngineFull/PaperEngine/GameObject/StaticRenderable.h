@@ -26,6 +26,7 @@ public:
 
 protected:
 	void convertVerticeToWorld();
+	void reconverVerticeToLocal();
 
 protected:
 	MaterialHandle mMaterialHandle;

@@ -149,3 +149,7 @@ void StaticRenderable::convertVerticeToWorld()
 	}
 }
 
+void StaticRenderable::reconverVerticeToLocal()
+{
+	//not implement
+}

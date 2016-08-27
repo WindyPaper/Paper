@@ -54,6 +54,7 @@ public:
 	//void preRender(const Material *pMaterial);
 	void bindShaderParam(Renderable *pRenderable, const RenderItemType type);
 	void bindBatchShaderParam(IMaterial *pMaterial);
+	void bindObjPosParam(Renderable *pRenderable);
 
 	//IRenderSequence *getRenderSequence() { return mpRenderSequence; }
 
@@ -61,8 +62,7 @@ public:
 	void swap();
 
 	const OpenGLWin32Window *getMainRenderWindow() const;
-
-	void renderOneContain(BatchRenderMap &contain, const RenderItemType type);
+	
 	void renderAll();
 
 	
@@ -70,6 +70,12 @@ public:
 protected:
 	void initGL();
 	void _render(const RenderCommand &renderCommand);
+
+	//forward render
+	void forwardRendering(BatchRenderMap &contain, const RenderItemType type);
+
+	//deferred lighting
+	void renderDefferedLighting(RenderContain *contain);
 
 private:
 	OpenGLWin32Support *mpGLSupport;

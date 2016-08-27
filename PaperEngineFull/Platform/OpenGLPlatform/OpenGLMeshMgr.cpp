@@ -58,7 +58,7 @@ IMesh * OpenGLMeshMgr::create(const std::string &name)
 IMesh * OpenGLMeshMgr::create(const std::string &name, const NameParamMap &paramMap)
 {
 	//创建单个模型实例会在batch render的时候造成位置的错误，修改一个，全部都改了
-	//if we only create a single mesh instance we will get a pos(.etc) data error when in batching rendering.
+	//if we only create a single mesh instance we will get error pos(.etc) data when in batching rendering.
 	IMesh *pMesh = getDataPtr(name);
 	if (pMesh != 0)
 	{

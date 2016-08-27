@@ -1,5 +1,6 @@
 #include "util/PrecompileHead.h"
 #include "util/RenderSequence.h"
+#include "util/Global.h"
 #include "GameObject/Renderable.h"
 #include "GameObject/StaticRenderable.h"
 
@@ -21,16 +22,40 @@ void RenderSequence::preRender()
 		for (BatchRenderMap::iterator batchIter = batMap.begin(); batchIter != batMap.end(); ++batchIter)
 		{
 			RenderContain &contain = batchIter->second;
+			std::set<std::string> renderBatchNameSet;
 			if (contain.size() > 1)
 			{
 				for (int i = 0; i < contain.size(); ++i)
 				{
-					if (dynamic_cast<StaticRenderable*>(contain[i]))
+					IMesh *pMesh = gEngModule->pMeshMgr->getDataPtr(contain[i]->getMeshHandle());
+					std::set<std::string>::iterator finder = renderBatchNameSet.find(pMesh->getName());
+					if (finder != renderBatchNameSet.end())
 					{
-						contain[i]->setBatchRenderEnable(true);
-					}					
+						renderBatchNameSet.insert(pMesh->getName());
+						//contain[i]->setBatchRenderEnable(true);
+					}
+					else
+					{
+						//Log::getInstance().logMsg("same mesh ins %s", pMesh->getName().c_str());
+					}
+					contain[i]->setBatchRenderEnable(true);
 				}
 			}
+
+			//if (renderContainSet.size() > 1)
+			//{
+			//	/*for (int i = 0; i < contain.size(); ++i)
+			//	{
+			//		if (dynamic_cast<StaticRenderable*>(contain[i]))
+			//		{
+			//			contain[i]->setBatchRenderEnable(true);
+			//		}					
+			//	}*/
+			//	for (RenderContainSet::iterator iter = renderContainSet.begin(); iter != renderContainSet.end(); ++iter)
+			//	{
+			//		(*iter)->setBatchRenderEnable(true);
+			//	}
+			//}
 		}
 	}
 }
