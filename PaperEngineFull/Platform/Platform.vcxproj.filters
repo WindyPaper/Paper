@@ -66,6 +66,9 @@
     <ClCompile Include="OpenGLPlatform\OpenGLCubeMap.cpp">
       <Filter>OpenGLPlatform\src</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGLPlatform\OpenGLGBuffer.cpp">
+      <Filter>OpenGLPlatform\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OpenGLPlatform\OpenGLTexture.h">
@@ -120,6 +123,9 @@
       <Filter>OpenGLPlatform\include</Filter>
     </ClInclude>
     <ClInclude Include="OpenGLPlatform\OpenGLCubeMap.h">
+      <Filter>OpenGLPlatform\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLPlatform\OpenGLGBuffer.h">
       <Filter>OpenGLPlatform\include</Filter>
     </ClInclude>
   </ItemGroup>

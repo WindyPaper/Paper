@@ -46,8 +46,8 @@ void CustomMeshLoader::loadMesh(Resource *res)
 	pMesh->setMeshMemData(pMemCopyFile);
 
 	//Import Vertex
-	pMesh->setMeshMemVertexData(pCurrMem, meshInfo.vertexCount, VertexDataSortType::P3UVF2);
-	pCurrMem += meshInfo.vertexCount * sizeof(Vertex_P3UVF2);
+	pMesh->setMeshMemVertexData(pCurrMem, meshInfo.vertexCount, VertexDataSortType::P3UVF2N3T3);
+	pCurrMem += meshInfo.vertexCount * sizeof(Vertex_P3UVF2N3T3);
 
 	//Import Index
 	pMesh->setMeshMemIndexData(pCurrMem, meshInfo.indexCount, BIT32);

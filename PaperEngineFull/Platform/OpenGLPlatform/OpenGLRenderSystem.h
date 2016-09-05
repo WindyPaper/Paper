@@ -14,6 +14,7 @@ class ShaderParam;
 class OpenGLWin32Window;
 class Camera;
 class IRenderTexture;
+class OpenGLGBuffer;
 
 class PostEffectRenderCommand
 {
@@ -23,6 +24,7 @@ public:
 
 
 	void draw(IRenderTexture *backBufferTex);
+	void draw(OpenGLGBuffer *pGBuffer);
 
 private:
 	uint mGLBufferVertexId;
@@ -42,6 +44,13 @@ public:
 		HELPER,
 		UI,
 	};
+
+	enum DeferredLightingStage
+	{
+		GeomotryStage,
+		LightingStage,
+	};
+
 	static OpenGLRenderSystem &getInstance();
 	static OpenGLRenderSystem *getInstancePtr();
 
@@ -53,7 +62,7 @@ public:
 	void beforeRender();
 	//void preRender(const Material *pMaterial);
 	void bindShaderParam(Renderable *pRenderable, const RenderItemType type);
-	void bindBatchShaderParam(IMaterial *pMaterial);
+	void bindBatchShaderParam(IMaterial *pMaterial, DeferredLightingStage stage);
 	void bindObjPosParam(Renderable *pRenderable);
 
 	//IRenderSequence *getRenderSequence() { return mpRenderSequence; }
@@ -75,12 +84,15 @@ protected:
 	void forwardRendering(BatchRenderMap &contain, const RenderItemType type);
 
 	//deferred lighting
-	void renderDefferedLighting(RenderContain *contain);
+	void generateGBuffer(BatchRenderMap &contain);
+	void renderDefferedLighting(BatchRenderMap &contain, const RenderItemType type);
 
 private:
 	OpenGLWin32Support *mpGLSupport;
 	//IRenderSequence *mpRenderSequence;
-	IRenderTexture *mpShadowMap;
+	//IRenderTexture *mpDepthBuffer;
+	OpenGLGBuffer *mpGBuffer;
+
 	IRenderTexture *mpBackBufferTex;
 	OpenGLImpl *gpGLImp;	
 

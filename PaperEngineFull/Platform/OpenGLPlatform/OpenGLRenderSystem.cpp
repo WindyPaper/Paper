@@ -18,6 +18,7 @@
 #include "OpenGLPlatform/OpenGLShader.h"
 #include "OpenGLPlatform/OpenGLMaterialMgr.h"
 #include "OpenGLPlatform/OpenGLRenderTexture.h"
+#include "OpenGLPlatform/OpenGLGBuffer.h"
 
 
 template<> OpenGLRenderSystem *Singleton<OpenGLRenderSystem>::msInstance = 0;
@@ -36,12 +37,12 @@ OpenGLRenderSystem &OpenGLRenderSystem::getInstance()
 OpenGLRenderSystem::OpenGLRenderSystem() :
 	mpGLSupport(0),
 	gpGLImp(0),
-	mpShadowMap(0),
+	mpGBuffer(0),
 	mpBackBufferTex(0)
 {
 	gpGLImp = new OpenGLImpl();
-
-	mpShadowMap = new OpenGLRenderTexture();
+	
+	mpGBuffer = new OpenGLGBuffer();
 	mpBackBufferTex = new OpenGLRenderTexture();
 
 	//nvFX::setMessageCallback((nvFX::messageCallbackFunc)Log::logNvFX);
@@ -52,7 +53,6 @@ OpenGLRenderSystem::~OpenGLRenderSystem()
 	OpenGLSupport *p = mpGLSupport;
 	SAFE_DELETE(mpGLSupport);
 	SAFE_DELETE(gpGLImp);
-	SAFE_DELETE(mpShadowMap);
 	SAFE_DELETE(mpBackBufferTex);
 	SAFE_DELETE(mpHdr);
 }
@@ -66,8 +66,8 @@ bool OpenGLRenderSystem::initRenderSystem()
 	}
 	initGL();
 	
-	mpShadowMap->init(mpGLSupport->getMainRenderWindow()->getWidth(), mpGLSupport->getMainRenderWindow()->getHeight());
-	mpBackBufferTex->init(mpGLSupport->getMainRenderWindow()->getWidth(), mpGLSupport->getMainRenderWindow()->getHeight());
+	mpGBuffer->init(mpGLSupport->getMainRenderWindow()->getWidth(), mpGLSupport->getMainRenderWindow()->getHeight());
+	//mpBackBufferTex->init(mpGLSupport->getMainRenderWindow()->getWidth(), mpGLSupport->getMainRenderWindow()->getHeight());
 
 	mpHdr = new PostEffectRenderCommand();
 
@@ -131,6 +131,25 @@ void OpenGLRenderSystem::_render(const RenderCommand &renderCommand)
 		OpenGLImpl::getInstancePtr()->checkError();
 
 		glVertexAttribPointer(BindShaderAttr::ATTR_TEXCOOD_ARRAY, 2, GL_FLOAT, GL_FALSE, pVerData->elementSize, (void*)12);
+		OpenGLImpl::getInstancePtr()->checkError();
+	}
+	else if (pVerData->type == VertexDataSortType::P3UVF2N3T3)
+	{
+		glEnableVertexAttribArray(BindShaderAttr::ATTR_POSITION_ARRAY);
+		glEnableVertexAttribArray(BindShaderAttr::ATTR_TEXCOOD_ARRAY);
+		glEnableVertexAttribArray(BindShaderAttr::ATTR_NORMAL_ARRAY);
+		glEnableVertexAttribArray(BindShaderAttr::ATTR_TANGENT_ARRAY);
+
+		glVertexAttribPointer(BindShaderAttr::ATTR_POSITION_ARRAY, 3, GL_FLOAT, GL_FALSE, pVerData->elementSize, 0);
+		OpenGLImpl::getInstancePtr()->checkError();
+
+		glVertexAttribPointer(BindShaderAttr::ATTR_TEXCOOD_ARRAY, 2, GL_FLOAT, GL_FALSE, pVerData->elementSize, (void*)12);
+		OpenGLImpl::getInstancePtr()->checkError();
+
+		glVertexAttribPointer(BindShaderAttr::ATTR_NORMAL_ARRAY, 3, GL_FLOAT, GL_FALSE, pVerData->elementSize, (void*)20);
+		OpenGLImpl::getInstancePtr()->checkError();
+
+		glVertexAttribPointer(BindShaderAttr::ATTR_TANGENT_ARRAY, 3, GL_FLOAT, GL_FALSE, pVerData->elementSize, (void*)32);
 		OpenGLImpl::getInstancePtr()->checkError();
 	}
 	else if (pVerData->type == VertexDataSortType::P3I1F2)
@@ -200,9 +219,47 @@ void OpenGLRenderSystem::_render(const RenderCommand &renderCommand)
 	OpenGLImpl::getInstancePtr()->checkError();
 }
 
-void OpenGLRenderSystem::renderDefferedLighting(RenderContain *contain)
+void OpenGLRenderSystem::renderDefferedLighting(BatchRenderMap &contain, const RenderItemType type)
 {
+	for (BatchRenderMap::iterator iter = contain.begin(); iter != contain.end(); ++iter)
+	{
+		RenderContain &contain = iter->second;
 
+
+		/*else
+		{
+		if (contain.size() > 0)
+		bindShaderParam(contain[0], type);
+		}*/
+		bool is_need_bind_batch = true;
+		MaterialHandle logMatHandle;
+		for (int i = 0; i < contain.size(); ++i)
+		{
+			if (contain[i]->getBatchRenderEnable() == false)
+			{
+				bindShaderParam(contain[i], type);
+				is_need_bind_batch = true;
+			}
+			else
+			{
+				if (is_need_bind_batch)
+				{
+					MaterialHandle matHandle = contain[i]->getMaterial();
+					IMaterial *pIMaterial = gEngModule->pMaterialMgr->getDataPtr(matHandle);
+					bindBatchShaderParam(pIMaterial, LightingStage);
+					logMatHandle = matHandle;
+
+					is_need_bind_batch = false;
+				}
+				//bindObjPosParam(contain[i]);
+				//Log::getInstance().logMsg("%d batch render", logMatHandle);
+
+			}
+			RenderCommand command;
+			contain[i]->generateRenderCommand(command);
+			_render(command);
+		}
+	}
 }
 
 void OpenGLRenderSystem::beforeRender()
@@ -212,12 +269,14 @@ void OpenGLRenderSystem::beforeRender()
 	//glClearDepth(1.0f);
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthRange(0.0f, 1.0f);
+	//glDepthRange(0.0f, 1.0f);
 	//glDepthFunc(GL_ALWAYS);
 	//glDepthFunc(GL_GREATER);
 	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_ONE, GL_ONE);
+	//glEnablei(GL_BLEND, GL_MAX_DRAW_BUFFERS);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -280,7 +339,7 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 	if (type != SHADOW)
 	{
 		//ÏÔÊ¾ÒõÓ°ÔÝÊ±×¢ÊÍ
-		//mpShadowMap->bindForReading(TexShadowMap);
+		//mpDepthBuffer->bindForReading(TexDepthMap);
 		//IShader *pShader = pIMaterial->getShader();
 		//dynamic_cast<OpenGLShader*>(pShader)->bindShadowMap();
 		pIMaterial->bindAllTexture();
@@ -289,14 +348,24 @@ void OpenGLRenderSystem::bindShaderParam(Renderable *pRenderable, const RenderIt
 	OpenGLImpl::getInstance().checkError();
 }
 
-void OpenGLRenderSystem::bindBatchShaderParam(IMaterial *pMaterial)
+void OpenGLRenderSystem::bindBatchShaderParam(IMaterial *pMaterial, DeferredLightingStage stage)
 {
-	IShader *pShader = pMaterial->getShader();
-	dynamic_cast<OpenGLShader*>(pShader)->bindProgram("TECH_DEFAULT", "BatchRender");
+	IShader *pShader = pMaterial->getShader();	
 
 	Camera *pCamera = SceneMgr::getInstance().getMainCamera();
-	pShader->setMatrix("g_View", pCamera->getViewMatrix());
-	pShader->setMatrix("g_Proj", pCamera->getProjMatrix());
+
+	if (stage == GeomotryStage)
+	{
+		dynamic_cast<OpenGLShader*>(pShader)->bindProgram("TECH_DEFAULT", "GeometryFstPass");
+		pShader->setMatrix("g_light_view", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightView));
+		pShader->setMatrix("g_light_proj", GlobalShaderParamMng::getInstance().getMatrixParam(GlobalShaderParamMng::MatrixLightProj));
+	}
+	else
+	{
+		dynamic_cast<OpenGLShader*>(pShader)->bindProgram("TECH_DEFAULT", "LightingPass");
+		pShader->setMatrix("g_View", pCamera->getViewMatrix());
+		pShader->setMatrix("g_Proj", pCamera->getProjMatrix());
+	}	
 
 	pMaterial->bindAllTexture();
 	OpenGLImpl::getInstance().checkError();
@@ -358,7 +427,7 @@ void OpenGLRenderSystem::forwardRendering(BatchRenderMap &contain, const RenderI
 				{
 					MaterialHandle matHandle = contain[i]->getMaterial();
 					IMaterial *pIMaterial = gEngModule->pMaterialMgr->getDataPtr(matHandle);
-					bindBatchShaderParam(pIMaterial);
+					bindBatchShaderParam(pIMaterial, GeomotryStage);
 					logMatHandle = matHandle;
 
 					is_need_bind_batch = false;
@@ -374,6 +443,11 @@ void OpenGLRenderSystem::forwardRendering(BatchRenderMap &contain, const RenderI
 	}
 }
 
+void OpenGLRenderSystem::generateGBuffer(BatchRenderMap &contain)
+{
+
+}
+
 void OpenGLRenderSystem::renderAll()
 {
 	//preRender(0);
@@ -382,9 +456,9 @@ void OpenGLRenderSystem::renderAll()
 
 	//shadow
 /*
-	mpShadowMap->bindForWriting();
+	mpDepthBuffer->bindForWriting();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	OpenGLImpl::getInstance().activeTexUnit(TexShadowMap);
+	OpenGLImpl::getInstance().activeTexUnit(TexDepthMap);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	OpenGLImpl::getInstance().checkError();
 	RenderContain renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
@@ -396,16 +470,26 @@ void OpenGLRenderSystem::renderAll()
 	//post
 	//mpBackBufferTex->bindForWriting();
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//mpShadowMap->bindForReading(TexShadowMap);
+	//mpDepthBuffer->bindForReading(TexDepthMap);
 	//OpenGLImpl::getInstance().checkError();
+
+	mpGBuffer->bindForWriting();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	BatchRenderMap renderableVec = gEngModule->pRenderSequence->getRenderSequence(RENDER_LAYER_DEFAULT);
 	//add instance render helper obj
 	HelperObjMgr::getInstance().fillVertexBufInsData();
+
+	
 	forwardRendering(renderableVec, NORMAL);
+		
+	mpGBuffer->bindForReading();	
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//post effect
 	//mpHdr->draw(mpBackBufferTex);
+	//mpHdr->draw(mpGBuffer);
+	renderDefferedLighting(renderableVec, NORMAL);
 
 	//render UI
 	glDisable(GL_DEPTH_TEST);
@@ -486,4 +570,28 @@ void PostEffectRenderCommand::draw(IRenderTexture *backBufferTex)
 	OpenGLImpl::getInstancePtr()->activeIndexBufObj(mGLBufferIndexId);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 
+}
+
+void PostEffectRenderCommand::draw(OpenGLGBuffer *pGBuffer)
+{
+	IMaterial *pMat = gEngModule->pMaterialMgr->getDataPtr(mMatHandle);
+	IShader *pShader = pMat->getShader();
+	dynamic_cast<OpenGLShader*>(pShader)->bindProgram("TECH_DEFAULT", "hdr");
+
+	//backBufferTex->bindForReading(TexDiffuse);
+	pGBuffer->bindForReading();
+
+	OpenGLImpl::getInstancePtr()->activeVertexBufObj(mGLBufferVertexId);
+
+	glEnableVertexAttribArray(BindShaderAttr::ATTR_POSITION_ARRAY);
+	glEnableVertexAttribArray(BindShaderAttr::ATTR_TEXCOOD_ARRAY);
+
+	glVertexAttribPointer(BindShaderAttr::ATTR_POSITION_ARRAY, 2, GL_FLOAT, GL_FALSE, 16, 0);
+	OpenGLImpl::getInstancePtr()->checkError();
+
+	glVertexAttribPointer(BindShaderAttr::ATTR_TEXCOOD_ARRAY, 2, GL_FLOAT, GL_FALSE, 16, (void*)8);
+	OpenGLImpl::getInstancePtr()->checkError();
+
+	OpenGLImpl::getInstancePtr()->activeIndexBufObj(mGLBufferIndexId);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 }

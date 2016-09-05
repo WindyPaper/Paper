@@ -111,6 +111,15 @@ void OpenGLShader::setMatrix(const std::string &name, const math::Matrix44 &matr
 	mpCstBuf->update();
 }
 
+void OpenGLShader::setArrayFloatValue(const std::string &name, const float *pData, const int count)
+{
+	if (mpCstBuf == 0)
+		return;
+	nvFX::IUniform *pUniform = mpCstBuf->findUniform(name.c_str());
+	pUniform->setValuefv(const_cast<float *>(pData), 1, count);
+	mpCstBuf->update();
+}
+
 void OpenGLShader::bindShadowMap()
 {
 	nvFX::IUniform *pUniform = mpEffect->findUniform("shadowmap_tex");
@@ -123,7 +132,7 @@ void OpenGLShader::bindShadowMap()
 			std::string passName = "_default";
 			if (pPass->getName() == passName)
 			{
-				pUniform->setImageUnit(TexShadowMap);
+				pUniform->setImageUnit(TexDepthMap);
 				pUniform->update(pPass);
 			}
 		}
@@ -150,8 +159,17 @@ void OpenGLShader::_bindAllTexture()
 		case TexSpecular:
 			texStr = "specular_tex";
 			break;
-		case TexShadowMap:
+		case TexDepthMap:
 			texStr = "shadowmap_tex";
+			break;
+		case TexGBNormalMap:
+			texStr = "gb_normal_tex";
+			break;
+		case TexGBWorldPosMap:
+			texStr = "gb_wpos_tex";
+			break;
+		case TexGBFluxColorMap:
+			texStr = "gb_flux_tex";
 			break;
 		default:
 			break;

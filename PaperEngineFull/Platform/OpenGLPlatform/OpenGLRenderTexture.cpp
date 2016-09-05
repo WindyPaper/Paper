@@ -16,9 +16,6 @@ OpenGLRenderTexture::~OpenGLRenderTexture()
 
 bool OpenGLRenderTexture::init(const uint width, const uint height)
 {
-	//here only test for shadowmap //fix me.
-	//glEnable(GL_TEXTURE_2D);
-	//glActiveTexture(GL_TEXTURE0);
 	glGenFramebuffers(1, &mFbo);
 
 	glGenTextures(1, &mTexture);
@@ -33,17 +30,17 @@ bool OpenGLRenderTexture::init(const uint width, const uint height)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
 
-	GLuint rboDepth;
+	/*GLuint rboDepth;
 	glGenRenderbuffers(1, &rboDepth);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);	
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);	*/
 
 	OpenGLImpl::getInstance().checkError();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mTexture, 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
+	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
 
 	//glDrawBuffer(GL_LEFT);
 	//glReadBuffer(GL_NONE);

@@ -38,7 +38,9 @@ void GlobalShaderParamMng::initGlobalParam()
 	mShaderParams[MatrixModel] = ShaderParam("g_Model", math::Matrix44());
 	mShaderParams[MatrixMVP] = ShaderParam("g_MVP", math::Matrix44());
 
-	_initGlobalLightDir(math::Vector3f(-1, -1, 1));
+	math::Vector3f dir = math::Vector3f(0.66, -0.66, 0.33);
+	dir.normalize();
+	_initGlobalLightDir(dir);
 }
 
 
@@ -90,24 +92,22 @@ void GlobalShaderParamMng::setCurrRenderable(Renderable *pRenderable)
 
 void GlobalShaderParamMng::_initGlobalLightDir(const math::Vector3f &dir)
 {
-	math::Vector3f xzVec = math::Vector3f(dir.x, 0, dir.z);
-	xzVec.normalize();
-	float yaw = ToDegree(std::acosf(xzVec * math::VEC3F_NEGATIVE_UNIT_Z));
+	math::Vector3f pos = math::Vector3f(-1382, 3331, -596);
+	math::Vector3f up = math::Vector3f(0.59, 0.74, 0.30);
+	
 
-	math::Vector3f xyVec = math::Vector3f(dir.x, dir.y, 0);
-	xyVec.normalize();
-	float pitch = ToDegree(std::acosf(xyVec * math::VEC3F_NEGATIVE_UNIT_X));
+	up.normalize();
+	Frustum generateProjMat;
 
-	if (dir.y < 0)
-	{
-		pitch *= -1;
-	}
+	math::OrthographicProjParam param;
+	param.width = (int)(param.width/2);
+	param.height = (int)(param.height/2);
+	math::Matrix44 orthoMat;
+	orthoMat.initOrthographicProj(param);
 
-	Camera cam;
-	cam.setPos(math::Vector3f(2000, 2000, -2000));
-	cam.pitch(pitch);
-	cam.yaw(yaw);
+	math::Matrix44 viewMat;
+	viewMat.m = XMMatrixLookToRH(pos, dir, up);
 
-	mShaderParams[MatrixLightView] = ShaderParam("light_view_mat", cam.getViewMatrix());
-	mShaderParams[MatrixLightProj] = ShaderParam("light_proj_mat", cam.getProjMatrix());
+	mShaderParams[MatrixLightView] = ShaderParam("light_view_mat", viewMat);
+	mShaderParams[MatrixLightProj] = ShaderParam("light_proj_mat", generateProjMat.getProjMatrix());
 }

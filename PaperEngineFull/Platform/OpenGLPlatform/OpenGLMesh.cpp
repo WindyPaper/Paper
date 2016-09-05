@@ -127,7 +127,11 @@ void OpenGLMesh::setMeshMemVertexData(unsigned char *pMemData, const uint count,
 	case VertexDataSortType::P3I1F2:
 		mVertexData.elementSize = sizeof(Vertex_P3I1F2);
 		break;
+	case VertexDataSortType::P3UVF2N3T3:
+		mVertexData.elementSize = sizeof(Vertex_P3UVF2N3T3);
+		break;
 	default:
+		assert(false);
 		break;
 	}
 

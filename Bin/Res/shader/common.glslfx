@@ -1,0 +1,462 @@
+/*
+    Copyright (c) 2013, NVIDIA CORPORATION. All rights reserved.
+    Copyright (c) 2013, Tristan Lorach. All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+     * Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+     * Neither the name of NVIDIA CORPORATION nor the names of its
+       contributors may be used to endorse or promote products derived
+       from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
+    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+    OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    Please direct any questions to tlorach@nvidia.com (Tristan Lorach)
+*/
+#extension GL_ARB_separate_shader_objects : enable
+
+GLSLShader 
+{
+    #version 420 compatibility
+    vec3 calWorldNormal(vec3 inNormal, vec3 inTangent, vec3 localNormal);
+}
+//////////////////////////////////////////////////////////
+// when declaring a sampler outside of any module : sampler can be known by nvFx (instrospection)
+// and shared between various pieces of code (replicated for every single program)
+uniform sampler2D diffuse_tex;
+uniform sampler2D normal_tex;
+uniform sampler2D specular_tex;
+uniform sampler2D shadowmap_tex;
+uniform sampler2D gb_normal_tex;
+uniform sampler2D gb_wpos_tex;
+uniform sampler2D gb_flux_tex;
+
+uniform samplerCube cube_tex;
+
+ConstantBuffer g_uniform_block
+{
+    uniform mat4 g_View; 
+    uniform mat4 g_Proj; 
+    uniform mat4 g_Model;
+
+    uniform vec3 g_cam_pos;
+    uniform vec3 g_cam_lookup;
+
+    uniform mat4 g_light_view;
+    uniform mat4 g_light_proj;
+};
+
+// SamplerState defaultSamplerState
+// {
+//     TEXTURE_MIN_FILTER = LINEAR_MIPMAP_LINEAR;
+//     TEXTURE_MAG_FILTER = LINEAR;
+// }
+
+
+////////////////////////////////////////////////////////////////////
+/// VERTEX PROGRAM /////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+GLSLShader ObjectVS
+{
+    layout(location=0) in vec3 Position;
+    layout(location=1) in vec2 TexCood;
+    layout(location=2) in vec3 Normal;
+
+    layout(location=0) out vec2 TexCood0; 
+    layout(location=1) out vec4 PosInPicCrood;
+    //layout(location=5) out vec3 Normal0;
+
+    out gl_PerVertex {
+        vec4 gl_Position;
+    };
+
+    void main(void)
+    {        
+        TexCood0 = TexCood;
+        //Normal0 = Normal;
+        vec4 lightScreenPos = vec4(Position, 1.0) * (g_Model * g_light_view * g_light_proj);
+        //lightScreenPos = lightScreenPos.xyzw/lightScreenPos.w;
+        PosInPicCrood = lightScreenPos;
+        gl_Position = vec4(Position, 1.0) * (g_Model * g_View * g_Proj);  
+    }
+}
+
+////////////////////////////////////////////////////////////////////
+/// FRAGMENT PROGRAM ///////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+GLSLShader ObjectPS
+{
+    layout(location=0) in vec2 TexCood0;
+    layout(location=1) in vec4 PosInPicCrood;
+
+    out vec4 FragColor;
+
+    void main() 
+    {
+        vec2 uv;
+        vec3 picVec = PosInPicCrood.xyz/PosInPicCrood.w;
+        uv.x = picVec.x * 0.5 + 0.5;
+        uv.y = picVec.y * 0.5 + 0.5;
+        float z = picVec.z * 0.5 + 0.5;
+
+        float depValue = texture2D(shadowmap_tex, uv).x;
+        //depValue = depValue * 0.5 + 0.5;
+
+        float bias = 0.0000005;
+        if(z - bias > depValue)
+            FragColor = vec4(0, 0, 0, 0.7);
+        else
+            FragColor = texture2D(diffuse_tex, TexCood0.st);
+    }
+}
+
+GLSLShader ShadowVS
+{
+    layout(location=0) in vec3 Position;
+
+    //layout(location=0) out vec4 outPos;
+
+    out gl_PerVertex {
+        vec4 gl_Position;
+    };
+
+    void main(void)
+    {        
+        gl_Position = vec4(Position, 1.0) * (g_Model * g_View * g_Proj);
+        //gl_Position = gl_Position.xyzw/gl_Position.w;
+        //outPos = gl_Position;
+    }
+}
+
+GLSLShader ShadowPS
+{
+    //layout(location=0) in vec4 inPos;
+
+    //out float backbuffer;
+    out vec4 FragColor;
+
+    void main() 
+    {
+        //backbuffer = inPos.w;
+        FragColor = vec4(0, 1, 0, 1);
+    }
+}
+
+GLSLShader NormalDiffuseVS
+{
+    layout(location=0) in vec3 Position;
+    layout(location=1) in vec2 TexCood;
+    //layout(location=2) in vec3 Normal;
+
+    layout(location=0) out vec2 TexCood0;
+    layout(location=1) out vec3 OutPos;
+
+    out gl_PerVertex {
+        vec4 gl_Position;
+    };
+
+    void main(void)
+    {        
+        TexCood0 = TexCood;
+        gl_Position = vec4(Position, 1.0) * (g_Model * g_View * g_Proj);
+        OutPos = vec3(vec4(Position, 1.0) * g_Model);
+    }
+}
+
+GLSLShader NormalDiffusePS
+{
+    layout(location=0) in vec2 TexCood0;
+    layout(location=1) in vec3 InPos;
+
+    //out vec4 FragColor;
+    layout(location=0) out vec4 outNormal;
+    layout(location=1) out vec4 outWPos;
+    layout(location=2) out vec4 outFlux;
+
+    void main() 
+    {
+        //vec3 eye_dir = normalize(InPos - g_cam_pos);
+        // //vec3 reflect_dir = reflect(eye_dir, normalize(vec3(texture(normal_tex, TexCood0))));
+        //vec3 refract_dir = refract(eye_dir, normalize(vec3(texture(normal_tex, TexCood0))), 1.00/1.52);
+        //FragColor = texture(cube_tex, refract_dir);
+        outNormal = texture(normal_tex, TexCood0.st);
+        outWPos = vec4(InPos, 1.0);
+        outFlux = texture(diffuse_tex, TexCood0.st);
+    }
+}
+
+GLSLShader BatchRenderVS
+{
+    layout(location=0) in vec3 Position;
+    layout(location=1) in vec2 TexCood;
+
+    layout(location=0) out vec2 TexCood0;
+    layout(location=1) out vec3 OutPos;
+
+    out gl_PerVertex {
+        vec4 gl_Position;
+    };
+
+    void main(void)
+    {        
+        TexCood0 = TexCood;
+        vec4 wpos = vec4(Position, 1.0) * g_View * g_Proj;
+        OutPos = wpos.xyz;
+        gl_Position = wpos;
+    }
+}
+
+GLSLShader BatchRenderPS
+{
+    layout(location=0) in vec2 TexCood0;
+    layout(location=1) in vec3 InPos;
+
+    // out vec4 FragColor;
+    layout(location=0) out vec4 outNormal;
+    layout(location=1) out vec4 outWPos;
+    layout(location=2) out vec4 outFlux;
+
+    void main() 
+    {
+        outNormal = texture(normal_tex, TexCood0.st);
+        outWPos = vec4(InPos, 1.0);
+        outFlux = texture(diffuse_tex, TexCood0.st);
+        // FragColor = texture(diffuse_tex, TexCood0.st);        
+    }
+}
+
+//---------------------- deferred lighting
+
+//暂时Batch先实现吧
+GLSLShader DLFstVS
+{
+    layout(location=0) in vec3 Position;
+    layout(location=1) in vec2 TexCood;
+    layout(location=2) in vec3 Normal;
+    layout(location=3) in vec3 Tangent;
+
+    layout(location=0) out vec2 TexCood0;
+    layout(location=1) out vec3 OutPos;
+    layout(location=2) out vec3 OutNormal;
+    layout(location=3) out vec3 OutTangent;
+
+    out gl_PerVertex {
+        vec4 gl_Position;
+    };
+
+    void main(void)
+    {        
+        TexCood0 = TexCood;
+        vec4 wpos = vec4(Position, 1.0) * g_light_view * g_light_proj;
+        OutPos = wpos.xyz;
+        OutTangent = (vec4(Tangent, 0.0) * g_light_view).xyz;
+        OutNormal = (vec4(Normal, 0.0) * g_light_view).xyz;
+
+        gl_Position = wpos;
+    }
+}
+
+
+
+GLSLShader CalculateNormal
+{
+    vec3 calWorldNormal(vec3 inNormal, vec3 inTangent, vec3 localNormal)
+    {
+        vec3 vertexNormal = normalize(inNormal);
+        vec3 tangent = normalize(inTangent);
+        tangent = normalize(tangent - dot(tangent, vertexNormal) * tangent);
+        vec3 bitangent = cross(tangent, vertexNormal);
+        mat3 norToWorldMat = mat3(tangent, bitangent, vertexNormal);
+        //vec3 localNormal = normalize(texture2D(normal_tex, TexCood0).xyz);
+        localNormal = 2 * localNormal - vec3(1.0, 1.0, 1.0);
+        vec3 worldNormal = norToWorldMat * localNormal;
+        worldNormal = normalize(worldNormal);
+        return worldNormal;
+    }
+}
+
+
+GLSLShader DLFstPS
+{
+    layout(location=0) in vec2 TexCood0;
+    layout(location=1) in vec3 InPos;
+    layout(location=2) in vec3 InNormal;
+    layout(location=3) in vec3 InTangent;
+
+    // out vec4 FragColor;
+    layout(location=0) out vec4 outNormal;
+    layout(location=1) out vec4 outWPos;
+    layout(location=2) out vec4 outFlux;
+
+    // vec3 calWorldNormal()
+    // {
+    //     vec3 vertexNormal = normalize(InNormal);
+    //     vec3 tangent = normalize(InTangent);
+    //     tangent = normalize(tangent - dot(tangent, vertexNormal) * tangent);
+    //     vec3 bitangent = cross(tangent, vertexNormal);
+    //     mat3 norToWorldMat = mat3(tangent, bitangent, vertexNormal);
+    //     vec3 localNormal = normalize(texture2D(normal_tex, TexCood0).xyz);
+    //     localNormal = 2 * localNormal - vec3(1.0, 1.0, 1.0);
+    //     vec3 worldNormal = norToWorldMat * localNormal;
+    //     worldNormal = normalize(worldNormal);
+    //     return worldNormal;
+    // }
+
+    void main() 
+    {
+        vec3 localNormal = normalize(texture2D(normal_tex, TexCood0).xyz);
+        vec3 worldNormal = calWorldNormal(InNormal, InTangent, localNormal);
+        outNormal = vec4(worldNormal, 1.0);
+        outWPos = vec4(InPos, 1.0);
+        outFlux = texture(diffuse_tex, TexCood0.st);
+        // FragColor = texture(diffuse_tex, TexCood0.st);        
+    }
+}
+
+GLSLShader DLLightingVS
+{
+    layout(location=0) in vec3 Position;
+    layout(location=1) in vec2 TexCood;
+    layout(location=2) in vec3 Normal;
+    layout(location=3) in vec3 Tangent;
+
+    layout(location=0) out vec2 TexCood0;
+    layout(location=1) out vec4 OutLightSpacePos;
+    layout(location=2) out vec3 outNormal;
+    layout(location=3) out vec3 outTangent;
+
+    out gl_PerVertex {
+        vec4 gl_Position;
+    };
+
+    void main(void)
+    {        
+        TexCood0 = TexCood;        
+        vec4 wpos = vec4(Position, 1.0) * g_View * g_Proj;
+        OutLightSpacePos = vec4(Position, 1.0) * g_light_view * g_light_proj;
+        outNormal = Normal;
+        outTangent = Tangent;
+        gl_Position = wpos;
+    }
+}
+
+uniform float samplerMaxNum = 16;
+uniform float rMax = 0.03;
+//uniform vec2 randomVec2[16];
+
+GLSLShader DLLightingPS
+{
+    layout(location=0) in vec2 TexCood0;
+    layout(location=1) in vec4 InLightSpacePos;
+    layout(location=2) in vec3 InNormal;
+    layout(location=3) in vec3 InTangent;
+
+    out vec4 FragColor;
+
+    float rand(vec2 n)
+    {
+        return 0.5 + 0.5 * fract(sin(dot(n.xy, vec2(12.9898, 78.233)))* 43758.5453);
+    }
+
+    vec4 indirectLightCal(vec2 pointuv, vec3 normal)
+    {
+        vec3 indirectLightColor = vec3(0, 0, 0);
+
+        vec3 pointPos = texture2D(gb_wpos_tex, pointuv).xyz;
+
+        for(int i = 0; i < samplerMaxNum; ++i)
+        {
+            vec2 randomUV = vec2(rand(pointuv), rand(pointuv));
+            randomUV = randomUV * rMax;
+
+            vec3 samplerPointNormal = texture2D(gb_normal_tex, randomUV).xyz;
+            vec3 samplerPointWPos = texture2D(gb_wpos_tex, randomUV).xyz;
+            vec3 samplerPointFlux = texture2D(gb_flux_tex, randomUV).xyz;
+
+            float dist = length(pointPos - samplerPointWPos);
+            vec3 icolor = samplerPointFlux * \
+                max(dot(normal, samplerPointWPos - pointPos), 0) * max(dot(samplerPointNormal, pointPos - samplerPointWPos), 0)/pow(dist, 4);
+            icolor = icolor * pow((1/dist), 2);
+
+            indirectLightColor = indirectLightColor + icolor;
+        }
+
+        return vec4(indirectLightColor, 1.0);
+    }
+
+    void main() 
+    {   
+        vec3 localNormal = normalize(texture2D(normal_tex, TexCood0).xyz);
+        vec3 worldNormal = calWorldNormal(InNormal, InTangent, localNormal);
+        vec4 lightSpacePosW = InLightSpacePos;
+        vec3 lightSpacePos = lightSpacePosW.xyz/lightSpacePosW.w;
+        vec3 lightTexUV = (lightSpacePos.xyz + vec3(1, 1, 1))/2; //map to [0, 1]
+        vec4 lightColor = indirectLightCal(lightTexUV.xy, worldNormal);
+
+        float shadowmapDepth = texture2D(shadowmap_tex, lightTexUV.xy).r;
+        float currentDepth = lightSpacePos.z;
+        currentDepth = currentDepth * 0.5 + 0.5; //map to [0, 1]
+        if(currentDepth - shadowmapDepth > 0.0005)
+        {
+            vec4 color = texture2D(diffuse_tex, TexCood0.st);         
+            color.rgb = 0.3 * color.rgb;
+            FragColor = color + lightColor;
+        }
+        else 
+        {
+            FragColor = texture2D(diffuse_tex, TexCood0.st) + lightColor;               
+        }
+    }
+}
+
+Technique TECH_DEFAULT
+{
+    Pass _default
+    {
+        VertexProgram = ObjectVS;
+        FragmentProgram = ObjectPS;
+    }
+
+    Pass nor_diffuse
+    {
+        VertexProgram = NormalDiffuseVS;
+        FragmentProgram = NormalDiffusePS;
+    }
+
+    Pass shadow
+    {
+        VertexProgram = ShadowVS;
+        FragmentProgram = ShadowPS;
+    }
+
+    Pass BatchRender
+    {
+        VertexProgram = BatchRenderVS;
+        FragmentProgram = BatchRenderPS;
+    }
+
+    //deferred lighting
+    Pass GeometryFstPass
+    {
+        VertexProgram = DLFstVS;
+        FragmentProgram = {DLFstPS, CalculateNormal};
+    }
+
+    Pass LightingPass
+    {
+        VertexProgram = DLLightingVS;
+        FragmentProgram = {DLLightingPS, CalculateNormal};
+    }
+}

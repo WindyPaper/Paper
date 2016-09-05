@@ -296,6 +296,22 @@ struct ENGINE_DLL PerspectiveProjParam
 	}
 };
 
+struct ENGINE_DLL OrthographicProjParam
+{
+	float width;
+	float height;
+	float zNear;
+	float zFar;
+
+	OrthographicProjParam()
+	{
+		width = WIN_WIDTH;
+		height = WIN_HEIGHT;
+		zNear = 1;
+		zFar = 10000;
+	}
+};
+
 class ENGINE_DLL Matrix4f
 {
 public:
@@ -439,6 +455,11 @@ public:
 		m.m[3][0] = 0.0f; m.m[3][1] = 0.0f; m.m[3][2] = 1.0f; m.m[3][3] = 0.0f;*/
 
 		m = XMMatrixPerspectiveFovRH(ToRadian(param.fov), param.width/param.height, param.zNear, param.zFar);
+	}
+
+	void initOrthographicProj(const OrthographicProjParam &param)
+	{
+		m = XMMatrixOrthographicOffCenterRH(-param.width, param.width, -param.height, param.height, param.zNear, param.zFar);
 	}
 
 	void initCameraTransform(const Vector3f &target, const Vector3f &up)

@@ -6,7 +6,7 @@ Frustum::Frustum() :
 	mWidth(4),
 	mHeight(3),
 	mNear(1.0),
-	mFar(10000.0)
+	mFar(8000.0)
 {
 	//fix me. should not write here
 	updateProjMatrix();

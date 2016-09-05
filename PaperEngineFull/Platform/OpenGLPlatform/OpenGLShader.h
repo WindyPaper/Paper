@@ -16,9 +16,10 @@ enum BindShaderAttr
 	ATTR_POSITION_ARRAY = 0,
 	ATTR_TEXCOOD_ARRAY,
 	ATTR_NORMAL_ARRAY,
+	ATTR_TANGENT_ARRAY,
 	ATTR_COLOR_INT,
 	ATTR_MVP_MAT_ARRAY,
-	ATTR_WORLD_MAT_ARRAY,
+	ATTR_WORLD_MAT_ARRAY,	
 };
 
 class ENGINE_DLL OpenGLShader : public IShader
@@ -51,6 +52,7 @@ public:
 	virtual void setVec4(const std::string &name, const math::Vector4f &vec4);
 	virtual void setVec3(const std::string &name, const math::Vector3f &vec3);
 	virtual void setMatrix(const std::string &name, const math::Matrix44 &matrix44);
+	virtual void setArrayFloatValue(const std::string &name, const float *pData, const int count);
 
 	/*virtual void setFloat(const std::string &name, const float fValue);
 	virtual void setInt(const std::string &name, const int iValue);

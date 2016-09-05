@@ -68,7 +68,7 @@ bool MagicImageLoader::loadRes(Resource *res)
 
 	if(bits == 0 || width == 0 || height == 0)
 	{
-		Log::getInstance().logMsg("tex some thing 0");
+		Log::getInstance().logMsg("tex bits/width/height is 0 ! filename is %s \n", pFileName);
 		return false;
 	}
 	//pImageRes->setWidth(width);

@@ -16,6 +16,7 @@ enum VertexDataSortType
 {
 	P3F2F3 = 0,
 	P3UVF2,
+	P3UVF2N3T3,
 	P3I1F2,
 	P3,
 	P3INS,
@@ -41,6 +42,14 @@ struct Vertex_P3UVF2
 {
 	math::Vector3f pos;
 	math::Vector2f texcood;
+};
+
+struct Vertex_P3UVF2N3T3
+{
+	math::Vector3f pos;
+	math::Vector2f texcood;
+	math::Vector3f normal;
+	math::Vector3f tangent;
 };
 
 struct Vertex_P3I1F2

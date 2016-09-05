@@ -1,0 +1,77 @@
+/*
+    Copyright (c) 2013, NVIDIA CORPORATION. All rights reserved.
+    Copyright (c) 2013, Tristan Lorach. All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+     * Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+     * Neither the name of NVIDIA CORPORATION nor the names of its
+       contributors may be used to endorse or promote products derived
+       from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
+    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+    OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    Please direct any questions to tlorach@nvidia.com (Tristan Lorach)
+*/
+#extension GL_ARB_separate_shader_objects : enable
+
+GLSLShader 
+{
+    #version 420 compatibility
+}
+
+ConstantBuffer g_uniform_block
+{
+    uniform mat4 g_View; 
+    uniform mat4 g_Proj;
+    uniform mat4 g_Model;
+};
+
+GLSLShader LineRenderVS
+{
+    layout(location=0) in vec3 Position;
+    layout(location=6) in mat4 ModelMat;
+
+    out gl_PerVertex {
+        vec4 gl_Position;
+    };
+
+    void main(void)
+    {
+        gl_Position = vec4(Position, 1.0) * (ModelMat * g_View * g_Proj);
+    }
+}
+
+GLSLShader LineRenderPS
+{
+    out vec4 FragColor;
+
+    void main() 
+    {
+        FragColor = vec4(0, 0, 0, 1.0);
+        //outNormal = vec3(1, 1, 1);
+        //outWPos = vec3(0, 0, 1);
+        //outFlux = vec3(1, 0, 0);
+    }
+}
+
+Technique TECH_DEFAULT
+{
+    Pass nor_diffuse
+    {
+        VertexProgram = LineRenderVS;
+        FragmentProgram = LineRenderPS;
+    }
+}

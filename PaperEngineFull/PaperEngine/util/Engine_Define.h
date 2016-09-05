@@ -9,7 +9,7 @@ typedef unsigned int uint32;
 
 #define EINT64 __int64
 
-#define  MAX_TEX_UNIT 8
+#define  MAX_TEX_UNIT 16
 
 #define DEFAULT_IMAGE_PATH "res/defaultTex.png"
 

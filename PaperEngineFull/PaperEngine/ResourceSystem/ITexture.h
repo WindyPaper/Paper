@@ -49,7 +49,10 @@ enum ShaderTexType
 	TexNormal,
 	TexSpecular,
 	TexMask,
-	TexShadowMap,
+	TexDepthMap,
+	TexGBNormalMap,
+	TexGBWorldPosMap,
+	TexGBFluxColorMap,
 
 	ShaderTexTypeNum,
 };

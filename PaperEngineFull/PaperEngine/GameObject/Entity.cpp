@@ -14,7 +14,7 @@
 
 Entity::Entity() :
 mpParentEntity(0),
-mIsShowAABB(true),
+mIsShowAABB(false),
 mIsNeedClip(true)
 {
 
@@ -22,7 +22,7 @@ mIsNeedClip(true)
 
 Entity::Entity(const std::string &name) :
 mpParentEntity(0),
-mIsShowAABB(true),
+mIsShowAABB(false),
 mIsNeedClip(true)
 {
 	mName = name;

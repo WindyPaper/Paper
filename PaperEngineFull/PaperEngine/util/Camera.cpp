@@ -188,26 +188,6 @@ void Camera::addCameraEdit(IControlUI *pUIControl)
 
 void Camera::updateViewMatrix()
 {
-	/*math::Vector3f n = mLookAt;
-	n.normalize();
-	math::Vector3f u = mUp;
-	u.normalize();
-	u = u.cross(mLookAt);
-	math::Vector3f v = n.cross(u);*/
-
-	/*math::Matrix44 rotationMatrix;
-	rotationMatrix.m[0][0] = u.x; rotationMatrix.m[0][1] = u.y; rotationMatrix.m[0][2] = u.z; rotationMatrix.m[0][3] = 0.0f;
-	rotationMatrix.m[1][0] = v.x; rotationMatrix.m[1][1] = v.y; rotationMatrix.m[1][2] = v.z; rotationMatrix.m[1][3] = 0.0f;
-	rotationMatrix.m[2][0] = n.x; rotationMatrix.m[2][1] = n.y; rotationMatrix.m[2][2] = n.z; rotationMatrix.m[2][3] = 0.0f;
-	rotationMatrix.m[3][0] = 0.0f; rotationMatrix.m[3][1] = 0.0f; rotationMatrix.m[3][2] = 0.0f; rotationMatrix.m[3][3] = 1.0f;
-
-	math::Matrix44 transformMatrix;
-	transformMatrix.m[0][0] = 1.0f; transformMatrix.m[0][1] = 0.0f; transformMatrix.m[0][2] = 0.0f; transformMatrix.m[0][3] = -mPos.x;
-	transformMatrix.m[1][0] = 0.0f; transformMatrix.m[1][1] = 1.0f; transformMatrix.m[1][2] = 0.0f; transformMatrix.m[1][3] = -mPos.y;
-	transformMatrix.m[2][0] = 0.0f; transformMatrix.m[2][1] = 0.0f; transformMatrix.m[2][2] = 1.0f; transformMatrix.m[2][3] = -mPos.z;
-	transformMatrix.m[3][0] = 0.0f; transformMatrix.m[3][1] = 0.0f; transformMatrix.m[3][2] = 0.0f; transformMatrix.m[3][3] = 1.0f;
-
-	mViewMatrix = rotationMatrix * transformMatrix;*/
 	if (ToRadian(mYaw) > 2 * XM_PI)
 		mYaw = ToDegree(0);
 
@@ -221,10 +201,6 @@ void Camera::updateViewMatrix()
 	if (ToRadian(mPitch) < ToRadian(-90.0f))
 		mPitch = -90.0f;
 
-	//std::cout << "pitch = " << mPitch << " yaw = " << mYaw << std::endl;
-	//XMVECTOR quat = XMQuaternionRotationRollPitchYaw(ToRadian(0), ToRadian(mYaw), 0);
-	//mOrientation.vec4 = quat;
-	//XMMATRIX rotateMat = XMMatrixRotationQuaternion(quat);
 	XMMATRIX rotateMat = XMMatrixRotationRollPitchYaw(ToRadian(mPitch), ToRadian(mYaw), 0);
 
 	XMVECTOR initTarget;
@@ -246,21 +222,7 @@ void Camera::updateViewMatrix()
 	mUp = initUp;
 
 	XMVECTOR eyeVec = mPos;
-	//XMVECTOR upVec = mOrientation * math::VEC3F_UNIT_Y;
-	//XMVECTOR lookVec = mOrientation * math::VEC3F_NEGATIVE_UNIT_Z;
-	//eyeVec = XMVector3Normalize(eyeVec);
-	//upVec = XMVector3Normalize(upVec);
-	//lookVec = XMVector3Normalize(lookVec);
-	/*std::cout << "x = " << lookVec.x;
-	std::cout << " y = " << lookVec.y;
-	std::cout << " z = " << lookVec.z;
-	std::cout << std::endl;*/
-	/*std::cout << "lx = " << lookVec.x;
-	std::cout << " ly = " << lookVec.y;
-	std::cout << " lz = " << lookVec.z << std::endl;*/
 
-	
-	
 	mViewMatrix.m = XMMatrixLookAtRH(mPos, target, up);
 	
 
@@ -285,22 +247,7 @@ void Camera::updateCollionPlane()
 	float fHeight = std::tan(ToRadian(mFov / 2)) * mFar;
 	float fWidth = mWidth / mHeight * fHeight;
 
-	/*XMVECTOR nlt = nc + left * nWidth / 2 + nor_up * nHeight / 2;
-	XMVECTOR nlb = nc + left * nWidth / 2 - nor_up * nHeight / 2;
-	XMVECTOR nrt = nc - left * nWidth / 2 + nor_up * nHeight / 2;
-	XMVECTOR nrb = nc - left * nWidth / 2 - nor_up * nHeight / 2;
-
-	XMVECTOR flt = fc + left * fWidth / 2 + nor_up * fHeight / 2;
-	XMVECTOR flb = fc + left * fWidth / 2 - nor_up * fHeight / 2;
-	XMVECTOR frt = fc - left * fWidth / 2 + nor_up * fHeight / 2;
-	XMVECTOR frb = fc - left * fWidth / 2 - nor_up * fHeight / 2;*/
-
-	//XMMATRIX cameraViewInvert;
-	//cameraViewInvert = XMMatrixInverse(cameraViewInvert.r, mViewMatrix.m);
-	//cameraViewInvert = XMMatrixTranspose(cameraViewInvert);
-	//XMMATRIX projectInvert;
-	//projectInvert = XMMatrixInverse(projectInvert.r, mProjMatrix.m);
-	//projectInvert = XMMatrixTranspose(projectInvert);
+	
 	XMMATRIX transformMatrix = mViewMatrix.m * mProjMatrix.m;
 	XMVECTOR t;
 	transformMatrix = XMMatrixInverse(&t, transformMatrix);
@@ -332,32 +279,6 @@ void Camera::updateCollionPlane()
 	flb = XMVector3TransformCoord(flb, transformMatrix);
 	frt = XMVector3TransformCoord(frt, transformMatrix);
 	frb = XMVector3TransformCoord(frb, transformMatrix);
-
-	/*math::Vector3f normal, point;
-
-	normal = nor_lookat;
-	point = nc;
-	mPlanes[P_NEAR].setNormalAndPoint(normal, point);
-
-	normal = -nor_lookat;
-	point = fc;
-	mPlanes[P_FAR].setNormalAndPoint(normal, point);
-
-	normal = XMVector3Normalize(XMVector3Cross((flb - nlb), (nlt - nlb)));
-	point = nlb;
-	mPlanes[P_LEFT].setNormalAndPoint(normal, point);
-
-	normal = XMVector3Normalize(XMVector3Cross((nrt - nrb), (frb - nrb)));
-	point = nrb;
-	mPlanes[P_RIGHT].setNormalAndPoint(normal, point);
-
-	normal = XMVector3Normalize(XMVector3Cross((nlt - nrt), (frt - nrt)));
-	point = nrt;
-	mPlanes[P_TOP].setNormalAndPoint(normal, point);
-
-	normal = XMVector3Normalize(XMVector3Cross((frb - nrb), (nlb - nrb)));
-	point = nrb;
-	mPlanes[P_BOTTOM].setNormalAndPoint(normal, point);*/
 
 	mPlanes[P_TOP].set3Points(nrt, nlt, flt);
 	mPlanes[P_BOTTOM].set3Points(nlb, nrb, frb);

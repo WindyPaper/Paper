@@ -98,7 +98,7 @@ void OpenGLImpl::checkError()
 			break;
 		}
 		
-		printf("GL error id : %s", errStr.c_str());
+		printf("GL error id : %s \n", errStr.c_str());
 		assert(false);
 	}
 #else
